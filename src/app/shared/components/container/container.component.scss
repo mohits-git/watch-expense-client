@@ -1,0 +1,8 @@
+:host {
+  width: 100%;
+  height: calc(98vh - 64px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+}

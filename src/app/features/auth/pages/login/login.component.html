@@ -1,0 +1,37 @@
+<div class="card" card>
+  <h2>Login</h2>
+  <p class="description">Login to WatchExpense to continue</p>
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <input pInputText pSize="large" type="email" id="email" name="email" autocomplete="off"
+          formControlName="email" />
+        <label for="email">Email</label>
+      </p-floatlabel>
+      @if (invalidEmail) {
+      <p-message severity="error" variant="simple" size="small" styleClass="error-message">
+        Enter a valid email.
+      </p-message>
+      }
+    </div>
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <input pInputText pSize="large" type="password" id="password" name="password" autocomplete="off"
+          formControlName="password" />
+        <label for="password">Password</label>
+      </p-floatlabel>
+      @if (invalidPassword) {
+      <p-message severity="error" variant="simple" size="small">
+        Invalid Password.
+      </p-message>
+      }
+    </div>
+    <p-button
+      size="large"
+      type="submit"
+      variant="outlined"
+      [label]="formState().loading ? 'Submitting...' : 'Submit'"
+      [disabled]="form.invalid || formState().submitted || formState().loading"
+    />
+  </form>
+</div>

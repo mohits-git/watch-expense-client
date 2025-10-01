@@ -1,0 +1,48 @@
+<div card>
+
+  @if(userDetails(); as user) {
+  <div class="header">
+    <p-avatar size="large" image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+
+    <div>
+      <h2>
+        {{ user?.name }}
+      </h2>
+      <span>
+        {{ user?.email }}
+      </span>
+    </div>
+  </div>
+
+  <ul>
+    <li>ID: {{ user?.id}}</li>
+    <li>Role: {{ user?.role }}</li>
+    <li>ProjectID: {{ user?.projectId }}</li>
+    <li>DepartmentID: {{ user?.departmentId }}</li>
+  </ul>
+  } @else {
+  <div class="header">
+    <p-skeleton shape="circle" size="3rem" class="mr-2" />
+
+    <div>
+      <p-skeleton width="300px" height="2rem" class="mb-2" />
+      <p-skeleton class="mb-2" />
+    </div>
+  </div>
+
+  <ul>
+    <li>
+        <p-skeleton class="mb-2" borderRadius="16px" />
+    </li>
+    <li>
+        <p-skeleton class="mb-2" borderRadius="16px" />
+    </li>
+    <li>
+        <p-skeleton class="mb-2" borderRadius="16px" />
+      </li>
+    <li>
+        <p-skeleton class="mb-2" borderRadius="16px" />
+    </li>
+  </ul>
+  }
+</div>

@@ -1,0 +1,35 @@
+.card {
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+  width: 400px;
+}
+
+h2 {
+  width: 100%;
+  text-align: center;
+}
+
+.description {
+  width: 100%;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+// .form-control {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+:host ::ng-deep {
+  .p-message {
+    padding-left: 0.25rem;
+  }
+}

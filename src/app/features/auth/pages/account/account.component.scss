@@ -1,0 +1,30 @@
+.header {
+  padding: 20px;
+  width: 400px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  div {
+    margin-inline: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+
+    h2 {
+      margin: 0;
+    }
+
+    span {
+      margin: 0;
+      color: #393939;
+    }
+  }
+}
+
+ul {
+  li {
+    margin: 1rem;
+  }
+}
