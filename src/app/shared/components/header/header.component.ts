@@ -4,10 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuItem } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, MenubarModule, AvatarModule],
+  imports: [RouterLink, MenubarModule, AvatarModule, ButtonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -19,28 +20,15 @@ export class HeaderComponent {
     const isAuthenticated = this.authService.isAuthenticated();
     return [
       {
-        label: 'Home',
-        routerLink: ['dashboard'],
+        label: 'Dashboard',
         visible: isAuthenticated,
-      },
-      {
-        label: 'Home',
-        routerLink: [''],
-        visible: !isAuthenticated,
-      },
-      {
-        label: 'Login',
-        routerLink: ['auth', 'login'],
-        visible: !isAuthenticated,
-      },
-      {
-        label: 'Logout',
-        visible: isAuthenticated,
-        command: () => {
-          this.authService.logout();
-          this.router.navigate(['auth', 'login'])
-        },
+        routerLink: ['dashboard']
       },
     ];
   });
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['auth', 'login']);
+  }
 }

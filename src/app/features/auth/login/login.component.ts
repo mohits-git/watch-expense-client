@@ -12,7 +12,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
-import { AuthService } from '../../services/auth.serivce';
+import { AuthService } from '../services/auth.serivce';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 

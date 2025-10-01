@@ -1,14 +1,11 @@
 import { Routes } from '@angular/router';
-import { unauthorizedOnly } from './guards/unauthorized-only.guard';
+import { authorizedOnly } from './guards/authorized-only.guard';
 
 export const routes: Routes = [
   {
     path: '',
-    // canActivate: [unauthorizedOnly],
-    // redirectTo: '/dashboard',
-    // pathMatch: 'full',
-    loadComponent: () =>
-      import('@/features/home/home.component').then((mod) => mod.HomeComponent),
+    redirectTo: '/auth/login',
+    pathMatch: 'full',
   },
   {
     path: 'auth',
@@ -17,6 +14,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    canActivate: [authorizedOnly],
     loadChildren: () =>
       import('@/features/dashboard/dashboard.routes').then((mod) => mod.routes),
   },

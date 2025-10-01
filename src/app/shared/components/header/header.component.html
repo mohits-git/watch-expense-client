@@ -1,9 +1,12 @@
+@if (this.authService.isAuthenticated()) {
 <p-menubar [model]="items()">
-  @if (this.authService.isAuthenticated()) {
   <ng-template #end>
-    <a [routerLink]="['auth', 'account']">
-      <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
-    </a>
+    <div class="end-container">
+      <p-button size="small" label="Logout" severity="secondary" (onClick)="onLogout()"/>
+      <a [routerLink]="['auth', 'account']">
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" />
+      </a>
+    </div>
   </ng-template>
-  }
 </p-menubar>
+}
