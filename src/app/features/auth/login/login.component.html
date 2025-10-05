@@ -22,7 +22,19 @@
       </p-floatlabel>
       @if (invalidPassword) {
       <p-message severity="error" variant="simple" size="small">
-        Invalid Password.
+        Invalid Password. Password must have:
+      </p-message>
+      <p-message severity="error" variant="simple" size="small">
+        - At least 8 characters.
+      </p-message>
+      <p-message severity="error" variant="simple" size="small">
+        - At least one special character.
+      </p-message>
+      <p-message severity="error" variant="simple" size="small">
+        - At least one digit.
+      </p-message>
+      <p-message severity="error" variant="simple" size="small">
+        - At least one upper and lower case.
       </p-message>
       }
     </div>
