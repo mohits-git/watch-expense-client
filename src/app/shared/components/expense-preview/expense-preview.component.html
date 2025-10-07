@@ -1,0 +1,13 @@
+<div card="shadow">
+  <ul>
+    <li>
+      Purpose: {{ expense().purpose }}
+    </li>
+    <li>
+      Amount: {{ expense().amount | currency:"INR" }}
+    </li>
+    <li>
+      Requested on {{ expense().createdAt | date:"medium" }}
+    </li>
+  </ul>
+</div>

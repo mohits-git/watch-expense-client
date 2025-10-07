@@ -1,0 +1,19 @@
+<div card class="card">
+  <h3>Pending Expenses Request</h3>
+  <div>
+    @if(!pendingExpenses) {
+      <p>Loading...</p>
+    }
+    @else if (!pendingExpenses.length) {
+        <p>No Pending Expenses Yet!</p>
+    }
+    @else {
+      <p>Total pending amount: {{ pendingExpenses | sum:"amount" | currency:"INR" }}</p>
+      <div class="list">
+        @for (expense of pendingExpenses; track expense.id) {
+          <app-expense-preview [expense]="expense" />
+        }
+      </div>
+    }
+  </div>
+</div>

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomeComponent } from './home.component';
+import { PendingAdvanceComponent } from './pending-advance.component';
 
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('PendingAdvanceComponent', () => {
+  let component: PendingAdvanceComponent;
+  let fixture: ComponentFixture<PendingAdvanceComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HomeComponent]
+      imports: [PendingAdvanceComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(PendingAdvanceComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

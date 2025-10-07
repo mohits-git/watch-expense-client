@@ -9,9 +9,11 @@
         <label for="email">Email</label>
       </p-floatlabel>
       @if (invalidEmail) {
-      <p-message severity="error" variant="simple" size="small" styleClass="error-message">
-        Enter a valid email.
-      </p-message>
+      <div class="email-error-container">
+        <p-message class="email-error" severity="error" variant="simple" size="small" styleClass="error-message">
+          Enter a valid email.
+        </p-message>
+      </div>
       }
     </div>
     <div class="form-control">
@@ -21,21 +23,23 @@
         <label for="password">Password</label>
       </p-floatlabel>
       @if (invalidPassword) {
-      <p-message severity="error" variant="simple" size="small">
-        Invalid Password. Password must have:
-      </p-message>
-      <p-message severity="error" variant="simple" size="small">
-        - At least 8 characters.
-      </p-message>
-      <p-message severity="error" variant="simple" size="small">
-        - At least one special character.
-      </p-message>
-      <p-message severity="error" variant="simple" size="small">
-        - At least one digit.
-      </p-message>
-      <p-message severity="error" variant="simple" size="small">
-        - At least one upper and lower case.
-      </p-message>
+      <div class="error-container">
+        <p-message severity="error" variant="simple" size="small">
+          Invalid Password. Password must have:
+        </p-message>
+        <p-message severity="error" variant="simple" size="small">
+          - At least 8 characters.
+        </p-message>
+        <p-message severity="error" variant="simple" size="small">
+          - At least one special character.
+        </p-message>
+        <p-message severity="error" variant="simple" size="small">
+          - At least one digit.
+        </p-message>
+        <p-message severity="error" variant="simple" size="small">
+          - At least one upper and lower case.
+        </p-message>
+      </div>
       }
     </div>
     <p-button

@@ -2,5 +2,8 @@
   padding: 0.5rem 1rem;
   border-radius: 10px;
   border: 1px solid #D3D3D3;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+:host.shadow {
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
 }

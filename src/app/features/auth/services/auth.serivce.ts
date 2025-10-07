@@ -16,6 +16,9 @@ export class AuthService {
   private httpClient = inject(HttpClient);
 
   private token = signal<string | null>(null);
+  getToken() {
+    return this.token()
+  }
 
   readonly isAuthenticated = computed(() => {
     return !!this.token();
