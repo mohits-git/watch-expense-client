@@ -6,11 +6,19 @@ import { Component, input } from '@angular/core';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
   host: {
-    "[class.shadow]": "config() === 'shadow'"
-  }
+    '[class.shadow]': "config() === 'shadow'",
+    '[class.summary-card]': "config() === 'summary'",
+    '[className]': "cardType()",
+  },
 })
 export class CardComponent {
-  config = input<string>('', {
+  config = input<'' | 'shadow' | 'summary'>('', {
     alias: 'card',
+  });
+
+  cardType = input<
+    '' | 'primary' | 'secondary' | 'warning' | 'error' | 'purple' | 'success' | 'pink' | 'red'
+  >('', {
+    alias: 'type',
   });
 }

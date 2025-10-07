@@ -1,0 +1,18 @@
+<div class="summary">
+  <div card="summary" type="primary">
+    <p class="summary-title">
+      Budget
+    </p>
+    <p class="summary-data">
+      {{ budget() | currency:"INR" }}
+    </p>
+  </div>
+  <div card="summary" type="secondary">
+    <p class="summary-title">
+      Budget Left
+    </p>
+    <p class="summary-data">
+      {{ budgetLeft() | currency:"INR" }}
+    </p>
+  </div>
+</div>

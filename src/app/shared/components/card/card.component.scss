@@ -1,3 +1,5 @@
+@import "variables";
+
 :host {
   padding: 0.5rem 1rem;
   border-radius: 10px;
@@ -6,4 +8,65 @@
 
 :host.shadow {
   box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+:host.summary-card {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-inline: 1rem;
+  padding-block: 3rem;
+
+  ::ng-deep .summary-title {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  ::ng-deep .summary-data {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+}
+
+:host.primary {
+  background-color: $primary-color;
+  color: white;
+}
+
+:host.secondary {
+  background-color: $secondary-color;
+  color: white;
+}
+
+:host.warning {
+  background-color: $warning;
+  color: white;
+}
+
+:host.error {
+  background-color: $error;
+  color: white;
+}
+
+:host.purple {
+  background-color: $purple;
+  color: white;
+}
+
+:host.success {
+  background-color: $success;
+  color: white;
+}
+
+:host.pink {
+  background-color: $pink;
+  color: white;
+}
+
+:host.red {
+  background-color: $red;
+  color: white;
 }

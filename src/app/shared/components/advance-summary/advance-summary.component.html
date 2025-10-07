@@ -1,0 +1,18 @@
+<div class="summary">
+  <div card="summary" type="primary">
+    <p class="summary-title">Balance</p>
+    <p class="summary-data">{{ balance() | currency:"INR" }}</p>
+  </div>
+  <div card="summary" type="red">
+    <p class="summary-title">To Reconcile</p>
+    <p class="summary-data">{{ toReconcile() | currency:"INR" }}</p>
+  </div>
+  <div card="summary" type="warning">
+    <p class="summary-title">Pending Reconciliation</p>
+    <p class="summary-data">{{ pendingReconciliation() | currency:"INR" }}</p>
+  </div>
+  <div card="summary" type="error">
+    <p class="summary-title">Rejected Advance Requests</p>
+    <p class="summary-data">{{ rejectedAdvance() | currency:"INR" }}</p>
+  </div>
+</div>

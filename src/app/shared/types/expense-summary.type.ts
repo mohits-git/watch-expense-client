@@ -1,6 +1,6 @@
 export interface ExpensesSummary {
   totalExpense: number;
-  pendingRequests: number;
+  pendingExpense: number;
   reimbursedExpense: number;
-  rejectedRequests: number;
+  rejectedExpense: number;
 }

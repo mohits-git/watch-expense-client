@@ -5,6 +5,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import { UserRole } from '@/shared/enums/user-role.enum';
 
 @Component({
   selector: 'app-header',
@@ -24,6 +25,16 @@ export class HeaderComponent {
         visible: isAuthenticated,
         routerLink: ['dashboard']
       },
+      {
+        label: 'Expenses',
+        visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
+        routerLink: ['expenses']
+      },
+      {
+        label: 'Advance',
+        visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
+        routerLink: ['advance']
+      }
     ];
   });
 

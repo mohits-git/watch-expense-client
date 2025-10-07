@@ -86,6 +86,10 @@ export class AuthService {
     );
   }
 
+  hasRole(role: UserRole) {
+    return this.user()?.role === role;
+  }
+
   private saveToken(token: string) {
     localStorage.setItem(TOKEN_KEY, token);
     this.token.set(token);

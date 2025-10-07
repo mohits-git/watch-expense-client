@@ -1,0 +1,17 @@
+.summary {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .summary {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 475px) {
+  .summary {
+    grid-template-columns: 1fr;
+  }
+}

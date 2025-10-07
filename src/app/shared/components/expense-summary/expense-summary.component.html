@@ -1,0 +1,18 @@
+<div class="summary">
+  <div card="summary" type="secondary">
+    <p class="summary-title">Total Expense</p>
+    <p class="summary-data">{{ summary().totalExpense | currency:"INR" }}</p>
+  </div>
+  <div card="summary" type="success">
+    <p class="summary-title">Reimbursed Expense</p>
+    <p class="summary-data">{{ summary().reimbursedExpense | currency:"INR" }}</p>
+  </div>
+  <div card="summary" type="warning">
+    <p class="summary-title">Pending Expense</p>
+    <p class="summary-data">{{ summary().pendingExpense| currency:"INR" }}</p>
+  </div>
+  <div card="summary" type="error">
+    <p class="summary-title">Rejected Expense Requests</p>
+    <p class="summary-data">{{ summary().rejectedExpense | currency:"INR" }}</p>
+  </div>
+</div>
