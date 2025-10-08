@@ -1,0 +1,33 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.form-control {
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+:host ::ng-deep {
+  .p-message {
+    padding-left: 0.25rem;
+  }
+}
+
+.error-container {
+  width: 300px;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
+  width: 300px;
+}
