@@ -2,27 +2,86 @@ import { inject, Injectable } from '@angular/core';
 import { Expense, RequestStatus } from '../types/expense.type';
 import { HttpClient } from '@angular/common/http';
 import { APIBaseResponse } from '../types/api-base-response.type';
-import { map } from 'rxjs';
+import { catchError, map, throwError } from 'rxjs';
+import { AuthService } from '@/features/auth/services/auth.serivce';
+import { MessageService } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ExpensesService {
-  httpClient = inject(HttpClient);
+  private httpClient = inject(HttpClient);
+  private authService = inject(AuthService);
+  private messageService = inject(MessageService);
 
   getExpenses(status?: RequestStatus, page?: number, limit?: number) {
     return this.httpClient
-      .get<APIBaseResponse<Expense[]>>('/api/expenses', {
+      .get<APIBaseResponse<{ totalExpenses: number, expenses: Expense[] }>>('/api/expenses', {
         params: {
-          page: page ?? 1,
-          limit: limit ?? 10,
-          status: status ?? '',
+          ...(page ? { page: page ?? 1 } : {}),
+          ...(limit ? { limit: limit ?? 10 } : {}),
+          ...(status ? { status: status ?? '' } : {}),
         },
       })
       .pipe(
         map((response) => {
           return response.data;
         }),
+        catchError((err) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error fetching expenses',
+            detail: err.message,
+          });
+          return throwError(() => new Error('Error fetching expenses'));
+        }),
       );
+  }
+
+  addNewExpense(expense: Partial<Expense>) {
+    if (!expense.amount || !expense.purpose) {
+      return throwError(() => new Error('Amount and Purpose are required'));
+    }
+    return this.httpClient
+      .post<APIBaseResponse<{ id: string }>>('/api/expenses', expense)
+      .pipe(
+        map((response) => {
+          console.log('POST /expenses', response);
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Success',
+            detail: 'Expense added successfully',
+          });
+          return true;
+        }),
+        catchError((err) => {
+          console.log('POST /expenses', err);
+          this.messageService.add({
+            severity: 'error',
+            summary: "Failed to add exense",
+            detail: err.message,
+          })
+          return throwError(() => new Error('Failed to add new expense'));
+        }),
+      );
+  }
+
+  NewExpense(expense: Partial<Expense>) {
+    return {
+      id: expense.id ?? Date.now().toString(),
+      purpose: expense.purpose ?? '',
+      amount: expense.amount ?? 0,
+      description: expense.description ?? '',
+      userId: this.authService.user()?.id || '',
+      status: RequestStatus.Pending,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+      approvedAt: null,
+      approvedBy: null,
+      reviewedAt: null,
+      reviewedBy: null,
+      isReconcilled: false,
+      bills: [], // TODO:
+    };
   }
 }

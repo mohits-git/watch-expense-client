@@ -1,17 +1,29 @@
 <div class="summary">
   <div card="summary" type="secondary">
+    <div class="summary-icon">
+      <i class="pi pi-indian-rupee" style="font-size: 1.25rem;"></i>
+    </div>
     <p class="summary-title">Total Expense</p>
     <p class="summary-data">{{ summary().totalExpense | currency:"INR" }}</p>
   </div>
   <div card="summary" type="success">
+    <div class="summary-icon">
+      <i class="pi pi-check" style="font-size: 1.25rem;"></i>
+    </div>
     <p class="summary-title">Reimbursed Expense</p>
     <p class="summary-data">{{ summary().reimbursedExpense | currency:"INR" }}</p>
   </div>
   <div card="summary" type="warning">
-    <p class="summary-title">Pending Expense</p>
+    <div class="summary-icon">
+      <i class="pi pi-hourglass" style="font-size: 1.25rem;"></i>
+    </div>
+    <p class="summary-title">Pending Expense Requests</p>
     <p class="summary-data">{{ summary().pendingExpense| currency:"INR" }}</p>
   </div>
   <div card="summary" type="error">
+    <div class="summary-icon">
+      <i class="pi pi-times" style="font-size: 1.25rem;"></i>
+    </div>
     <p class="summary-title">Rejected Expense Requests</p>
     <p class="summary-data">{{ summary().rejectedExpense | currency:"INR" }}</p>
   </div>

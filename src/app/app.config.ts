@@ -15,6 +15,7 @@ import { loggingInterceptor } from '@/interceptors/logging.interceptor';
 import { MessageService } from 'primeng/api';
 import { apiProxyInterceptor } from './interceptors/api-proxy.interceptor';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { mockApiInterceptor } from './interceptors/mock-api-server.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,7 +28,12 @@ export const appConfig: ApplicationConfig = {
       }),
     ),
     provideHttpClient(
-      withInterceptors([loggingInterceptor, authInterceptor, apiProxyInterceptor]),
+      withInterceptors([
+        loggingInterceptor,
+        mockApiInterceptor,
+        authInterceptor,
+        apiProxyInterceptor,
+      ]),
     ),
     provideAnimationsAsync(),
     providePrimeNG({

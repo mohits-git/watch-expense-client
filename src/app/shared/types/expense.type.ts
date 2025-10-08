@@ -12,12 +12,20 @@ export interface Expense {
   purpose: string;
   status: RequestStatus;
   description: string;
-  createdAt: string;
-  updatedAt: string;
-  approvedBy: string;
-  approvedAt: Date;
-  reviewedBy: string;
-  reviewedAt: number;
+  createdAt: number;
+  updatedAt: number;
+  approvedBy: string | null;
+  approvedAt: number | null;
+  reviewedBy: string | null;
+  reviewedAt: number | null;
   isReconcilled: boolean;
-  bills: any[]; // TODO:
+  bills: Bill[];
+}
+
+export interface Bill {
+  id: string;
+  expenseId: string;
+  amount: number;
+  description: string;
+  attachmentUrl: string;
 }

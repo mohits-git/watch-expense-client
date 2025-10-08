@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { authorizedOnly } from './guards/authorized-only.guard';
+import { employeeOnly } from './guards/employee-only.guard';
 
 export const routes: Routes = [
   {
@@ -17,5 +18,23 @@ export const routes: Routes = [
     canActivate: [authorizedOnly],
     loadChildren: () =>
       import('@/features/dashboard/dashboard.routes').then((mod) => mod.routes),
+  },
+  {
+    path: 'expenses',
+    canMatch: [employeeOnly],
+    canActivate: [authorizedOnly],
+    loadComponent: () =>
+      import('@/features/expenses/expenses.component').then(
+        (mod) => mod.ExpensesComponent,
+      ),
+  },
+  {
+    path: 'advance',
+    canMatch: [employeeOnly],
+    canActivate: [authorizedOnly],
+    loadComponent: () =>
+      import('@/features/advance/advance.component').then(
+        (mod) => mod.AdvanceComponent
+      ),
   },
 ];

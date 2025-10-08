@@ -1,4 +1,4 @@
-@import "variables";
+@use "variables" as vars;
 
 :host {
   padding: 0.5rem 1rem;
@@ -16,8 +16,18 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-inline: 1rem;
-  padding-block: 3rem;
+  padding: 1rem;
+
+  ::ng-deep.summary-icon {
+    border-radius: 50%;
+    padding: 2rem;
+    height: 3rem;
+    width: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
 
   ::ng-deep .summary-title {
     margin: 0;
@@ -31,42 +41,59 @@
   }
 }
 
+
 :host.primary {
-  background-color: $primary-color;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$primary-color, 0.5);
+    color: white;
+  }
 }
 
 :host.secondary {
-  background-color: $secondary-color;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$secondary-color, 0.5);
+    color: white;
+  }
 }
 
 :host.warning {
-  background-color: $warning;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$warning, 0.5);
+    color: white;
+  }
 }
 
 :host.error {
-  background-color: $error;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$error, 0.5);
+    color: white;
+  }
 }
 
 :host.purple {
-  background-color: $purple;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$purple, 0.5);
+    color: white;
+  }
 }
 
 :host.success {
-  background-color: $success;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$success, 0.5);
+    color: white;
+  }
 }
 
 :host.pink {
-  background-color: $pink;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$pink, 0.5);
+    color: white;
+  }
 }
 
 :host.red {
-  background-color: $red;
-  color: white;
+  ::ng-deep.summary-icon {
+    background-color: rgba(vars.$red, 0.7);
+    color: white;
+  }
 }

@@ -23,18 +23,21 @@ export class HeaderComponent {
       {
         label: 'Dashboard',
         visible: isAuthenticated,
-        routerLink: ['dashboard']
+        routerLink: ['dashboard'],
+        routerLinkActiveOptions: {exact: true},
       },
       {
         label: 'Expenses',
         visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
-        routerLink: ['expenses']
+        routerLink: ['expenses'],
+        routerLinkActiveOptions: {exact: true}
       },
       {
         label: 'Advance',
         visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
-        routerLink: ['advance']
-      }
+        routerLink: ['advance'],
+        routerLinkActiveOptions: {exact: true}
+      },
     ];
   });
 

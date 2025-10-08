@@ -38,7 +38,8 @@ export class LoginComponent {
   formState = signal({
     loading: false,
     submitted: false,
-  })
+  });
+
   form = new FormGroup({
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],

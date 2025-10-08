@@ -1,0 +1,78 @@
+<div class='container'>
+  <app-expense-summary />
+
+  <div class="header">
+    <h2>Expenses</h2>
+    <p-button (click)="openAddExpenseForm()">
+      <i class="pi pi-plus"></i> New Expense
+    </p-button>
+  </div>
+
+  <p-selectbutton
+    [options]="statusOptions"
+    (onChange)="onStatusChange($event.value)"
+    [(ngModel)]="status"
+    optionLabel="label"
+    optionValue="value"
+    aria-labelledby="label"
+  />
+
+  <p-table
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [value]="expenses()?.slice(0, 5) ?? []"
+      [loading]="!expenses()"
+      [showLoader]="false"
+      sortMode='single'
+      sortField='createdAt'
+      [sortOrder]="-1"
+  >
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="createdAt" style="width:25%">
+          Requested On <p-sortIcon field="createdAt" />
+        </th>
+        <th style="width:20%">Purpose</th>
+        <th style="width:10%">Expense</th>
+        <th style="width:10%">Status</th>
+        <th style="width:35%">Description</th>
+      </tr>
+    </ng-template>
+    <ng-template #loadingbody>
+      <td></td>
+      <td></td>
+      <td [colSpan]="2">
+        @if(dataFetchingError()) {
+          <p-message severity="error" size="small" variant="simple">
+            {{ dataFetchingError() }}
+          </p-message>
+        }
+        @else {
+          <div class='spinner-container'>
+            <app-spinner />
+          </div>
+        }
+      </td>
+      <td></td>
+      <td></td>
+    </ng-template>
+    <ng-template #body let-expense>
+      <tr>
+        <td>{{ expense.createdAt | date:"medium" }}</td>
+        <td>{{ expense.purpose }}</td>
+        <td>{{ expense.amount }}</td>
+        <td>
+          <p-tag [value]="expense.status" [severity]="getSeverity(expense.status)" [rounded]="true" />
+        </td>
+        <td>{{ expense.description }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-paginator
+    [totalRecords]="totalRecords()"
+    [rows]="5"
+    (onPageChange)="onPageChange($event)"
+  />
+
+  <app-new-expense-form [(visible)]="openNewExpenseForm" />
+</div>

@@ -7,6 +7,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   if (req.url.startsWith('/api/')) {
     const token = authService.getToken();
     if (token) {
+      console.log("TOKEN Found")
       req = req.clone({
         headers: req.headers.append("Authorization", "Bearer " + token)
       })
