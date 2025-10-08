@@ -17,7 +17,6 @@ export const authorizedOnly: CanActivateFn = (
   if (authService.isAuthenticated()) {
     return true;
   }
-  console.log('--------not authorized-------')
   const login = router.parseUrl('/auth/login');
   return new RedirectCommand(login, {
     skipLocationChange: true,
