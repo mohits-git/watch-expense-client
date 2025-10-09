@@ -5,10 +5,10 @@
     <div class="form-control">
       <p-floatlabel variant="on">
         <input pInputText pSize="large" type="email" id="email" name="email" autocomplete="off"
-          formControlName="email" />
+          formControlName="email" fluid />
         <label for="email">Email</label>
       </p-floatlabel>
-      @if (invalidEmail) {
+      @if (formState().submitted && isInvalidField('email')) {
       <div class="email-error-container">
         <p-message class="email-error" severity="error" variant="simple" size="small" styleClass="error-message">
           Enter a valid email.
@@ -19,10 +19,10 @@
     <div class="form-control">
       <p-floatlabel variant="on">
         <input pInputText pSize="large" type="password" id="password" name="password" autocomplete="off"
-          formControlName="password" />
+          formControlName="password" fluid />
         <label for="password">Password</label>
       </p-floatlabel>
-      @if (invalidPassword) {
+      @if (formState().submitted && isInvalidField('password')) {
       <div class="error-container">
         <p-message severity="error" variant="simple" size="small">
           Invalid Password. Password must have:
@@ -47,7 +47,7 @@
       type="submit"
       variant="outlined"
       [label]="formState().loading ? 'Submitting...' : 'Submit'"
-      [disabled]="form.invalid || formState().submitted || formState().loading"
+      [disabled]="formState().loading"
     />
   </form>
 </div>

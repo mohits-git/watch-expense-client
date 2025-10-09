@@ -13,6 +13,7 @@ export class ExpensesService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
   private messageService = inject(MessageService);
+
   totalExpenses = signal(0);
   expenses = signal<Expense[] | null>(null);
 

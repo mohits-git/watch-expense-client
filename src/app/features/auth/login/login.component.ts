@@ -50,8 +50,11 @@ export class LoginComponent {
   });
 
   onSubmit() {
-    if (this.form.invalid) return;
-    this.formState.update(prev => ({ ...prev, loading: true }))
+    if (this.form.invalid) {
+      this.formState.update((prev) => ({ ...prev, submitted: true }));
+      return;
+    }
+    this.formState.set({ submitted: true, loading: true });
     this.authService
       .login(this.form.value.email!, this.form.value.password!)
       .subscribe({
@@ -62,7 +65,7 @@ export class LoginComponent {
             summary: 'Success',
             detail: 'Logged In Successfully',
           });
-          this.formState.update(prev => ({ ...prev, submitted: true }))
+          this.formState.update((prev) => ({ ...prev, submitted: true }));
         },
         error: (err) => {
           this.messageService.add({
@@ -72,23 +75,16 @@ export class LoginComponent {
           });
         },
         complete: () => {
-          this.formState.update(prev => ({ ...prev, loading: false }))
-        }
+          this.formState.update((prev) => ({ ...prev, loading: false }));
+        },
       });
     this.form.reset();
   }
 
-  get invalidEmail() {
+  isInvalidField(field: 'email' | 'password') {
     return (
-      this.form.controls.email.invalid &&
-      (this.form.controls.email.dirty || this.form.controls.email.touched)
-    );
-  }
-
-  get invalidPassword() {
-    return (
-      this.form.controls.password.invalid &&
-      (this.form.controls.password.dirty || this.form.controls.password.touched)
+      this.form.controls[field]?.invalid &&
+      (this.form.controls[field]?.dirty || this.form.controls[field]?.touched)
     );
   }
 }

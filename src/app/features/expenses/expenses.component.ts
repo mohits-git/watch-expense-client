@@ -3,7 +3,7 @@ import { NewExpenseFormComponent } from '@/shared/components/new-expense-form/ne
 import { ExpensesService } from '@/shared/services/expenses.service';
 import { RequestStatus } from '@/shared/types/expense.type';
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -32,7 +32,7 @@ import { PaginatorModule, PaginatorState } from 'primeng/paginator';
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.scss',
 })
-export class ExpensesComponent {
+export class ExpensesComponent implements OnInit {
   private expenseService = inject(ExpensesService);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
@@ -54,7 +54,7 @@ export class ExpensesComponent {
     { label: 'Reviewed', value: 'REVIEWED' },
   ];
 
-  ngOnInit() {
+  ngOnInit(): void {
     const paramsSub = this.activatedRoute.queryParams.subscribe({
       next: (value) => {
         const status = value['status']
@@ -73,7 +73,6 @@ export class ExpensesComponent {
             this.loading.set(false);
           },
         });
-
       },
     });
 

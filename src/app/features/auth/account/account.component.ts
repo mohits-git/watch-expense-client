@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { AuthService } from '../services/auth.serivce';
 import { User } from '@/shared/types/user.type';
 import { CardComponent } from '@/shared/components/card/card.component';
@@ -11,11 +11,11 @@ import { SkeletonModule } from 'primeng/skeleton';
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
 })
-export class AccountComponent {
+export class AccountComponent implements OnInit {
   authService = inject(AuthService);
   userDetails = signal<User | null>(null);
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.authService.authMe().subscribe({
       next: (user) => {
         this.userDetails.set({ ...user });

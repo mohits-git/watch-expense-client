@@ -1,0 +1,23 @@
+<p-floatlabel variant="on">
+  <input
+    pInputText
+    fluid
+    pSize="large"
+    autocomplete="off"
+    [id]="name()"
+    [name]="name()"
+    [formControlName]="name()"
+  />
+  <label [for]="name()">
+    {{ label() }}
+  </label>
+</p-floatlabel>
+@if (formState().submitted && invalid()) {
+<div class="email-error-container">
+  @for (errMessage of errorMessages(); track errMessage) {
+  <p-message severity="error" variant="simple" size="small" styleClass="error-message">
+    {{ errMessage }}
+  </p-message>
+  }
+</div>
+}
