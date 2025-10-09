@@ -59,11 +59,11 @@ export class NewExpenseFormComponent {
   }
 
   onSubmit() {
-    this.formState.update((state) => ({ ...state, submitted: true }));
     if (this.formGroup.invalid) {
+      this.formState.update((state) => ({ ...state, submitted: true }));
       return;
     }
-    this.formState.update((state) => ({ ...state, loading: true }));
+    this.formState.set({ submitted: true, loading: true });
     this.expenseService
       .addNewExpense({
         amount: this.formGroup.value.amount!,

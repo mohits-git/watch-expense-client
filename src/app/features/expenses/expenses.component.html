@@ -20,7 +20,7 @@
   <p-table
       [tableStyle]="{ 'min-width': '50rem' }"
       [value]="expenses()?.slice(0, 5) ?? []"
-      [loading]="!expenses()"
+      [loading]="loading() || !!(dataFetchingError())"
       [showLoader]="false"
       sortMode='single'
       sortField='createdAt'
@@ -28,11 +28,11 @@
   >
     <ng-template #header>
       <tr>
-        <th pSortableColumn="createdAt" style="width:25%">
+        <th pSortableColumn="createdAt" style="width:20%">
           Requested On <p-sortIcon field="createdAt" />
         </th>
         <th style="width:20%">Purpose</th>
-        <th style="width:10%">Expense</th>
+        <th style="width:15%">Expense</th>
         <th style="width:10%">Status</th>
         <th style="width:35%">Description</th>
       </tr>
@@ -40,13 +40,13 @@
     <ng-template #loadingbody>
       <td></td>
       <td></td>
-      <td [colSpan]="2">
+      <td>
         @if(dataFetchingError()) {
           <p-message severity="error" size="small" variant="simple">
             {{ dataFetchingError() }}
           </p-message>
         }
-        @else {
+        @if(loading()) {
           <div class='spinner-container'>
             <app-spinner />
           </div>
@@ -68,11 +68,13 @@
     </ng-template>
   </p-table>
 
+  @if(totalRecords()) {
   <p-paginator
     [totalRecords]="totalRecords()"
     [rows]="5"
     (onPageChange)="onPageChange($event)"
   />
+  }
 
   <app-new-expense-form [(visible)]="openNewExpenseForm" />
 </div>

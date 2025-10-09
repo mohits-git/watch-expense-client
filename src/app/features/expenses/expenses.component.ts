@@ -1,11 +1,11 @@
 import { ExpenseSummaryComponent } from '@/shared/components/expense-summary/expense-summary.component';
 import { NewExpenseFormComponent } from '@/shared/components/new-expense-form/new-expense-form.component';
 import { ExpensesService } from '@/shared/services/expenses.service';
-import { Expense, RequestStatus } from '@/shared/types/expense.type';
+import { RequestStatus } from '@/shared/types/expense.type';
 import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TableModule, TablePageEvent } from 'primeng/table';
+import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { FormsModule } from '@angular/forms';
@@ -37,13 +37,14 @@ export class ExpensesComponent {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  totalRecords = signal(0);
-  page = signal(0);
-  expenses = signal<Expense[] | null>(null);
+  totalRecords = this.expenseService.totalExpenses;
+  expenses = this.expenseService.expenses;
+  loading = signal(true);
   dataFetchingError = signal('');
 
   openNewExpenseForm = signal(false);
 
+  page = signal(0);
   status = signal<RequestStatus | 'ALL'>('ALL');
   statusOptions = [
     { label: 'All', value: 'ALL' },
@@ -62,16 +63,17 @@ export class ExpensesComponent {
         this.status.set(status ?? 'ALL');
         const page = value['page'] ? Number(value['page']) : 1;
         const limit = value['limit'] ? Number(value['limit']) : 10;
-        this.expenseService.getExpenses(status, page, limit).subscribe({
-          next: (val) => {
-            console.log(val)
-            this.totalRecords.set(val.totalExpenses);
-            this.expenses.set(val.expenses);
+
+        this.expenseService.fetchExpenses(status, page, limit).subscribe({
+          complete: () => {
+            this.loading.set(false);
           },
           error: (err) => {
             this.dataFetchingError.set(err.message);
+            this.loading.set(false);
           },
         });
+
       },
     });
 
@@ -118,6 +120,6 @@ export class ExpensesComponent {
       queryParamsHandling: 'merge',
     });
     this.page.set(0);
-    this.expenses.set(null);
+    this.loading.set(true);
   }
 }
