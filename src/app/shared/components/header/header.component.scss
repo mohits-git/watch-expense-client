@@ -3,6 +3,7 @@
   top: 10px;
   left: 0;
   z-index: 1000;
+  width: 100%;
 }
 
 .end-container {
@@ -11,4 +12,22 @@
   justify-content: center;
   align-items: center;
   gap: 1rem;
+}
+
+:host ::ng-deep.active {
+  background-color: grey;
+}
+
+:host ::ng-deep .logout-button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+:host ::ng-deep .logout-button:hover {
+  border: none;
+  outline: none;
+}
+
+.toggle-button {
+  margin-left: 95vw;
 }

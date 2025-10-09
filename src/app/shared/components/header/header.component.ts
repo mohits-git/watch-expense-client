@@ -6,10 +6,11 @@ import { AvatarModule } from 'primeng/avatar';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { UserRole } from '@/shared/enums/user-role.enum';
+import { DarkModeToggleComponent } from '../dark-mode-toggle/dark-mode-toggle.component';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, MenubarModule, AvatarModule, ButtonModule],
+  imports: [RouterLink, MenubarModule, AvatarModule, ButtonModule, DarkModeToggleComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
@@ -23,19 +24,19 @@ export class HeaderComponent {
       {
         label: 'Dashboard',
         visible: isAuthenticated,
-        routerLink: ['dashboard'],
+        routerLink: ['/dashboard'],
         routerLinkActiveOptions: {exact: true},
       },
       {
         label: 'Expenses',
         visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
-        routerLink: ['expenses'],
+        routerLink: ['/expenses'],
         routerLinkActiveOptions: {exact: true}
       },
       {
         label: 'Advance',
         visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
-        routerLink: ['advance'],
+        routerLink: ['/advance'],
         routerLinkActiveOptions: {exact: true}
       },
     ];

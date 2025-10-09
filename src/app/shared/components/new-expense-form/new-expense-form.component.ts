@@ -1,6 +1,7 @@
 import { ExpensesService } from '@/shared/services/expenses.service';
 import { Component, inject, model, signal } from '@angular/core';
 import {
+  FormArray,
   FormControl,
   FormGroup,
   ReactiveFormsModule,
@@ -50,7 +51,24 @@ export class NewExpenseFormComponent {
     description: new FormControl('', {
       validators: [],
     }),
+    bills: new FormArray([this.addBill()], {
+      validators: [Validators.minLength(1)],
+    }),
   });
+
+  addBill() {
+    return new FormGroup({
+      amount: new FormControl(0, {
+        validators: [Validators.min(0)],
+      }),
+      description: new FormControl(''),
+      attachmentUrl: new FormControl(''),
+    });
+  }
+
+  removeBill(index: number) {
+    this.formGroup.controls.bills.removeAt(index)
+  }
 
   onCancel() {
     this.formGroup.reset();

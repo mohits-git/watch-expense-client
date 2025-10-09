@@ -3,7 +3,7 @@
 :host {
   padding: 0.5rem 1rem;
   border-radius: 10px;
-  border: 1px solid #D3D3D3;
+  border: 1px solid var(--p-surface-300);
 }
 
 :host.shadow {
@@ -45,55 +45,47 @@
 :host.primary {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$primary-color, 0.5);
-    color: white;
   }
 }
 
 :host.secondary {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$secondary-color, 0.5);
-    color: white;
   }
 }
 
 :host.warning {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$warning, 0.5);
-    color: white;
   }
 }
 
 :host.error {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$error, 0.5);
-    color: white;
   }
 }
 
 :host.purple {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$purple, 0.5);
-    color: white;
   }
 }
 
 :host.success {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$success, 0.5);
-    color: white;
   }
 }
 
 :host.pink {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$pink, 0.5);
-    color: white;
   }
 }
 
 :host.red {
   ::ng-deep.summary-icon {
     background-color: rgba(vars.$red, 0.7);
-    color: white;
   }
 }
