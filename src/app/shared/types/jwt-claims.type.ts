@@ -1,7 +1,10 @@
+import { UserRole } from "../enums";
+
 export interface JWTClaims {
   sub: string;
   name: string;
-  role: string;
+  role: UserRole;
   email: string;
   iat: string;
+  exp: number;
 }

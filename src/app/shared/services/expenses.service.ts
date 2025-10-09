@@ -1,10 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { Expense, RequestStatus } from '../types/expense.type';
+import { Expense, RequestStatus } from '@/shared/types';
 import { HttpClient } from '@angular/common/http';
-import { APIBaseResponse } from '../types/api-base-response.type';
+import { APIBaseResponse } from '@/shared/types';
 import { catchError, map, throwError } from 'rxjs';
-import { AuthService } from '@/features/auth/services/auth.serivce';
+import { AuthService } from '@/shared/services/auth.serivce';
 import { MessageService } from 'primeng/api';
+import { API_ENDPOINTS } from '../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +21,7 @@ export class ExpensesService {
   fetchExpenses(status?: RequestStatus, page?: number, limit?: number) {
     return this.httpClient
       .get<APIBaseResponse<{ totalExpenses: number; expenses: Expense[] }>>(
-        '/api/expenses',
+        API_ENDPOINTS.EXPENSE.GET_ALL,
         {
           params: {
             ...(page ? { page: page ?? 1 } : {}),
@@ -53,7 +54,7 @@ export class ExpensesService {
     const newExpense = this.NewExpense(expense);
     this.expenses.update((expenses) => [newExpense, ...(expenses ?? [])]);
     return this.httpClient
-      .post<APIBaseResponse<{ id: string }>>('/api/expenses', expense)
+      .post<APIBaseResponse<{ id: string }>>(API_ENDPOINTS.EXPENSE.CREATE, expense)
       .pipe(
         map((response) => {
           this.messageService.add({
@@ -73,7 +74,6 @@ export class ExpensesService {
           );
         }),
         catchError((err) => {
-          console.log('POST /expenses', err);
           this.messageService.add({
             severity: 'error',
             summary: 'Failed to add exense',

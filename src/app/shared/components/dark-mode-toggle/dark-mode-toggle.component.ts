@@ -13,7 +13,6 @@ export class DarkModeToggleComponent {
   constructor() {
     const effectRef = effect(() => {
       const html = document.querySelector('html');
-      console.log(html?.classList);
       if (this.darkMode()) {
         html?.classList.add('dark');
       } else {

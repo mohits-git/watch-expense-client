@@ -1,4 +1,4 @@
-import { AuthService } from '@/features/auth/services/auth.serivce';
+import { AuthService } from '@/shared/services/auth.serivce';
 import { UserRole } from '@/shared/enums/user-role.enum';
 import { inject } from '@angular/core';
 import { CanMatchFn, Route, UrlSegment } from '@angular/router';

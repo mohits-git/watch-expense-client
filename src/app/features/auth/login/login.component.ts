@@ -12,9 +12,10 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { PasswordModule } from 'primeng/password';
-import { AuthService } from '../services/auth.serivce';
+import { AuthService } from '@/shared/services/auth.serivce';
 import { Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { DEFAULTS } from '@/shared/constants/default.constants';
+import { FormState } from '@/shared/types/form-state.type';
 
 @Component({
   selector: 'app-login',
@@ -31,14 +32,10 @@ import { MessageService } from 'primeng/api';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
-  private messageService = inject(MessageService);
   private router = inject(Router);
   private authService = inject(AuthService);
 
-  formState = signal({
-    loading: false,
-    submitted: false,
-  });
+  formState = signal<FormState>(DEFAULTS.FORM_STATE);
 
   form = new FormGroup({
     email: new FormControl('', {
@@ -60,22 +57,10 @@ export class LoginComponent {
       .subscribe({
         next: () => {
           this.router.navigate(['dashboard']);
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Logged In Successfully',
-          });
-          this.formState.update((prev) => ({ ...prev, submitted: true }));
+          this.formState.update((prev) => ({ ...prev, loading: false}));
         },
         error: (err) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Error',
-            detail: err.message,
-          });
-        },
-        complete: () => {
-          this.formState.update((prev) => ({ ...prev, loading: false }));
+          this.formState.update((prev) => ({ ...prev, loading: false}));
         },
       });
     this.form.reset();

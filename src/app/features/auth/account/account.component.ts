@@ -1,5 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { AuthService } from '../services/auth.serivce';
+import { AuthService } from '@/shared/services/auth.serivce';
 import { User } from '@/shared/types/user.type';
 import { CardComponent } from '@/shared/components/card/card.component';
 import { AvatarModule } from 'primeng/avatar';
