@@ -1,26 +1,27 @@
 import { Routes } from '@angular/router';
 import { authorizedOnly } from './guards/authorized-only.guard';
 import { employeeOnly } from './guards/employee-only.guard';
+import { APP_ROUTES } from './shared/constants';
 
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: '/auth/login',
+    redirectTo: `/${APP_ROUTES.AUTH.LOGIN}`,
     pathMatch: 'full',
   },
   {
-    path: 'auth',
+    path: APP_ROUTES.AUTH.BASE,
     loadChildren: () =>
       import('@/features/auth/auth.routes').then((mod) => mod.routes),
   },
   {
-    path: 'dashboard',
+    path: APP_ROUTES.DASHBOARD,
     canActivate: [authorizedOnly],
     loadChildren: () =>
       import('@/features/dashboard/dashboard.routes').then((mod) => mod.routes),
   },
   {
-    path: 'expenses',
+    path: APP_ROUTES.EXPENSES,
     canMatch: [employeeOnly],
     canActivate: [authorizedOnly],
     loadComponent: () =>
@@ -29,7 +30,7 @@ export const routes: Routes = [
       ),
   },
   {
-    path: 'advance',
+    path: APP_ROUTES.ADVANCE,
     canMatch: [employeeOnly],
     canActivate: [authorizedOnly],
     loadComponent: () =>

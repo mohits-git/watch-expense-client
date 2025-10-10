@@ -23,6 +23,7 @@ import {
   APP_ROUTES,
   NAVIGATION_OPTIONS,
 } from '@/shared/constants/routes.constants';
+import { getRouteSegments } from '@/shared/utils/routes.util';
 
 @Component({
   selector: 'app-expenses',
@@ -66,15 +67,11 @@ export class ExpensesComponent implements OnInit {
         const status = value[EXPENSE.QUERY_PARAMS.STATUS]
           ? (String(value[EXPENSE.QUERY_PARAMS.STATUS]) as RequestStatus)
           : undefined;
-        this.status.set(status ?? EXPENSE.STATUS_FILTER.ALL);
-        const page = value[EXPENSE.QUERY_PARAMS.PAGE]
-          ? Number(value[EXPENSE.QUERY_PARAMS.PAGE])
-          : 1;
-        this.page.set(page);
-        const limit = value[EXPENSE.QUERY_PARAMS.LIMIT]
-          ? Number(value[EXPENSE.QUERY_PARAMS.LIMIT])
-          : 10;
+        const page = Number(value[EXPENSE.QUERY_PARAMS.PAGE] ?? 1);
+        const limit = Number(value[EXPENSE.QUERY_PARAMS.LIMIT] ?? 10);
 
+        this.status.set(status ?? EXPENSE.STATUS_FILTER.ALL);
+        this.page.set(page);
         this.loading.set(true);
         this.expenses.set(null);
         this.getExpenses(status, page, limit);
@@ -88,12 +85,10 @@ export class ExpensesComponent implements OnInit {
 
   getExpenses(status?: RequestStatus, page?: number, limit?: number) {
     this.expenseService.fetchExpenses(status, page, limit).subscribe({
-      complete: () => {
-        this.loading.set(false);
-      },
       next: (val) => {
         this.expenses.set(val.expenses);
         this.totalRecords.set(val.totalExpenses);
+        this.loading.set(false);
       },
       error: (err) => {
         this.dataFetchingError.set(err.message);
@@ -122,7 +117,7 @@ export class ExpensesComponent implements OnInit {
   }
 
   onPageChange(event: PaginatorState) {
-    this.router.navigate([APP_ROUTES.EXPENSES], {
+    this.router.navigate(getRouteSegments(APP_ROUTES.EXPENSES), {
       queryParams: {
         page: `${(event.page ?? 0) + 1}`,
       },
@@ -131,9 +126,9 @@ export class ExpensesComponent implements OnInit {
   }
 
   onStatusChange(status: ExpenseStatusFilter) {
-    this.router.navigate([APP_ROUTES.EXPENSES], {
+    this.router.navigate(getRouteSegments(APP_ROUTES.EXPENSES), {
       queryParams: {
-        ...{ status: status === EXPENSE.STATUS_FILTER.ALL ? null : status },
+        status: status === EXPENSE.STATUS_FILTER.ALL ? null : status,
         page: `${1}`,
       },
       queryParamsHandling: NAVIGATION_OPTIONS.QUERY_PARAMS_HANDLING.MERGE,

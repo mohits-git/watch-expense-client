@@ -1,10 +1,12 @@
 export const APP_ROUTES = {
   AUTH: {
+    BASE: 'auth',
     LOGIN: 'auth/login',
     ACCOUNT: 'auth/account',
   },
   DASHBOARD: 'dashboard',
   EXPENSES: 'expenses',
+  ADVANCE: 'advance',
 }
 
 export const NAVIGATION_OPTIONS = {

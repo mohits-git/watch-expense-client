@@ -38,6 +38,7 @@
       </tr>
     </ng-template>
     <ng-template #loadingbody>
+      <tr>
       <td></td>
       <td></td>
       <td>
@@ -54,6 +55,7 @@
       </td>
       <td></td>
       <td></td>
+      </tr>
     </ng-template>
     <ng-template #body let-expense>
       <tr>
@@ -71,10 +73,13 @@
   @if(totalRecords()) {
   <p-paginator
     [totalRecords]="totalRecords()"
-    [rows]="5"
+    [rows]="limit()"
     (onPageChange)="onPageChange($event)"
   />
   }
 
-  <app-new-expense-form [(visible)]="openNewExpenseForm" (onAddExpense)="addNewExpense($event)" />
+  <app-new-expense-form
+    [(visible)]="openNewExpenseForm"
+    (onAddExpense)="addNewExpense($event)"
+  />
 </div>
