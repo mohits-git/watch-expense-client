@@ -3,7 +3,10 @@
   "version": 1,
   "cli": {
     "packageManager": "bun",
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "angular-eslint"
+    ]
   },
   "newProjectRoot": "projects",
   "projects": {
@@ -40,7 +43,7 @@
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
-                "src/styles",
+                "src/styles"
               ]
             },
             "scripts": []
@@ -103,6 +106,15 @@
               "src/styles.scss"
             ],
             "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
