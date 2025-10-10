@@ -8,17 +8,16 @@ import {
   Validators,
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { FloatLabel } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
-import { MessageModule } from 'primeng/message';
-import { PasswordModule } from 'primeng/password';
 import { AuthService } from '@/shared/services/auth.serivce';
 import { Router } from '@angular/router';
-import { DEFAULTS } from '@/shared/constants/default.constants';
+import { DEFAULTS, APP_ROUTES } from '@/shared/constants';
 import { FormState } from '@/shared/types/form-state.type';
 import { getRouteSegments } from '@/shared/utils/routes.util';
-import { APP_ROUTES } from '@/shared/constants/routes.constants';
 import { LoginFormFields } from '@/shared/types/login-form.type';
+import { getValidationErrors } from '@/shared/utils/validation.util';
+import { FieldErrorMessagesComponent } from '@/shared/components/field-error-messages/field-error-messages.component';
+import { FloatLabel } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-login',
@@ -26,10 +25,9 @@ import { LoginFormFields } from '@/shared/types/login-form.type';
     CardComponent,
     ReactiveFormsModule,
     InputTextModule,
-    FloatLabel,
-    PasswordModule,
     ButtonModule,
-    MessageModule,
+    FloatLabel,
+    FieldErrorMessagesComponent,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -74,5 +72,11 @@ export class LoginComponent {
       this.form.controls[field].invalid &&
       (this.form.controls[field].dirty || this.form.controls[field].touched)
     );
+  }
+
+  getFieldErrors(field: LoginFormFields): string[] {
+    const errors = this.form.controls[field]?.errors;
+    if (!errors) return [];
+    return getValidationErrors(errors);
   }
 }

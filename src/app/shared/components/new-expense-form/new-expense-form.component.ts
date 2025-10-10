@@ -61,15 +61,19 @@ export class NewExpenseFormComponent {
   newBill() {
     return new FormGroup({
       amount: new FormControl(0, {
-        validators: [Validators.min(0)],
+        validators: [Validators.min(1)],
       }),
       description: new FormControl(''),
       attachmentUrl: new FormControl(''),
     });
   }
 
+  addBill() {
+    this.formGroup.controls.bills.push(this.newBill());
+  }
+
   removeBill(index: number) {
-    this.formGroup.controls.bills.removeAt(index)
+    this.formGroup.controls.bills.removeAt(index);
   }
 
   onCancel() {

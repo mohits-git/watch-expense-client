@@ -29,13 +29,3 @@ form {
   align-items: center;
   justify-content: center;
 }
-
-:host ::ng-deep {
-  .p-message {
-    padding-left: 0.25rem;
-  }
-}
-
-.email-error-container {
-  width: 275px;
-}

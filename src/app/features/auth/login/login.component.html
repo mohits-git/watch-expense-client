@@ -4,16 +4,12 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-control">
       <p-floatlabel variant="on">
-        <input pInputText pSize="large" type="email" id="email" name="email" autocomplete="off"
-          formControlName="email" fluid />
+        <input pInputText pSize="large" type="email" id="email" name="email" autocomplete="off" formControlName="email"
+          fluid />
         <label for="email">Email</label>
       </p-floatlabel>
       @if (formState().submitted && isInvalidField('email')) {
-      <div class="email-error-container">
-        <p-message class="email-error" severity="error" variant="simple" size="small" styleClass="error-message">
-          Enter a valid email.
-        </p-message>
-      </div>
+      <app-field-error-messages [errors]="getFieldErrors('email')" />
       }
     </div>
     <div class="form-control">
@@ -23,31 +19,10 @@
         <label for="password">Password</label>
       </p-floatlabel>
       @if (formState().submitted && isInvalidField('password')) {
-      <div class="error-container">
-        <p-message severity="error" variant="simple" size="small">
-          Invalid Password. Password must have:
-        </p-message>
-        <p-message severity="error" variant="simple" size="small">
-          - At least 8 characters.
-        </p-message>
-        <p-message severity="error" variant="simple" size="small">
-          - At least one special character.
-        </p-message>
-        <p-message severity="error" variant="simple" size="small">
-          - At least one digit.
-        </p-message>
-        <p-message severity="error" variant="simple" size="small">
-          - At least one upper and lower case.
-        </p-message>
-      </div>
+      <app-field-error-messages [errors]="getFieldErrors('password')" />
       }
     </div>
-    <p-button
-      size="large"
-      type="submit"
-      variant="outlined"
-      [label]="formState().loading ? 'Submitting...' : 'Submit'"
-      [disabled]="formState().loading"
-    />
+    <p-button size="large" type="submit" variant="outlined" [label]="formState().loading ? 'Submitting...' : 'Submit'"
+      [disabled]="formState().loading" />
   </form>
 </div>
