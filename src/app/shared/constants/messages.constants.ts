@@ -38,7 +38,6 @@ export const VALIDATION_ERROR_MESSAGES = {
     'Invalid Password. Password must have:',
     '- At least 8 characters.',
     '- At least one special character.',
-    '- At least one special character.',
     '- At least one digit.',
     '- At least one upper and lower case.',
   ] as const,
