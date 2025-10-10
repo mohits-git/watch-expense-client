@@ -1,5 +1,6 @@
 import { ExpensesService } from '@/shared/services/expenses.service';
-import { Component, inject, model, signal } from '@angular/core';
+import { Expense } from '@/shared/types';
+import { Component, inject, model, output, signal } from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -38,6 +39,7 @@ export class NewExpenseFormComponent {
   visible = model.required<boolean>();
   private expenseService = inject(ExpensesService);
   private router = inject(Router);
+  onAddExpense = output<Expense>();
 
   formState = signal(defaultFormState);
 
@@ -51,12 +53,12 @@ export class NewExpenseFormComponent {
     description: new FormControl('', {
       validators: [],
     }),
-    bills: new FormArray([this.addBill()], {
+    bills: new FormArray([this.newBill()], {
       validators: [Validators.minLength(1)],
     }),
   });
 
-  addBill() {
+  newBill() {
     return new FormGroup({
       amount: new FormControl(0, {
         validators: [Validators.min(0)],
@@ -89,7 +91,7 @@ export class NewExpenseFormComponent {
         description: this.formGroup.value.description || '',
       })
       .subscribe({
-        next: () => {
+        next: (expense: Expense) => {
           this.visible.set(false);
           this.formGroup.reset();
           this.router.navigate(['/expenses'], {
@@ -97,6 +99,7 @@ export class NewExpenseFormComponent {
             skipLocationChange: true,
           });
           this.formState.set(defaultFormState);
+          this.onAddExpense.emit(expense);
         },
         error: () => {
           this.formState.update((state) => ({ ...state, loading: false }));

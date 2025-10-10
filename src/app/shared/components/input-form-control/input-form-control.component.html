@@ -12,10 +12,10 @@
     {{ label() }}
   </label>
 </p-floatlabel>
-@if (formState().submitted && invalid()) {
-<div class="email-error-container">
+@if (invalid()) {
+<div class="error-container">
   @for (errMessage of errorMessages(); track errMessage) {
-  <p-message severity="error" variant="simple" size="small" styleClass="error-message">
+  <p-message severity="error" variant="simple" size="small">
     {{ errMessage }}
   </p-message>
   }

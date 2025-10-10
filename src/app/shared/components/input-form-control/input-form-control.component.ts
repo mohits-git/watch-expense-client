@@ -1,5 +1,5 @@
-import { DefaultFormState } from '@/shared/constants/defaults/default-form-state';
-import { FormState } from '@/shared/types/form-state.type';
+import { DEFAULTS } from '@/shared/constants';
+import { InputType } from '@/shared/types/form-input.type';
 import { Component, input } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FloatLabel } from 'primeng/floatlabel';
@@ -17,9 +17,8 @@ import { MessageModule } from 'primeng/message';
 })
 export class InputFormControlComponent {
   name = input.required<string>();
-  type = input<string>('text');
+  type = input<InputType>(DEFAULTS.INPUT_TYPE);
   label = input.required<string>();
-  formState = input<FormState>(DefaultFormState);
   invalid = input<boolean>(false);
   errorMessages = input<string[]>([]);
 }

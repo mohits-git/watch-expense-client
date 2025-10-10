@@ -16,6 +16,9 @@ import { AuthService } from '@/shared/services/auth.serivce';
 import { Router } from '@angular/router';
 import { DEFAULTS } from '@/shared/constants/default.constants';
 import { FormState } from '@/shared/types/form-state.type';
+import { getRouteSegments } from '@/shared/utils/routes.util';
+import { APP_ROUTES } from '@/shared/constants/routes.constants';
+import { LoginFormFields } from '@/shared/types/login-form.type';
 
 @Component({
   selector: 'app-login',
@@ -56,20 +59,20 @@ export class LoginComponent {
       .login(this.form.value.email!, this.form.value.password!)
       .subscribe({
         next: () => {
-          this.router.navigate(['dashboard']);
-          this.formState.update((prev) => ({ ...prev, loading: false}));
+          this.router.navigate(getRouteSegments(APP_ROUTES.DASHBOARD));
+          this.formState.update((prev) => ({ ...prev, loading: false }));
+          this.form.reset();
         },
-        error: (err) => {
-          this.formState.update((prev) => ({ ...prev, loading: false}));
+        error: () => {
+          this.formState.update((prev) => ({ ...prev, loading: false }));
         },
       });
-    this.form.reset();
   }
 
-  isInvalidField(field: 'email' | 'password') {
+  isInvalidField(field: LoginFormFields) {
     return (
-      this.form.controls[field]?.invalid &&
-      (this.form.controls[field]?.dirty || this.form.controls[field]?.touched)
+      this.form.controls[field].invalid &&
+      (this.form.controls[field].dirty || this.form.controls[field].touched)
     );
   }
 }

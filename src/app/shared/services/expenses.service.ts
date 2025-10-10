@@ -1,11 +1,25 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { Expense, RequestStatus } from '@/shared/types';
-import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import {
+  CreateExpenseAPIResponse,
+  Expense,
+  GetExpenseAPIResponse,
+  RequestStatus,
+} from '@/shared/types';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpStatusCode,
+} from '@angular/common/http';
 import { APIBaseResponse } from '@/shared/types';
-import { catchError, map, throwError } from 'rxjs';
+import { catchError, map, Observable, throwError } from 'rxjs';
 import { AuthService } from '@/shared/services/auth.serivce';
 import { MessageService } from 'primeng/api';
-import { API_ENDPOINTS } from '../constants';
+import {
+  API_ENDPOINTS,
+  API_MESSAGES,
+  TOAST_SUMMARIES,
+  TOAST_TYPES,
+} from '../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +29,9 @@ export class ExpensesService {
   private authService = inject(AuthService);
   private messageService = inject(MessageService);
 
-  totalExpenses = signal(0);
-  expenses = signal<Expense[] | null>(null);
-
   fetchExpenses(status?: RequestStatus, page?: number, limit?: number) {
     return this.httpClient
-      .get<APIBaseResponse<{ totalExpenses: number; expenses: Expense[] }>>(
+      .get<APIBaseResponse<GetExpenseAPIResponse>>(
         API_ENDPOINTS.EXPENSE.GET_ALL,
         {
           params: {
@@ -32,60 +43,51 @@ export class ExpensesService {
       )
       .pipe(
         map((response) => {
-          this.totalExpenses.set(response.data.totalExpenses);
-          this.expenses.set(response.data.expenses);
-          return true;
+          return response.data;
         }),
-        catchError((err) => {
+        catchError(() => {
           this.messageService.add({
-            severity: 'error',
-            summary: 'Error fetching expenses',
-            detail: err.message,
+            severity: TOAST_TYPES.ERROR,
+            summary: TOAST_SUMMARIES.ERROR,
+            detail: API_MESSAGES.EXPENSE.FETCH_ERROR,
           });
-          return throwError(() => new Error('Error fetching expenses'));
+          return throwError(() => new Error(API_MESSAGES.EXPENSE.FETCH_ERROR));
         }),
       );
   }
 
-  addNewExpense(expense: Partial<Expense>) {
+  addNewExpense(expense: Partial<Expense>): Observable<Expense> {
     if (!expense.amount || !expense.purpose) {
-      return throwError(() => new Error('Amount and Purpose are required'));
+      return throwError(
+        () => new Error(API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST),
+      );
     }
     const newExpense = this.NewExpense(expense);
-    this.expenses.update((expenses) => [newExpense, ...(expenses ?? [])]);
     return this.httpClient
-      .post<APIBaseResponse<{ id: string }>>(API_ENDPOINTS.EXPENSE.CREATE, expense)
+      .post<
+        APIBaseResponse<CreateExpenseAPIResponse>
+      >(API_ENDPOINTS.EXPENSE.CREATE, expense)
       .pipe(
         map((response) => {
           this.messageService.add({
-            severity: 'success',
-            summary: 'Success',
-            detail: 'Expense added successfully',
+            severity: TOAST_TYPES.SUCCESS,
+            summary: TOAST_SUMMARIES.SUCCESS,
+            detail: API_MESSAGES.EXPENSE.ADD_EXPENSE_SUCCESS,
           });
-          // update expense id
-          this.expenses.update(
-            (expenses) =>
-              expenses?.map((expense) => {
-                if (expense.id === newExpense.id) {
-                  return { ...expense, id: response.data.id };
-                }
-                return expense;
-              }) ?? null,
-          );
+          newExpense.id = response.data.id;
+          return newExpense;
         }),
-        catchError((err) => {
+        catchError((err: HttpErrorResponse) => {
+          let errMsg = API_MESSAGES.EXPENSE.ADD_EXPENSE_ERROR;
+          if (err.status === HttpStatusCode.BadRequest) {
+            errMsg = API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST;
+          }
           this.messageService.add({
-            severity: 'error',
-            summary: 'Failed to add exense',
-            detail: err.message,
+            severity: TOAST_TYPES.ERROR,
+            summary: TOAST_SUMMARIES.ERROR,
+            detail: errMsg,
           });
-          // remove from the expneses list
-          this.expenses.update(
-            (expenses) =>
-              expenses?.filter((expense) => expense.id !== newExpense.id) ??
-              null,
-          );
-          return throwError(() => new Error('Failed to add new expense'));
+          return throwError(() => new Error(errMsg));
         }),
       );
   }
@@ -105,7 +107,7 @@ export class ExpensesService {
       reviewedAt: null,
       reviewedBy: null,
       isReconcilled: false,
-      bills: [], // TODO:
+      bills: [],
     };
   }
 }

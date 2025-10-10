@@ -1,7 +1,11 @@
 import { ExpenseSummaryComponent } from '@/shared/components/expense-summary/expense-summary.component';
 import { NewExpenseFormComponent } from '@/shared/components/new-expense-form/new-expense-form.component';
 import { ExpensesService } from '@/shared/services/expenses.service';
-import { RequestStatus } from '@/shared/types/expense.type';
+import {
+  Expense,
+  ExpenseStatusFilter,
+  RequestStatus,
+} from '@/shared/types/expense.type';
 import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +17,12 @@ import { SpinnerComponent } from '@/shared/components/spinner/spinner.component'
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { EXPENSE } from '@/shared/constants';
+import { PRIMENG } from '@/shared/constants/primeng.constants';
+import {
+  APP_ROUTES,
+  NAVIGATION_OPTIONS,
+} from '@/shared/constants/routes.constants';
 
 @Component({
   selector: 'app-expenses',
@@ -37,42 +47,37 @@ export class ExpensesComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
-  totalRecords = this.expenseService.totalExpenses;
-  expenses = this.expenseService.expenses;
+
+  totalRecords = signal<number>(0);
+  expenses = signal<Expense[] | null>(null);
   loading = signal(true);
   dataFetchingError = signal('');
 
   openNewExpenseForm = signal(false);
 
   page = signal(0);
-  status = signal<RequestStatus | 'ALL'>('ALL');
-  statusOptions = [
-    { label: 'All', value: 'ALL' },
-    { label: 'Pending', value: 'PENDING' },
-    { label: 'Approved', value: 'APPROVED' },
-    { label: 'Rejected', value: 'REJECTED' },
-    { label: 'Reviewed', value: 'REVIEWED' },
-  ];
+  limit = signal(5);
+  status = signal<ExpenseStatusFilter>(EXPENSE.STATUS_FILTER.ALL);
+  statusOptions = EXPENSE.STATUS_FILTER_OPTIONS;
 
   ngOnInit(): void {
     const paramsSub = this.activatedRoute.queryParams.subscribe({
       next: (value) => {
-        const status = value['status']
-          ? (String(value['status']) as RequestStatus)
+        const status = value[EXPENSE.QUERY_PARAMS.STATUS]
+          ? (String(value[EXPENSE.QUERY_PARAMS.STATUS]) as RequestStatus)
           : undefined;
-        this.status.set(status ?? 'ALL');
-        const page = value['page'] ? Number(value['page']) : 1;
-        const limit = value['limit'] ? Number(value['limit']) : 10;
+        this.status.set(status ?? EXPENSE.STATUS_FILTER.ALL);
+        const page = value[EXPENSE.QUERY_PARAMS.PAGE]
+          ? Number(value[EXPENSE.QUERY_PARAMS.PAGE])
+          : 1;
+        this.page.set(page);
+        const limit = value[EXPENSE.QUERY_PARAMS.LIMIT]
+          ? Number(value[EXPENSE.QUERY_PARAMS.LIMIT])
+          : 10;
 
-        this.expenseService.fetchExpenses(status, page, limit).subscribe({
-          complete: () => {
-            this.loading.set(false);
-          },
-          error: (err) => {
-            this.dataFetchingError.set(err.message);
-            this.loading.set(false);
-          },
-        });
+        this.loading.set(true);
+        this.expenses.set(null);
+        this.getExpenses(status, page, limit);
       },
     });
 
@@ -81,18 +86,34 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
+  getExpenses(status?: RequestStatus, page?: number, limit?: number) {
+    this.expenseService.fetchExpenses(status, page, limit).subscribe({
+      complete: () => {
+        this.loading.set(false);
+      },
+      next: (val) => {
+        this.expenses.set(val.expenses);
+        this.totalRecords.set(val.totalExpenses);
+      },
+      error: (err) => {
+        this.dataFetchingError.set(err.message);
+        this.loading.set(false);
+      },
+    });
+  }
+
   getSeverity(status: string) {
     switch (status) {
       case RequestStatus.Pending:
-        return 'warn';
+        return PRIMENG.SEVERITY.WARN;
       case RequestStatus.Approved:
-        return 'success';
+        return PRIMENG.SEVERITY.SUCCESS;
       case RequestStatus.Rejected:
-        return 'error';
+        return PRIMENG.SEVERITY.ERROR;
       case RequestStatus.Reviewed:
-        return 'info';
+        return PRIMENG.SEVERITY.INFO;
       default:
-        return 'primary';
+        return PRIMENG.SEVERITY.PRIMARY;
     }
   }
 
@@ -101,24 +122,29 @@ export class ExpensesComponent implements OnInit {
   }
 
   onPageChange(event: PaginatorState) {
-    console.log(event.page ?? 0 + 1);
-    this.router.navigate(['expenses'], {
+    this.router.navigate([APP_ROUTES.EXPENSES], {
       queryParams: {
         page: `${(event.page ?? 0) + 1}`,
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: NAVIGATION_OPTIONS.QUERY_PARAMS_HANDLING.MERGE,
     });
   }
 
-  onStatusChange(status: RequestStatus | 'ALL') {
-    this.router.navigate(['expenses'], {
+  onStatusChange(status: ExpenseStatusFilter) {
+    this.router.navigate([APP_ROUTES.EXPENSES], {
       queryParams: {
-        ...(status !== 'ALL' ? { status: status } : { status: null }),
-        page: '1',
+        ...{ status: status === EXPENSE.STATUS_FILTER.ALL ? null : status },
+        page: `${1}`,
       },
-      queryParamsHandling: 'merge',
+      queryParamsHandling: NAVIGATION_OPTIONS.QUERY_PARAMS_HANDLING.MERGE,
     });
     this.page.set(0);
-    this.loading.set(true);
+  }
+
+  addNewExpense(expense: Expense) {
+    if (!this.status() || this.status() === EXPENSE.STATUS.PENDING) {
+      this.expenses.update((expenses) => [expense, ...(expenses ?? [])]);
+      this.totalRecords.update((total) => total + 1);
+    }
   }
 }

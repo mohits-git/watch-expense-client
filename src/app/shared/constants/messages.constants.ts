@@ -7,19 +7,24 @@ export const AUTH_MESSAGES = {
   INVALID_TOKEN: 'Invalid token. Please login again.',
 };
 
-export const EXPENSE_API_MESSAGES = {
-  FETCH_ERROR: 'Failed to fetch expense summary'
-}
-
-export const ADVANCE_API_MESSAGES = {
-  FETCH_ERROR: 'Failed to fetch advance summary'
-}
-
-export const USER_API_MESSAGES = {
-  FETCH_ERROR: 'Failed to fetch user data'
-}
-
 export const COMMON_MESSAGES = {
   UNKNOWN_ERROR: 'Something went wrong. Please try again later.',
   NETWORK_ERROR: 'Network error. Please check your connection.',
+};
+
+export const API_MESSAGES = {
+  EXPENSE: {
+    FETCH_ERROR: 'Failed to fetch expenses',
+    FETCH_SUMMARY_ERROR: 'Failed to fetch expense summary',
+    ADD_EXPENSE_SUCCESS: 'Expense added successfully',
+    ADD_EXPENSE_ERROR: 'Failed to add expense',
+    ADD_EXPENSE_BAD_REQUEST: 'Invalid expense data. Please check and try again.',
+  },
+  ADVANCE: {
+    FETCH_ERROR: 'Failed to fetch advances',
+    FETCH_SUMMARY_ERROR: 'Failed to fetch advance summary',
+  },
+  USER: {
+    FETCH_BUDGET_ERROR: 'Failed to fetch user data',
+  },
 };

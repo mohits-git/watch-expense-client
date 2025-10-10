@@ -29,3 +29,21 @@ export interface Bill {
   description: string;
   attachmentUrl: string;
 }
+
+export interface ExpensesSummary {
+  totalExpense: number;
+  pendingExpense: number;
+  reimbursedExpense: number;
+  rejectedExpense: number;
+}
+
+export interface GetExpenseAPIResponse {
+  totalExpenses: number;
+  expenses: Expense[];
+}
+
+export interface CreateExpenseAPIResponse {
+  id: string;
+}
+
+export type ExpenseStatusFilter = RequestStatus | 'ALL';

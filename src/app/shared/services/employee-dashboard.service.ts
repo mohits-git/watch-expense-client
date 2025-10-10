@@ -2,17 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, throwError } from 'rxjs';
 import { APIBaseResponse } from '../types/api-base-response.type';
-import { ExpensesSummary } from '../types/expense-summary.type';
+import { ExpensesSummary } from '../types/expense.type';
 import { AdvanceSummary } from '../types/advance-summary.type';
 import {
-  ADVANCE_API_MESSAGES,
   API_ENDPOINTS,
-  EXPENSE_API_MESSAGES,
+  API_MESSAGES,
   TOAST_SUMMARIES,
   TOAST_TYPES,
-  USER_API_MESSAGES,
 } from '../constants';
 import { MessageService } from 'primeng/api';
+import { BudgetSummary } from '../types/budget-summary.type';
 
 @Injectable({
   providedIn: 'root',
@@ -32,7 +31,7 @@ export class EmployeeDashboardService {
           this.messageService.add({
             severity: TOAST_TYPES.ERROR,
             summary: TOAST_SUMMARIES.ERROR,
-            detail: EXPENSE_API_MESSAGES.FETCH_ERROR,
+            detail: API_MESSAGES.EXPENSE.FETCH_SUMMARY_ERROR,
           });
           return throwError(() => err);
         }),
@@ -50,7 +49,7 @@ export class EmployeeDashboardService {
           this.messageService.add({
             severity: TOAST_TYPES.ERROR,
             summary: TOAST_SUMMARIES.ERROR,
-            detail: ADVANCE_API_MESSAGES.FETCH_ERROR,
+            detail: API_MESSAGES.ADVANCE.FETCH_SUMMARY_ERROR,
           });
           return throwError(() => err);
         }),
@@ -59,7 +58,7 @@ export class EmployeeDashboardService {
 
   getBudget() {
     return this.httpClient
-      .get<APIBaseResponse<{ budget: number }>>(API_ENDPOINTS.USERS.BUDGET)
+      .get<APIBaseResponse<BudgetSummary>>(API_ENDPOINTS.USERS.BUDGET)
       .pipe(
         map((val) => {
           return val.data;
@@ -68,7 +67,7 @@ export class EmployeeDashboardService {
           this.messageService.add({
             severity: TOAST_TYPES.ERROR,
             summary: TOAST_SUMMARIES.ERROR,
-            detail: USER_API_MESSAGES.FETCH_ERROR,
+            detail: API_MESSAGES.USER.FETCH_BUDGET_ERROR,
           });
           return throwError(() => err);
         }),

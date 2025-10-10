@@ -19,7 +19,7 @@
 
   <p-table
       [tableStyle]="{ 'min-width': '50rem' }"
-      [value]="expenses()?.slice(0, 5) ?? []"
+      [value]="expenses()?.slice(0, limit()) ?? []"
       [loading]="loading() || !!(dataFetchingError())"
       [showLoader]="false"
       sortMode='single'
@@ -76,5 +76,5 @@
   />
   }
 
-  <app-new-expense-form [(visible)]="openNewExpenseForm" />
+  <app-new-expense-form [(visible)]="openNewExpenseForm" (onAddExpense)="addNewExpense($event)" />
 </div>

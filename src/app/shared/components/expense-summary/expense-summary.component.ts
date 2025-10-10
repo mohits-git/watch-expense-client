@@ -1,27 +1,26 @@
 import { CardComponent } from '@/shared/components/card/card.component';
+import { DEFAULTS } from '@/shared/constants';
 import { EmployeeDashboardService } from '@/shared/services/employee-dashboard.service';
-import { ExpensesSummary } from '@/shared/types/expense-summary.type';
+import { ExpensesSummary } from '@/shared/types';
 import { CurrencyPipe } from '@angular/common';
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 
 @Component({
   selector: 'app-expense-summary',
   imports: [CardComponent, CurrencyPipe],
   templateUrl: './expense-summary.component.html',
-  styleUrl: './expense-summary.component.scss'
+  styleUrl: './expense-summary.component.scss',
 })
-export class ExpenseSummaryComponent {
-  dashboardService = inject(EmployeeDashboardService);
+export class ExpenseSummaryComponent implements OnInit {
+  private dashboardService = inject(EmployeeDashboardService);
 
-  summary = computed((): ExpensesSummary => {
-    if(!this.dashboardService.expenseSummary()) {
-      return {
-        totalExpense: 0,
-        reimbursedExpense: 0,
-        pendingExpense: 0,
-        rejectedExpense: 0,
-      };
-    }
-    return this.dashboardService.expenseSummary()!;
-  });
+  summary = signal<ExpensesSummary>(DEFAULTS.EXPENSE.SUMMARY);
+
+  ngOnInit() {
+    this.dashboardService.getExpenseSummary().subscribe({
+      next: (summary: ExpensesSummary) => {
+        this.summary.set(summary);
+      }
+    })
+  }
 }

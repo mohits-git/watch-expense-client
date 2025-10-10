@@ -6,8 +6,7 @@ import {
   HttpErrorResponse,
   HttpStatusCode,
 } from '@angular/common/http';
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
+import { computed, inject, Injectable, Signal } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { APIBaseResponse } from '@/shared/types';
 import { MessageService } from 'primeng/api';
@@ -17,8 +16,9 @@ import {
   COMMON_MESSAGES,
   TOAST_SUMMARIES,
   TOAST_TYPES,
-  TOKEN_STORAGE_KEY,
 } from '@/shared/constants';
+import { TokenService } from './token.service';
+import { LoginAPIResponse } from '../types/auth.type';
 
 @Injectable({
   providedIn: 'root',
@@ -26,44 +26,31 @@ import {
 export class AuthService {
   private httpClient = inject(HttpClient);
   private messageService = inject(MessageService);
+  private tokenService = inject(TokenService);
 
-  private token = signal<string | null>(null);
-  constructor() {
-    const savedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
-    if (!savedToken) return;
-    if (!this.isValidToken(savedToken)) {
-      this.removeToken();
-      return;
-    }
-    this.token.set(savedToken);
-  }
+  private token = this.tokenService.token;
+
+  readonly user: Signal<User | null> = computed((): User | null => {
+    if (!this.token()) return null;
+    const decoded: JWTClaims | null = this.tokenService.parseToken(
+      this.token()!,
+    );
+    if (!decoded) return null;
+    return {
+      id: decoded.sub,
+      name: decoded.name,
+      role: decoded.role,
+      email: decoded.email,
+    };
+  });
+
+  readonly isAuthenticated = computed(() => {
+    return !!this.user();
+  });
 
   getToken() {
     return this.token();
   }
-
-  readonly isAuthenticated = computed(() => {
-    return !!this.token();
-  });
-
-  readonly user = computed((): User | null => {
-    if (!this.token()) return null;
-    try {
-      const decoded: JWTClaims = jwtDecode<JWTClaims>(this.token()!);
-      if (!decoded?.sub) {
-        throw new Error(AUTH_MESSAGES.INVALID_TOKEN);
-      }
-      return {
-        id: decoded.sub,
-        name: decoded.name,
-        role: decoded.role,
-        email: decoded.email,
-      };
-    } catch (error) {
-      this.logout();
-    }
-    return null;
-  });
 
   hasRole(role: UserRole) {
     return this.user()?.role === role;
@@ -71,9 +58,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<boolean> {
     return this.httpClient
-      .post<{
-        token: string;
-      }>(API_ENDPOINTS.AUTH.LOGIN, {
+      .post<LoginAPIResponse>(API_ENDPOINTS.AUTH.LOGIN, {
         email: email,
         password: password,
       })
@@ -82,7 +67,7 @@ export class AuthService {
           if (!response.token) {
             return false;
           }
-          this.saveToken(response.token);
+          this.tokenService.saveToken(response.token);
           this.messageService.add({
             severity: TOAST_TYPES.SUCCESS,
             summary: TOAST_SUMMARIES.SUCCESS,
@@ -90,6 +75,7 @@ export class AuthService {
           });
           return true;
         }),
+
         catchError((errorResponse: HttpErrorResponse) => {
           let errorMsg = AUTH_MESSAGES.LOGIN_FAILED;
           if (errorResponse.status === HttpStatusCode.Unauthorized) {
@@ -108,8 +94,7 @@ export class AuthService {
   }
 
   logout() {
-    this.token.set(null);
-    this.removeToken();
+    this.tokenService.removeToken();
   }
 
   authMe(): Observable<User> {
@@ -135,26 +120,5 @@ export class AuthService {
           return throwError(() => new Error(errorMsg));
         }),
       );
-  }
-
-  private saveToken(token: string) {
-    localStorage.setItem(TOKEN_STORAGE_KEY, token);
-    this.token.set(token);
-  }
-
-  private removeToken() {
-    localStorage.removeItem(TOKEN_STORAGE_KEY);
-    this.token.set(null);
-  }
-
-  private isValidToken(token: string): boolean {
-    try {
-      const decoded = jwtDecode<JWTClaims>(token);
-      return (
-        !!decoded?.sub && (!decoded.exp || decoded.exp * 1000 > Date.now())
-      );
-    } catch {
-      return false;
-    }
   }
 }
