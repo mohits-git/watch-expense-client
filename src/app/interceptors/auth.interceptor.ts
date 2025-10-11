@@ -1,6 +1,5 @@
 import { AuthService } from '@/shared/services/auth.serivce';
-import { API_PREFIX, HEADERS } from '@/shared/constants';
-import { AUTH_STRATEGY } from '@/shared/constants';
+import { API_PREFIX, HEADERS, AUTH_STRATEGY } from '@/shared/constants';
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 

@@ -13,12 +13,17 @@ import { SpinnerComponent } from '@/shared/components/spinner/spinner.component'
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { ADVANCE, PRIMENG } from '@/shared/constants';
+import { MessageService } from 'primeng/api';
+import { getRouteSegments } from '@/shared/utils/routes.util';
 import {
+  ADVANCE,
+  PRIMENG,
+  API_MESSAGES,
+  TOAST_SUMMARIES,
+  TOAST_TYPES,
   APP_ROUTES,
   NAVIGATION_OPTIONS,
-} from '@/shared/constants/routes.constants';
-import { getRouteSegments } from '@/shared/utils/routes.util';
+} from '@/shared/constants';
 
 @Component({
   selector: 'app-advances',
@@ -43,6 +48,7 @@ export class AdvancesComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private messageService = inject(MessageService);
 
   totalRecords = signal<number>(0);
   advances = signal<Advance[] | null>(null);
@@ -85,9 +91,14 @@ export class AdvancesComponent implements OnInit {
         this.totalRecords.set(val.totalAdvances);
         this.loading.set(false);
       },
-      error: (err) => {
-        this.dataFetchingError.set(err.message);
+      error: (err: Error) => {
         this.loading.set(false);
+        this.messageService.add({
+          severity: TOAST_TYPES.ERROR,
+          summary: TOAST_SUMMARIES.ERROR,
+          detail: err.message || API_MESSAGES.ADVANCE.FETCH_ERROR,
+        });
+        this.dataFetchingError.set(err.message);
       },
     });
   }

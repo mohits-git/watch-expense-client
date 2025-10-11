@@ -3,8 +3,10 @@ import {
   AddNewAdvanceFormFields,
   Advance,
   NewAdvanceForm,
+  AdvanceCreateResult,
 } from '@/shared/types';
 import { getValidationErrors } from '@/shared/utils/validation.util';
+import { API_MESSAGES, TOAST_SUMMARIES, TOAST_TYPES } from '@/shared/constants';
 import { Component, inject, model, output, signal } from '@angular/core';
 import {
   FormControl,
@@ -18,6 +20,7 @@ import { Dialog } from 'primeng/dialog';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
+import { MessageService } from 'primeng/api';
 import { TextareaModule } from 'primeng/textarea';
 import { FieldErrorMessagesComponent } from '../field-error-messages/field-error-messages.component';
 
@@ -44,6 +47,7 @@ const defaultFormState = {
 export class NewAdvanceFormComponent {
   visible = model.required<boolean>();
   private advanceService = inject(AdvancesService);
+  private messageService = inject(MessageService);
   private router = inject(Router);
   onAddAdvance = output<Advance>();
 
@@ -82,18 +86,38 @@ export class NewAdvanceFormComponent {
         description: this.formGroup.value.description || '',
       })
       .subscribe({
-        next: (advance: Advance) => {
-          this.visible.set(false);
-          this.formGroup.reset();
-          this.router.navigate(['/advances'], {
-            queryParamsHandling: 'preserve',
-            skipLocationChange: true,
-          });
-          this.formState.set(defaultFormState);
-          this.onAddAdvance.emit(advance);
+        next: (result: AdvanceCreateResult) => {
+          if (result.success && result.data) {
+            this.messageService.add({
+              severity: TOAST_TYPES.SUCCESS,
+              summary: TOAST_SUMMARIES.SUCCESS,
+              detail: API_MESSAGES.ADVANCE.ADD_ADVANCE_SUCCESS,
+            });
+
+            this.visible.set(false);
+            this.formGroup.reset();
+            this.router.navigate(['/advances'], {
+              queryParamsHandling: 'preserve',
+              skipLocationChange: true,
+            });
+            this.formState.set(defaultFormState);
+            this.onAddAdvance.emit(result.data);
+          } else {
+            this.messageService.add({
+              severity: TOAST_TYPES.ERROR,
+              summary: TOAST_SUMMARIES.ERROR,
+              detail: result.message || API_MESSAGES.ADVANCE.ADD_ADVANCE_ERROR,
+            });
+            this.formState.update((state) => ({ ...state, loading: false }));
+          }
         },
-        error: () => {
+        error: (result: AdvanceCreateResult) => {
           this.formState.update((state) => ({ ...state, loading: false }));
+          this.messageService.add({
+            severity: TOAST_TYPES.ERROR,
+            summary: TOAST_SUMMARIES.ERROR,
+            detail: result.message || API_MESSAGES.ADVANCE.ADD_ADVANCE_ERROR,
+          });
         },
       });
   }

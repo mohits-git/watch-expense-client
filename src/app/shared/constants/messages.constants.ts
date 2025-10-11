@@ -7,6 +7,7 @@ export const AUTH_MESSAGES = {
   LOGIN_SUCCESS: 'Logged In Successfully',
   LOGOUT_SUCCESS: 'Logged Out Successfully',
   INVALID_TOKEN: 'Invalid token. Please login again.',
+  UNAUTHORIZED_ACTION: 'You are not authorized to perform this action.',
 };
 
 export const COMMON_MESSAGES = {

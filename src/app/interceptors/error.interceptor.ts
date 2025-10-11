@@ -9,11 +9,18 @@ import {
   COMMON_MESSAGES,
   AUTH_MESSAGES,
   HTTP_STATUS_CODES,
+  API_ENDPOINTS,
+  APP_ROUTES,
 } from '@/shared/constants';
+import { getRouteSegments } from '@/shared/utils/routes.util';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const messageService = inject(MessageService);
   const router = inject(Router);
+
+  if (req.url.includes(API_ENDPOINTS.AUTH.LOGIN)) {
+    return next(req);
+  }
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
@@ -32,7 +39,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           summary: TOAST_SUMMARIES.ERROR,
           detail: AUTH_MESSAGES.UNAUTHORIZED_ACTION,
         });
-        router.navigate(['/auth/login']);
+        router.navigate(getRouteSegments(APP_ROUTES.AUTH.LOGIN));
         return throwError(() => error);
       }
 

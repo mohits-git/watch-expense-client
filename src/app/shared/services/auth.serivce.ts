@@ -1,19 +1,16 @@
-import { UserRole } from '@/shared/enums/user-role.enum';
-import { User, JWTClaims, APIBaseResponse } from '@/shared/types';
+import { UserRole, ServiceErrorType } from '@/shared/enums';
+import { User, JWTClaims, APIBaseResponse, LoginResult, ServiceError } from '@/shared/types';
 import {
   HttpClient,
   HttpErrorResponse,
-  HttpStatusCode,
 } from '@angular/common/http';
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { MessageService } from 'primeng/api';
 import {
   API_ENDPOINTS,
   AUTH_MESSAGES,
   COMMON_MESSAGES,
-  TOAST_SUMMARIES,
-  TOAST_TYPES,
+  HTTP_STATUS_CODES,
 } from '@/shared/constants';
 import { TokenService } from './token.service';
 import { LoginAPIResponse } from '../types/auth.type';
@@ -23,7 +20,6 @@ import { LoginAPIResponse } from '../types/auth.type';
 })
 export class AuthService {
   private httpClient = inject(HttpClient);
-  private messageService = inject(MessageService);
   private tokenService = inject(TokenService);
 
   private token = this.tokenService.token;
@@ -54,7 +50,7 @@ export class AuthService {
     return this.user()?.role === role;
   }
 
-  login(email: string, password: string): Observable<boolean> {
+  login(email: string, password: string): Observable<LoginResult> {
     return this.httpClient
       .post<LoginAPIResponse>(API_ENDPOINTS.AUTH.LOGIN, {
         email: email,
@@ -63,30 +59,42 @@ export class AuthService {
       .pipe(
         map((response) => {
           if (!response.token) {
-            return false;
+            return {
+              success: false,
+              error: {
+                message: AUTH_MESSAGES.LOGIN_FAILED,
+                type: ServiceErrorType.Validation
+              }
+            };
           }
           this.tokenService.saveToken(response.token);
-          this.messageService.add({
-            severity: TOAST_TYPES.SUCCESS,
-            summary: TOAST_SUMMARIES.SUCCESS,
-            detail: AUTH_MESSAGES.LOGIN_SUCCESS,
-          });
-          return true;
+          return { success: true };
         }),
 
         catchError((errorResponse: HttpErrorResponse) => {
           let errorMsg = AUTH_MESSAGES.LOGIN_FAILED;
-          if (errorResponse.status === HttpStatusCode.Unauthorized) {
+          let errorType: ServiceErrorType = ServiceErrorType.Unknown;
+
+          if (errorResponse.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
             errorMsg = AUTH_MESSAGES.INVALID_CREDENTIALS;
+            errorType = ServiceErrorType.Unauthorized;
           } else if (errorResponse.error?.message) {
             errorMsg = errorResponse.error.message;
+            errorType = ServiceErrorType.Validation;
+          } else if (errorResponse.status === HTTP_STATUS_CODES.NETWORK_ERROR) {
+            errorType = ServiceErrorType.Network;
           }
-          this.messageService.add({
-            severity: TOAST_TYPES.ERROR,
-            summary: TOAST_SUMMARIES.ERROR,
-            detail: errorMsg,
-          });
-          return throwError(() => new Error(errorMsg));
+
+          const result: LoginResult = {
+            success: false,
+            error: {
+              message: errorMsg,
+              type: errorType,
+              statusCode: errorResponse.status
+            }
+          };
+
+          return throwError(() => result);
         }),
       );
   }
@@ -104,18 +112,26 @@ export class AuthService {
         }),
         catchError((errorResponse: HttpErrorResponse) => {
           let errorMsg = COMMON_MESSAGES.UNKNOWN_ERROR;
-          if (errorResponse.status === HttpStatusCode.Unauthorized) {
+          let errorType: ServiceErrorType = ServiceErrorType.Unknown;
+
+          if (errorResponse.status === HTTP_STATUS_CODES.UNAUTHORIZED) {
             this.logout();
             errorMsg = AUTH_MESSAGES.SESSION_EXPIRED;
+            errorType = ServiceErrorType.Unauthorized;
           } else if (errorResponse.error?.message) {
             errorMsg = errorResponse.error.message;
+            errorType = ServiceErrorType.Validation;
+          } else if (errorResponse.status === HTTP_STATUS_CODES.NETWORK_ERROR) {
+            errorType = ServiceErrorType.Network;
           }
-          this.messageService.add({
-            severity: TOAST_TYPES.ERROR,
-            summary: TOAST_SUMMARIES.ERROR,
-            detail: errorMsg,
-          });
-          return throwError(() => new Error(errorMsg));
+
+          const error: ServiceError = {
+            message: errorMsg,
+            type: errorType,
+            statusCode: errorResponse.status
+          };
+
+          return throwError(() => error);
         }),
       );
   }

@@ -4,22 +4,13 @@ import {
   Expense,
   GetExpenseAPIResponse,
   RequestStatus,
+  APIBaseResponse,
+  ExpenseCreateResult,
 } from '@/shared/types';
-import {
-  HttpClient,
-  HttpErrorResponse,
-  HttpStatusCode,
-} from '@angular/common/http';
-import { APIBaseResponse } from '@/shared/types';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { AuthService } from '@/shared/services/auth.serivce';
-import { MessageService } from 'primeng/api';
-import {
-  API_ENDPOINTS,
-  API_MESSAGES,
-  TOAST_SUMMARIES,
-  TOAST_TYPES,
-} from '../constants';
+import { API_ENDPOINTS, API_MESSAGES, HTTP_STATUS_CODES } from '../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -27,9 +18,12 @@ import {
 export class ExpensesService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
-  private messageService = inject(MessageService);
 
-  fetchExpenses(status?: RequestStatus, page?: number, limit?: number) {
+  fetchExpenses(
+    status?: RequestStatus,
+    page?: number,
+    limit?: number,
+  ): Observable<GetExpenseAPIResponse> {
     return this.httpClient
       .get<APIBaseResponse<GetExpenseAPIResponse>>(
         API_ENDPOINTS.EXPENSE.GET_ALL,
@@ -45,23 +39,25 @@ export class ExpensesService {
         map((response) => {
           return response.data;
         }),
-        catchError(() => {
-          this.messageService.add({
-            severity: TOAST_TYPES.ERROR,
-            summary: TOAST_SUMMARIES.ERROR,
-            detail: API_MESSAGES.EXPENSE.FETCH_ERROR,
-          });
-          return throwError(() => new Error(API_MESSAGES.EXPENSE.FETCH_ERROR));
+        catchError((errorResponse: HttpErrorResponse) => {
+          const errorMessage =
+            errorResponse.error?.message || API_MESSAGES.EXPENSE.FETCH_ERROR;
+          return throwError(() => new Error(errorMessage));
         }),
       );
   }
 
-  addNewExpense(expense: Partial<Expense>): Observable<Expense> {
+  addNewExpense(expense: Partial<Expense>): Observable<ExpenseCreateResult> {
     if (!expense.amount || !expense.purpose) {
       return throwError(
-        () => new Error(API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST),
+        () =>
+          ({
+            success: false,
+            message: API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST,
+          }) as ExpenseCreateResult,
       );
     }
+
     const newExpense = this.NewExpense(expense);
     return this.httpClient
       .post<
@@ -69,25 +65,28 @@ export class ExpensesService {
       >(API_ENDPOINTS.EXPENSE.CREATE, expense)
       .pipe(
         map((response) => {
-          this.messageService.add({
-            severity: TOAST_TYPES.SUCCESS,
-            summary: TOAST_SUMMARIES.SUCCESS,
-            detail: API_MESSAGES.EXPENSE.ADD_EXPENSE_SUCCESS,
-          });
           newExpense.id = response.data.id;
-          return newExpense;
+          return {
+            success: true,
+            data: newExpense,
+          } as ExpenseCreateResult;
         }),
         catchError((err: HttpErrorResponse) => {
-          let errMsg = API_MESSAGES.EXPENSE.ADD_EXPENSE_ERROR;
-          if (err.status === HttpStatusCode.BadRequest) {
-            errMsg = API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST;
+          let errorMessage = API_MESSAGES.EXPENSE.ADD_EXPENSE_ERROR;
+          if (err.status === HTTP_STATUS_CODES.BAD_REQUEST) {
+            errorMessage =
+              err.error?.message ||
+              API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST;
+          } else if (err.error?.message) {
+            errorMessage = err.error.message;
           }
-          this.messageService.add({
-            severity: TOAST_TYPES.ERROR,
-            summary: TOAST_SUMMARIES.ERROR,
-            detail: errMsg,
-          });
-          return throwError(() => new Error(errMsg));
+
+          const result: ExpenseCreateResult = {
+            success: false,
+            message: errorMessage,
+          };
+
+          return throwError(() => result);
         }),
       );
   }
@@ -107,7 +106,7 @@ export class ExpensesService {
       reviewedAt: null,
       reviewedBy: null,
       isReconcilled: false,
-      advanceId: null
+      advanceId: null,
       bills: [],
     } as Expense;
   }

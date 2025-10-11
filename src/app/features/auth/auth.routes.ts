@@ -15,8 +15,6 @@ export const routes: Routes = [
     path: getRouteSegments(APP_ROUTES.AUTH.ACCOUNT).pop()!,
     canActivate: [authorizedOnly],
     loadComponent: () =>
-      import('./account/account.component').then(
-        (mod) => mod.AccountComponent,
-      ),
+      import('./account/account.component').then((mod) => mod.AccountComponent),
   },
-]
+];

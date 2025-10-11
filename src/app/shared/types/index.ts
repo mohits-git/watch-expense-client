@@ -8,3 +8,4 @@ export * from './budget-summary.type';
 export * from './auth.type';
 export * from './project.type';
 export * from './department.type';
+export * from './service.type';

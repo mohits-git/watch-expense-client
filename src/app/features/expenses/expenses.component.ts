@@ -13,11 +13,15 @@ import { SpinnerComponent } from '@/shared/components/spinner/spinner.component'
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { MessageService } from 'primeng/api';
 import {
   EXPENSE,
   PRIMENG,
   APP_ROUTES,
   NAVIGATION_OPTIONS,
+  TOAST_SUMMARIES,
+  TOAST_TYPES,
+  API_MESSAGES,
 } from '@/shared/constants';
 import { getRouteSegments } from '@/shared/utils/routes.util';
 
@@ -44,6 +48,7 @@ export class ExpensesComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private messageService = inject(MessageService);
 
   totalRecords = signal<number>(0);
   expenses = signal<Expense[] | null>(null);
@@ -86,9 +91,14 @@ export class ExpensesComponent implements OnInit {
         this.totalRecords.set(val.totalExpenses);
         this.loading.set(false);
       },
-      error: (err) => {
+      error: (err: Error) => {
         this.dataFetchingError.set(err.message);
         this.loading.set(false);
+        this.messageService.add({
+          severity: TOAST_TYPES.ERROR,
+          summary: TOAST_SUMMARIES.ERROR,
+          detail: err.message || API_MESSAGES.EXPENSE.FETCH_ERROR,
+        });
       },
     });
   }

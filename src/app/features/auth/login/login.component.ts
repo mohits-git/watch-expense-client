@@ -9,14 +9,22 @@ import {
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '@/shared/services/auth.serivce';
+import { LoginResult } from '@/shared/types';
 import { Router } from '@angular/router';
-import { DEFAULTS, APP_ROUTES } from '@/shared/constants';
+import {
+  DEFAULTS,
+  APP_ROUTES,
+  AUTH_MESSAGES,
+  TOAST_SUMMARIES,
+  TOAST_TYPES,
+} from '@/shared/constants';
 import { FormState, LoginForm, LoginFormFields } from '@/shared/types';
 import { getRouteSegments } from '@/shared/utils/routes.util';
 import { getValidationErrors } from '@/shared/utils/validation.util';
 import { FieldErrorMessagesComponent } from '@/shared/components/field-error-messages/field-error-messages.component';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +42,7 @@ import { InputTextModule } from 'primeng/inputtext';
 export class LoginComponent {
   private router = inject(Router);
   private authService = inject(AuthService);
+  private messageService = inject(MessageService);
 
   formState = signal<FormState>(DEFAULTS.FORM_STATE);
 
@@ -57,12 +66,32 @@ export class LoginComponent {
     this.authService
       .login(this.form.value.email!, this.form.value.password!)
       .subscribe({
-        next: () => {
-          this.router.navigate(getRouteSegments(APP_ROUTES.DASHBOARD));
+        next: (result: LoginResult) => {
+          if (result.success) {
+            this.messageService.add({
+              severity: TOAST_TYPES.SUCCESS,
+              summary: TOAST_SUMMARIES.SUCCESS,
+              detail: AUTH_MESSAGES.LOGIN_SUCCESS,
+            });
+            this.router.navigate(getRouteSegments(APP_ROUTES.DASHBOARD));
+            this.form.reset();
+          } else if (result.error) {
+            this.messageService.add({
+              severity: TOAST_TYPES.ERROR,
+              summary: TOAST_SUMMARIES.ERROR,
+              detail: result.error.message,
+            });
+          }
           this.formState.update((prev) => ({ ...prev, loading: false }));
-          this.form.reset();
         },
-        error: () => {
+        error: (loginResult: LoginResult) => {
+          if (loginResult.error) {
+            this.messageService.add({
+              severity: TOAST_TYPES.ERROR,
+              summary: TOAST_SUMMARIES.ERROR,
+              detail: loginResult.error.message,
+            });
+          }
           this.formState.update((prev) => ({ ...prev, loading: false }));
         },
       });
