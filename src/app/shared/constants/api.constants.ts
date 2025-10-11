@@ -32,14 +32,14 @@ export const API_ENDPOINTS = {
     SUMMARY: `${API_PREFIX}/advance-request/summary`,
     USER_ADVANCES: `${API_PREFIX}/user/:id/advance-requests`,
   },
+  USERS: {
+    GET_ALL: `${API_PREFIX}/users`,
+    GET_BY_ID: `${API_PREFIX}/users/:id`,
+    UPDATE: `${API_PREFIX}/users/:id`,
+    DELETE: `${API_PREFIX}/users/:id`,
+    BUDGET: `${API_PREFIX}/users/budget`,
+  },
   ADMIN: {
-    USERS: {
-      GET_ALL: `${API_PREFIX}/users`,
-      GET_BY_ID: `${API_PREFIX}/users/:id`,
-      UPDATE: `${API_PREFIX}/users/:id`,
-      DELETE: `${API_PREFIX}/users/:id`,
-      BUDGET: `${API_PREFIX}/users/budget`,
-    },
     PROJECT: {
       GET_ALL: `${API_PREFIX}/admin/projects`,
       GET_BY_ID: `${API_PREFIX}/admin/projects/:id`,
