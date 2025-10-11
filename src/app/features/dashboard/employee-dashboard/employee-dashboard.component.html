@@ -1,5 +1,23 @@
-<div class="container">
-  <app-advance-summary />
-  <app-expense-summary />
-  <app-budget-summary />
+<div class="employee-dashboard">
+  <div class="dashboard-content">
+    <h1 class="dashboard-title">Dashboard</h1>
+    <section class="dashboard-section">
+      <h2 class="section-title">Advance Overview</h2>
+      <div class="summary-grid">
+        <app-advance-summary></app-advance-summary>
+      </div>
+    </section>
+    <section class="dashboard-section">
+      <h2 class="section-title">Expense Overview</h2>
+      <div class="summary-grid">
+        <app-expense-summary></app-expense-summary>
+      </div>
+    </section>
+    <section class="dashboard-section">
+      <h2 class="section-title">Your Budget</h2>
+      <div class="summary-grid">
+        <app-budget-summary></app-budget-summary>
+      </div>
+    </section>
+  </div>
 </div>

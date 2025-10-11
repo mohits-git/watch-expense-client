@@ -5,6 +5,7 @@ import { BudgetSummaryComponent } from './budget-summary/budget-summary.componen
 
 @Component({
   selector: 'app-employee-dashboard',
+  standalone: true,
   imports: [
     AdvanceSummaryComponent,
     ExpenseSummaryComponent,

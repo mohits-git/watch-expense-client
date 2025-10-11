@@ -1,8 +1,9 @@
 @use 'variables' as vars;
 
 .container {
-  height: 85vh;
-  width: 100%;
+  height: 90vh;
+  width: 96vw;
+  overflow-y: auto;
 }
 
 .header {

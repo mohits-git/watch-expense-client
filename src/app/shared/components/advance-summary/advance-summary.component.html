@@ -1,30 +1,39 @@
-<div class="summary">
-  <div card="summary" type="primary">
-    <div class="summary-icon">
-      <i class="pi pi-wallet" style="font-size: 1.25rem;"></i>
-    </div>
-    <p class="summary-title">Balance</p>
-    <p class="summary-data">{{ balance() | currency:"INR" }}</p>
+@if (loading()) {
+  <div class="summary">
+    <app-summary-card-skeleton variant="primary" />
+    <app-summary-card-skeleton variant="red" />
+    <app-summary-card-skeleton variant="warning" />
+    <app-summary-card-skeleton variant="error" />
   </div>
-  <div card="summary" type="red">
-    <div class="summary-icon">
-      <i class="pi pi-book" style="font-size: 1.25rem;"></i>
+} @else {
+  <div class="summary">
+    <div card="summary" type="primary">
+      <div class="summary-icon">
+        <i class="pi pi-wallet" style="font-size: 1.25rem;"></i>
+      </div>
+      <p class="summary-title">Balance</p>
+      <p class="summary-data">{{ balance() | currency:"INR" }}</p>
     </div>
-    <p class="summary-title">To Reconcile</p>
-    <p class="summary-data">{{ toReconcile() | currency:"INR" }}</p>
-  </div>
-  <div card="summary" type="warning">
-    <div class="summary-icon">
-      <i class="pi pi-hourglass" style="font-size: 1.25rem;"></i>
+    <div card="summary" type="red">
+      <div class="summary-icon">
+        <i class="pi pi-book" style="font-size: 1.25rem;"></i>
+      </div>
+      <p class="summary-title">To Reconcile</p>
+      <p class="summary-data">{{ toReconcile() | currency:"INR" }}</p>
     </div>
-    <p class="summary-title">Pending Reconciliation</p>
-    <p class="summary-data">{{ pendingReconciliation() | currency:"INR" }}</p>
-  </div>
-  <div card="summary" type="error">
-    <div class="summary-icon">
-      <i class="pi pi-times" style="font-size: 1.25rem;"></i>
+    <div card="summary" type="warning">
+      <div class="summary-icon">
+        <i class="pi pi-hourglass" style="font-size: 1.25rem;"></i>
+      </div>
+      <p class="summary-title">Pending Reconciliation</p>
+      <p class="summary-data">{{ pendingReconciliation() | currency:"INR" }}</p>
     </div>
-    <p class="summary-title">Rejected Advance Requests</p>
-    <p class="summary-data">{{ rejectedAdvance() | currency:"INR" }}</p>
+    <div card="summary" type="error">
+      <div class="summary-icon">
+        <i class="pi pi-times" style="font-size: 1.25rem;"></i>
+      </div>
+      <p class="summary-title">Rejected Advance Requests</p>
+      <p class="summary-data">{{ rejectedAdvance() | currency:"INR" }}</p>
+    </div>
   </div>
-</div>
+}

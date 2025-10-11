@@ -6,7 +6,7 @@ import {
   APIBaseResponse,
   ExpensesSummary,
   AdvanceSummary,
-  BudgetSummary,
+  UserBudgetAPIResponse,
 } from '@/shared/types';
 import {
   API_ENDPOINTS,
@@ -60,7 +60,7 @@ export class EmployeeDashboardService {
 
   getBudget() {
     return this.httpClient
-      .get<APIBaseResponse<BudgetSummary>>(API_ENDPOINTS.USERS.BUDGET)
+      .get<APIBaseResponse<UserBudgetAPIResponse>>(API_ENDPOINTS.USERS.BUDGET)
       .pipe(
         map((val) => {
           return val.data;

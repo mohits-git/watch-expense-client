@@ -1,5 +1,5 @@
 import { FormState } from '@/shared/types';
-import { AdvanceSummary, ExpensesSummary, UsersSummary, DepartmentsSummary, ProjectsSummary } from '../types';
+import { AdvanceSummary, ExpensesSummary, UsersSummary, DepartmentsSummary, ProjectsSummary, BudgetSummary } from '../types';
 
 export const DEFAULTS = {
   FORM_STATE: {
@@ -21,6 +21,14 @@ export const DEFAULTS = {
     pendingReconciliation: 0,
     rejectedAdvance: 0,
   } as AdvanceSummary,
+  EMPLOYEE: {
+    BUDGET_SUMMARY: {
+      allocatedBudget: 0,
+      usedBudget: 0,
+      remainingBudget: 0,
+      usagePercentage: 0,
+    } as BudgetSummary,
+  },
   ADMIN: {
     USERS_SUMMARY: {
       totalUsers: 0,
