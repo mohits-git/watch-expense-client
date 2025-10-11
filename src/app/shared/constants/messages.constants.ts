@@ -42,4 +42,6 @@ export const VALIDATION_ERROR_MESSAGES = {
     '- At least one upper and lower case.',
   ] as const,
   [ValidationError.Required]: ['This field is required.'] as const,
+  [ValidationError.Min]: ['Value too small.'] as const,
+  [ValidationError.MinLength]: ['Value too short'] as const,
 } as const;

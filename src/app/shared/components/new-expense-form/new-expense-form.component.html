@@ -1,45 +1,76 @@
-<p-dialog header="Add Expense" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-  <span>Create a new expense request</span>
-
+<p-dialog header="Add Expense" [modal]="true" [(visible)]="visible" [style]="{ width: '52rem', padding: '1rem' }">
   <form [formGroup]="formGroup">
-    <div class="form-control">
-      <p-floatlabel variant="on">
-        <label for="amount">Amount</label>
-        <input pInputText type="number" id="amount" class="flex-auto" autocomplete="off" formControlName="amount" fluid />
-      </p-floatlabel>
-      @if (formState().submitted && isInvalidField('amount')) {
-        <app-field-error-messages [errors]="getFieldErrors('amount')" />
-      }
-    </div>
+      <div class="main-section">
+        <span>Create a new expense request</span>
 
-    <div class="form-control">
-      <p-floatlabel variant="on" [style]="{ width: '100%' }">
-        <label for="purpose" class="font-semibold w-24">Purpose</label>
-        <input pInputText id="purpose" class="flex-auto" autocomplete="off" formControlName="purpose" fluid />
-      </p-floatlabel>
-      @if (formState().submitted && isInvalidField('purpose')) {
-        <app-field-error-messages [errors]="getFieldErrors('purpose')" />
-      }
-    </div>
+        <div class="form-control">
+          <p-floatlabel variant="on">
+            <label for="amount">Amount</label>
+            <input pInputText type="number" id="amount" class="flex-auto" autocomplete="off" formControlName="amount" fluid />
+          </p-floatlabel>
+          @if (formState().submitted && isInvalidField('amount')) {
+            <app-field-error-messages [errors]="getFieldErrors('amount')" />
+          }
+        </div>
 
-    <div class="form-control">
-      <p-floatlabel variant="on" [style]="{ width: '100%' }">
-        <label for="description" class="font-semibold w-24">Description</label>
-        <textarea pTextarea rows="5" cols="23" id="description" class="flex-auto" autocomplete="off" [autoResize]="true"
-          formControlName="description" fluid></textarea>
-      </p-floatlabel>
-      @if (formState().submitted && isInvalidField('description')) {
-        <app-field-error-messages [errors]="getFieldErrors('description')" />
-      }
-    </div>
+        <div class="form-control">
+          <p-floatlabel variant="on" [style]="{ width: '100%' }">
+            <label for="purpose" class="font-semibold w-24">Purpose</label>
+            <input pInputText id="purpose" class="flex-auto" autocomplete="off" formControlName="purpose" fluid />
+          </p-floatlabel>
+          @if (formState().submitted && isInvalidField('purpose')) {
+            <app-field-error-messages [errors]="getFieldErrors('purpose')" />
+          }
+        </div>
 
-    <div class="button-container">
-      <p-button label="Cancel" severity="secondary" (click)="onCancel()" [disabled]="formState().loading" />
-      <p-button
-        [label]="formState().loading ? 'Submitting...' : 'Submit'"
-        (click)="onSubmit()"
-        [disabled]="formState().loading"
-      />
-    </div>
+        <div class="form-control">
+          <p-floatlabel variant="on" [style]="{ width: '100%' }">
+            <label for="description" class="font-semibold w-24">Description</label>
+            <textarea pTextarea rows="5" cols="23" id="description" class="flex-auto" autocomplete="off" [autoResize]="true"
+              formControlName="description" fluid></textarea>
+          </p-floatlabel>
+          @if (formState().submitted && isInvalidField('description')) {
+            <app-field-error-messages [errors]="getFieldErrors('description')" />
+          }
+        </div>
+
+        <div class="button-container">
+          <p-button label="Cancel" severity="secondary" (click)="onCancel()" [disabled]="formState().loading" />
+          <p-button
+            [label]="formState().loading ? 'Submitting...' : 'Submit'"
+            (click)="onSubmit()"
+            [disabled]="formState().loading"
+          />
+        </div>
+      </div>
+
+      <div class="bills-section">
+        <div class="flex-header">
+          <h3>Bills</h3>
+          <p-button
+            type="button"
+            size="small"
+            label="Add Bill"
+            icon="pi pi-plus"
+            class="p-button-outlined"
+            (click)="addBill()"
+            [disabled]="formState().loading"
+          />
+        </div>
+        <p-message>
+          Total Amount: {{ formGroup.controls.bills.value | sum:'amount' | currency:'INR' }}
+        </p-message>
+        <div formArrayName="bills" class="bills-list">
+          @for (billControl of formGroup.controls.bills.controls; track $index) {
+              <app-bill-form
+                [formGroup]="billControl"
+                [index]="$index"
+                [removeable]="formGroup.controls.bills.length > 1"
+                (remove)="removeBill($index)"
+                [formState]="formState()"
+              />
+          }
+        </div>
+      </div>
   </form>
 </p-dialog>

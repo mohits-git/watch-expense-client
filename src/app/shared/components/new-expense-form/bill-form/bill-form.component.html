@@ -1,1 +1,79 @@
+<div [formGroup]="formGroup()" class="bill">
+  <div class="flex-row">
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="amount">Amount</label>
+        <input
+          pInputText
+          type="number"
+          id="amount"
+          class="flex-auto"
+          autocomplete="off"
+          formControlName="amount"
+          fluid
+        />
+      </p-floatlabel>
+    </div>
 
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="description" class="font-semibold w-24">
+          Description
+        </label>
+        <textarea
+          pTextarea
+          rows="1"
+          cols="23"
+          id="description"
+          name="description"
+          formControlName="description"
+          class="flex-auto"
+          autocomplete="off"
+          [autoResize]="true"
+          fluid
+        >
+        </textarea>
+      </p-floatlabel>
+      @if (formState().submitted && isInvalidField('description')) {
+        <app-field-error-messages [errors]="getFieldErrors('description')" />
+      }
+    </div>
+  </div>
+      @if (formState().submitted && isInvalidField('amount')) {
+        <app-field-error-messages
+          [errors]="getFieldErrors('amount')"
+        />
+      }
+
+  <div class='file-upload-container'>
+  <p-fileupload
+    #fu
+    mode="basic"
+    chooseLabel="Choose"
+    chooseIcon="pi pi-upload"
+    name="attachment"
+    accept="image/*,application/pdf"
+    maxFileSize="1000000"
+    [customUpload]="true"
+    (onSelect)="uploadHandler($event)"
+  />
+  </div>
+
+  <div class="justify-content-between">
+    <p-message size="small" severity="secondary" variant="simple">
+      Bill #{{ index() + 1 }}
+    </p-message>
+    @if(removeable()) {
+    <p-button
+      label="Remove"
+      severity="danger"
+      variant="text"
+      icon="pi pi-times"
+      size="small"
+      [raised]="true"
+      (click)="remove.emit()"
+      [disabled]="formState().loading"
+    />
+    }
+  </div>
+</div>

@@ -1,0 +1,52 @@
+.bill {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.grid-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.flex-row {
+  display: grid;
+    // 30% 70%
+  grid-template-columns: 30% 70%;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+}
+
+.justify-content-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-upload-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+::ng-deep {
+  .p-fileupload-choose-button {
+    padding: 0.3rem 0.5rem;
+  }
+  .p-textarea {
+    margin-top: 2px;
+    padding-block: 0.55rem;
+  }
+}

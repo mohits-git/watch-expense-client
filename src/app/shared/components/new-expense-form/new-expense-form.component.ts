@@ -1,5 +1,5 @@
 import { ExpensesService } from '@/shared/services/expenses.service';
-import { AddNewExpenseFormFields, Expense } from '@/shared/types';
+import { AddNewExpenseFormFields, Bill, Expense, NewExpenseForm } from '@/shared/types';
 import { getValidationErrors } from '@/shared/utils/validation.util';
 import { Component, inject, model, output, signal } from '@angular/core';
 import {
@@ -17,6 +17,9 @@ import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TextareaModule } from 'primeng/textarea';
 import { FieldErrorMessagesComponent } from '../field-error-messages/field-error-messages.component';
+import { BillFormComponent } from './bill-form/bill-form.component';
+import { SumPipe } from '@/shared/pipes/sum.pipe';
+import { CurrencyPipe } from '@angular/common';
 
 const defaultFormState = {
   loading: false,
@@ -34,6 +37,9 @@ const defaultFormState = {
     FloatLabel,
     MessageModule,
     FieldErrorMessagesComponent,
+    BillFormComponent,
+    SumPipe,
+    CurrencyPipe,
   ],
   templateUrl: './new-expense-form.component.html',
   styleUrl: './new-expense-form.component.scss',
@@ -46,11 +52,13 @@ export class NewExpenseFormComponent {
 
   formState = signal(defaultFormState);
 
-  formGroup = new FormGroup({
+  formGroup: FormGroup<NewExpenseForm> = new FormGroup({
     amount: new FormControl(0, {
-      validators: [Validators.required, Validators.min(0)],
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(1)],
     }),
     purpose: new FormControl('', {
+      nonNullable: true,
       validators: [Validators.required, Validators.minLength(3)],
     }),
     description: new FormControl('', {
@@ -64,7 +72,8 @@ export class NewExpenseFormComponent {
   newBill() {
     return new FormGroup({
       amount: new FormControl(0, {
-        validators: [Validators.min(1)],
+        nonNullable: true,
+        validators: [Validators.required, Validators.min(1)],
       }),
       description: new FormControl(''),
       attachmentUrl: new FormControl(''),
@@ -96,6 +105,7 @@ export class NewExpenseFormComponent {
         amount: this.formGroup.value.amount!,
         purpose: this.formGroup.value.purpose!,
         description: this.formGroup.value.description || '',
+        bills: this.formGroup.value.bills! as Bill[],
       })
       .subscribe({
         next: (expense: Expense) => {

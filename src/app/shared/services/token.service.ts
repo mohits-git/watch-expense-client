@@ -29,7 +29,7 @@ export class TokenService {
     this.token.set(null);
   }
 
-  isValidToken(token?: string): boolean {
+  isValidToken(token: string | null): boolean {
     try {
       if (!token) {
         return false;

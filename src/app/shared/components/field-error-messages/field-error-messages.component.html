@@ -1,4 +1,4 @@
-@for (errMessage of errors(); track errMessage) {
+@for (errMessage of errors(); track $index) {
 <p-message severity="error" variant="simple" size="small">
   {{ errMessage }}
 </p-message>
