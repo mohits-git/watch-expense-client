@@ -1,14 +1,26 @@
-import { Component, input, output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
+import {
+  FileSelectEvent,
+  FileUpload,
+  FileUploadModule,
+} from 'primeng/fileupload';
 import { FieldErrorMessagesComponent } from '../../field-error-messages/field-error-messages.component';
 import { AddNewBillFormFields, FormState, NewBillForm } from '@/shared/types';
 import { getValidationErrors } from '@/shared/utils/validation.util';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
+import { ImageUploadService } from '@/shared/services/image-upload.service';
 
 @Component({
   selector: 'app-bill-form',
@@ -26,6 +38,8 @@ import { MessageModule } from 'primeng/message';
   styleUrl: './bill-form.component.scss',
 })
 export class BillFormComponent {
+  private imageUploadService = inject(ImageUploadService);
+  private fileUploadRef = viewChild<FileUpload>('fu');
   formGroup = input.required<FormGroup<NewBillForm>>();
   index = input.required<number>();
   remove = output<void>();
@@ -33,8 +47,22 @@ export class BillFormComponent {
   formState = input.required<FormState>();
 
   uploadHandler(event: FileSelectEvent) {
-    // TODO: image upload service -> upload image -> get url -> update form
-    this.formGroup().patchValue({ attachmentUrl: event.currentFiles[0].name });
+    this.imageUploadService.uploadImage(event.files[0]).subscribe({
+      next: (imageUrl) => {
+        this.formGroup().patchValue({ attachmentUrl: imageUrl });
+      },
+      error: () => {
+        this.fileUploadRef()?.clear();
+      },
+    });
+  }
+
+  clearFile() {
+    const attachmentUrl = this.formGroup().controls['attachmentUrl'].value;
+    this.formGroup().patchValue({ attachmentUrl: '' });
+    this.fileUploadRef()?.clear();
+    if (!attachmentUrl) return;
+    this.imageUploadService.deleteImage(attachmentUrl, true).subscribe()
   }
 
   isInvalidField(field: AddNewBillFormFields): boolean {

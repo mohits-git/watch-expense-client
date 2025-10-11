@@ -36,8 +36,8 @@ export const API_ENDPOINTS = {
     BUDGET: `${API_PREFIX}/users/budget`,
   },
   IMAGE: {
-    UPLOAD: BASE_URL.IMAGE_UPLOAD,
-    DELETE: BASE_URL.IMAGE_UPLOAD,
+    UPLOAD: '/images',
+    DELETE: '/images',
   },
 } as const;
 

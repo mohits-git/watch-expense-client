@@ -52,11 +52,22 @@
     chooseLabel="Choose"
     chooseIcon="pi pi-upload"
     name="attachment"
-    accept="image/*,application/pdf"
-    maxFileSize="1000000"
+    accept="image/*"
+    maxFileSize="1024 * 1024 * 5"
     [customUpload]="true"
     (onSelect)="uploadHandler($event)"
   />
+    @if(fu.files && fu.files.length > 0) {
+    <p-button
+      severity="secondary"
+      variant="text"
+      icon="pi pi-times"
+      size="small"
+      [rounded]="true"
+      (click)="clearFile()"
+      [disabled]="formState().loading"
+    />
+    }
   </div>
 
   <div class="justify-content-between">

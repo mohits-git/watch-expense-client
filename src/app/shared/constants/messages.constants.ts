@@ -30,6 +30,12 @@ export const API_MESSAGES = {
   USER: {
     FETCH_BUDGET_ERROR: 'Failed to fetch user data',
   },
+  IMAGE: {
+    UPLOAD_SUCCESS: 'Image uploaded successfully',
+    UPLOAD_ERROR: 'Failed to upload image',
+    DELETE_SUCCESS: 'Image deleted successfully',
+    DELETE_ERROR: 'Failed to delete image',
+  },
 };
 
 export const VALIDATION_ERROR_MESSAGES = {
