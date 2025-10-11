@@ -107,7 +107,8 @@ export class ExpensesService {
       reviewedAt: null,
       reviewedBy: null,
       isReconcilled: false,
+      advanceId: null
       bills: [],
-    };
+    } as Expense;
   }
 }

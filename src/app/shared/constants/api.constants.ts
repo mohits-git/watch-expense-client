@@ -15,25 +15,45 @@ export const API_ENDPOINTS = {
   EXPENSE: {
     CREATE: `${API_PREFIX}/expenses`,
     UPDATE: `${API_PREFIX}/expenses/:id`,
+    PATCH: `${API_PREFIX}/expenses/:id`,
     DELETE: `${API_PREFIX}/expenses/:id`,
     GET_ALL: `${API_PREFIX}/expenses`,
     GET_BY_ID: `${API_PREFIX}/expenses/:id`,
     SUMMARY: `${API_PREFIX}/expenses/summary`,
+    USER_EXPENSES: `${API_PREFIX}/user/:id/expenses`,
   },
   ADVANCE: {
     CREATE: `${API_PREFIX}/advance-request`,
     UPDATE: `${API_PREFIX}/advance-request/:id`,
+    PATCH: `${API_PREFIX}/advance-request/:id`,
     DELETE: `${API_PREFIX}/advance-request/:id`,
     GET_ALL: `${API_PREFIX}/advance-request`,
     GET_BY_ID: `${API_PREFIX}/advance-request/:id`,
     SUMMARY: `${API_PREFIX}/advance-request/summary`,
+    USER_ADVANCES: `${API_PREFIX}/user/:id/advance-requests`,
   },
-  USERS: {
-    GET_ALL: `${API_PREFIX}/users`,
-    GET_BY_ID: `${API_PREFIX}/users/:id`,
-    UPDATE: `${API_PREFIX}/users/:id`,
-    DELETE: `${API_PREFIX}/users/:id`,
-    BUDGET: `${API_PREFIX}/users/budget`,
+  ADMIN: {
+    USERS: {
+      GET_ALL: `${API_PREFIX}/users`,
+      GET_BY_ID: `${API_PREFIX}/users/:id`,
+      UPDATE: `${API_PREFIX}/users/:id`,
+      DELETE: `${API_PREFIX}/users/:id`,
+      BUDGET: `${API_PREFIX}/users/budget`,
+    },
+    PROJECT: {
+      GET_ALL: `${API_PREFIX}/admin/projects`,
+      GET_BY_ID: `${API_PREFIX}/admin/projects/:id`,
+      CREATE: `${API_PREFIX}/admin/projects`,
+      UPDATE: `${API_PREFIX}/admin/projects/:id`,
+      DELETE: `${API_PREFIX}/admin/projects/:id`,
+    },
+    DEPARTMENT: {
+      GET_ALL: `${API_PREFIX}/admin/departments`,
+      GET_BY_ID: `${API_PREFIX}/admin/departments/:id`,
+      CREATE: `${API_PREFIX}/admin/departments`,
+      UPDATE: `${API_PREFIX}/admin/departments/:id`,
+      DELETE: `${API_PREFIX}/admin/departments/:id`,
+    },
   },
   IMAGE: {
     UPLOAD: '/images',
@@ -52,4 +72,4 @@ export const API_QUERY_PARAMS = {
     PAGE: 'page',
     LIMIT: 'limit',
   },
-}
+};

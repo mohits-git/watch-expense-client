@@ -10,7 +10,9 @@ export interface Advance {
   createdAt: number;
   updatedAt: number;
   approvedBy: string | null;
+  approvedAt: number | null;
   reviewedBy: string | null;
+  reviewedAt: number | null;
 }
 
 export interface AdvanceSummary {

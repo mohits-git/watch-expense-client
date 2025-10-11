@@ -1,8 +1,8 @@
 export enum RequestStatus {
-  Pending = "PENDING",
-  Approved = "APPROVED",
-  Reviewed = "REVIEWED",
-  Rejected = "REJECTED",
+  Pending = 'PENDING',
+  Approved = 'APPROVED',
+  Reviewed = 'REVIEWED',
+  Rejected = 'REJECTED',
 }
 
 export interface Expense {
@@ -19,6 +19,7 @@ export interface Expense {
   reviewedBy: string | null;
   reviewedAt: number | null;
   isReconcilled: boolean;
+  advanceId: string | null;
   bills: Bill[];
 }
 
