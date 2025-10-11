@@ -2,7 +2,7 @@ const SEVERITY = {
   PRIMARY: 'primary',
   WARN: 'warn',
   SUCCESS: 'success',
-  ERROR: 'error',
+  DANGER: 'danger',
   INFO: 'info',
   CONTRAST: 'contrast',
 } as const;

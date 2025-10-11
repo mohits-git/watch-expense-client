@@ -30,12 +30,12 @@ export const routes: Routes = [
       ),
   },
   {
-    path: APP_ROUTES.ADVANCE,
+    path: APP_ROUTES.ADVANCES,
     canMatch: [employeeOnly],
     canActivate: [authorizedOnly],
     loadComponent: () =>
-      import('@/features/advance/advance.component').then(
-        (mod) => mod.AdvanceComponent
+      import('@/features/advances/advances.component').then(
+        (mod) => mod.AdvancesComponent
       ),
   },
 ];

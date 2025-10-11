@@ -1,0 +1,85 @@
+<div class='container'>
+  <app-advance-summary />
+
+  <div class="header">
+    <h2>Advances</h2>
+    <p-button (click)="openAddAdvanceForm()">
+      <i class="pi pi-plus"></i> New Advance
+    </p-button>
+  </div>
+
+  <p-selectbutton
+    [options]="statusOptions"
+    (onChange)="onStatusChange($event.value)"
+    [(ngModel)]="status"
+    optionLabel="label"
+    optionValue="value"
+    aria-labelledby="label"
+  />
+
+  <p-table
+      [tableStyle]="{ 'min-width': '50rem' }"
+      [value]="advances()?.slice(0, limit()) ?? []"
+      [loading]="loading() || !!(dataFetchingError())"
+      [showLoader]="false"
+      sortMode='single'
+      sortField='createdAt'
+      [sortOrder]="-1"
+  >
+    <ng-template #header>
+      <tr>
+        <th pSortableColumn="createdAt" style="width:20%">
+          Requested On <p-sortIcon field="createdAt" />
+        </th>
+        <th style="width:20%">Purpose</th>
+        <th style="width:15%">Advance</th>
+        <th style="width:10%">Status</th>
+        <th style="width:35%">Description</th>
+      </tr>
+    </ng-template>
+    <ng-template #loadingbody>
+      <tr>
+      <td></td>
+      <td></td>
+      <td [colSpan]="2">
+        @if(dataFetchingError()) {
+          <p-message severity="error" size="small" variant="simple">
+            {{ dataFetchingError() }}
+          </p-message>
+        }
+        @if(loading()) {
+          <div class='spinner-container'>
+            <app-spinner />
+          </div>
+        }
+      </td>
+      <td></td>
+      <td></td>
+      </tr>
+    </ng-template>
+    <ng-template #body let-advance>
+      <tr>
+        <td>{{ advance.createdAt | date:"medium" }}</td>
+        <td>{{ advance.purpose }}</td>
+        <td>{{ advance.amount }}</td>
+        <td>
+          <p-tag [value]="advance.status" [severity]="getSeverity(advance.status)" [rounded]="true" />
+        </td>
+        <td>{{ advance.description }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  @if(totalRecords()) {
+  <p-paginator
+    [totalRecords]="totalRecords()"
+    [rows]="limit()"
+    (onPageChange)="onPageChange($event)"
+  />
+  }
+
+  <app-new-advance-form
+    [(visible)]="openNewAdvanceForm"
+    (onAddAdvance)="addNewAdvance($event)"
+  />
+</div>

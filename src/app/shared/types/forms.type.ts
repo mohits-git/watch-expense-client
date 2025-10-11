@@ -5,15 +5,11 @@ export interface FormState {
   submitted: boolean;
 }
 
-export type LoginFormFields = 'email' | 'password'
-
-export type AddNewExpenseFormFields = 'amount' | 'purpose' | 'description' | 'bills';
-export type AddNewBillFormFields = 'amount' | 'description' | 'attachmentUrl';
-
 export interface LoginForm {
-  email: string;
-  password: string;
+  email: FormControl<string>;
+  password: FormControl<string>;
 }
+export type LoginFormFields = keyof LoginForm;
 
 export interface NewExpenseForm {
   amount: FormControl<number>;
@@ -21,9 +17,18 @@ export interface NewExpenseForm {
   description: FormControl<string | null>;
   bills: FormArray<FormGroup<NewBillForm>>;
 }
+export type AddNewExpenseFormFields = keyof NewExpenseForm;
 
 export interface NewBillForm {
   amount: FormControl<number>;
   description: FormControl<string | null>;
   attachmentUrl: FormControl<string | null>;
 }
+export type AddNewBillFormFields = keyof NewBillForm;
+
+export interface NewAdvanceForm {
+  amount: FormControl<number>;
+  purpose: FormControl<string>;
+  description: FormControl<string | null>;
+}
+export type AddNewAdvanceFormFields = keyof NewAdvanceForm;

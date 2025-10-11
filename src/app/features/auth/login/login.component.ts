@@ -11,7 +11,7 @@ import { ButtonModule } from 'primeng/button';
 import { AuthService } from '@/shared/services/auth.serivce';
 import { Router } from '@angular/router';
 import { DEFAULTS, APP_ROUTES } from '@/shared/constants';
-import { FormState, LoginFormFields } from '@/shared/types';
+import { FormState, LoginForm, LoginFormFields } from '@/shared/types';
 import { getRouteSegments } from '@/shared/utils/routes.util';
 import { getValidationErrors } from '@/shared/utils/validation.util';
 import { FieldErrorMessagesComponent } from '@/shared/components/field-error-messages/field-error-messages.component';
@@ -37,11 +37,13 @@ export class LoginComponent {
 
   formState = signal<FormState>(DEFAULTS.FORM_STATE);
 
-  form = new FormGroup({
+  form: FormGroup<LoginForm> = new FormGroup({
     email: new FormControl('', {
+      nonNullable: true,
       validators: [Validators.required, Validators.email],
     }),
     password: new FormControl('', {
+      nonNullable: true,
       validators: [Validators.required, validatePassword],
     }),
   });

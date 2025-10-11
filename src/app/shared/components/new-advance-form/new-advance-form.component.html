@@ -1,0 +1,44 @@
+<p-dialog [draggable]="false" header="Add Advance" [modal]="true" [(visible)]="visible">
+  <form [formGroup]="formGroup">
+    <span>Create a new advance request</span>
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="amount">Amount</label>
+        <input pInputText type="number" id="amount" class="flex-auto" autocomplete="off" formControlName="amount" fluid />
+      </p-floatlabel>
+      @if (formState().submitted && isInvalidField('amount')) {
+        <app-field-error-messages [errors]="getFieldErrors('amount')" />
+      }
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on" [style]="{ width: '100%' }">
+        <label for="purpose" class="font-semibold w-24">Purpose</label>
+        <input pInputText id="purpose" class="flex-auto" autocomplete="off" formControlName="purpose" fluid />
+      </p-floatlabel>
+      @if (formState().submitted && isInvalidField('purpose')) {
+        <app-field-error-messages [errors]="getFieldErrors('purpose')" />
+      }
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on" [style]="{ width: '100%' }">
+        <label for="description" class="font-semibold w-24">Description</label>
+        <textarea pTextarea rows="5" cols="23" id="description" class="flex-auto" autocomplete="off" [autoResize]="true"
+          formControlName="description" fluid></textarea>
+      </p-floatlabel>
+      @if (formState().submitted && isInvalidField('description')) {
+        <app-field-error-messages [errors]="getFieldErrors('description')" />
+      }
+    </div>
+
+    <div class="button-container">
+      <p-button label="Cancel" severity="secondary" (click)="onCancel()" [disabled]="formState().loading" />
+      <p-button
+        [label]="formState().loading ? 'Submitting...' : 'Submit'"
+        (click)="onSubmit()"
+        [disabled]="formState().loading"
+      />
+    </div>
+  </form>
+</p-dialog>

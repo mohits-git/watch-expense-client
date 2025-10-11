@@ -26,6 +26,10 @@ export const API_MESSAGES = {
   ADVANCE: {
     FETCH_ERROR: 'Failed to fetch advances',
     FETCH_SUMMARY_ERROR: 'Failed to fetch advance summary',
+    ADD_ADVANCE_SUCCESS: 'Advance request submitted successfully',
+    ADD_ADVANCE_ERROR: 'Failed to submit advance request',
+    ADD_ADVANCE_BAD_REQUEST:
+      'Invalid advance request data. Please check and try again.',
   },
   USER: {
     FETCH_BUDGET_ERROR: 'Failed to fetch user data',

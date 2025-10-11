@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import {
-  CreateExpenseAPIResponse,
-  Expense,
-  GetExpenseAPIResponse,
+  CreateAdvanceAPIResponse,
+  Advance,
+  GetAdvanceAPIResponse,
   RequestStatus,
 } from '@/shared/types';
 import {
@@ -24,15 +24,15 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class ExpensesService {
+export class AdvancesService {
   private httpClient = inject(HttpClient);
   private authService = inject(AuthService);
   private messageService = inject(MessageService);
 
-  fetchExpenses(status?: RequestStatus, page?: number, limit?: number) {
+  fetchAdvances(status?: RequestStatus, page?: number, limit?: number) {
     return this.httpClient
-      .get<APIBaseResponse<GetExpenseAPIResponse>>(
-        API_ENDPOINTS.EXPENSE.GET_ALL,
+      .get<APIBaseResponse<GetAdvanceAPIResponse>>(
+        API_ENDPOINTS.ADVANCE.GET_ALL,
         {
           params: {
             page: page ?? 1,
@@ -45,42 +45,43 @@ export class ExpensesService {
         map((response) => {
           return response.data;
         }),
-        catchError(() => {
+        catchError((err) => {
+          console.log(err);
           this.messageService.add({
             severity: TOAST_TYPES.ERROR,
             summary: TOAST_SUMMARIES.ERROR,
-            detail: API_MESSAGES.EXPENSE.FETCH_ERROR,
+            detail: API_MESSAGES.ADVANCE.FETCH_ERROR,
           });
-          return throwError(() => new Error(API_MESSAGES.EXPENSE.FETCH_ERROR));
+          return throwError(() => new Error(API_MESSAGES.ADVANCE.FETCH_ERROR));
         }),
       );
   }
 
-  addNewExpense(expense: Partial<Expense>): Observable<Expense> {
-    if (!expense.amount || !expense.purpose) {
+  addNewAdvance(advance: Partial<Advance>): Observable<Advance> {
+    if (!advance.amount || !advance.purpose) {
       return throwError(
-        () => new Error(API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST),
+        () => new Error(API_MESSAGES.ADVANCE.ADD_ADVANCE_BAD_REQUEST),
       );
     }
-    const newExpense = this.NewExpense(expense);
+    const newAdvance = this.NewAdvance(advance);
     return this.httpClient
       .post<
-        APIBaseResponse<CreateExpenseAPIResponse>
-      >(API_ENDPOINTS.EXPENSE.CREATE, expense)
+        APIBaseResponse<CreateAdvanceAPIResponse>
+      >(API_ENDPOINTS.ADVANCE.CREATE, advance)
       .pipe(
         map((response) => {
           this.messageService.add({
             severity: TOAST_TYPES.SUCCESS,
             summary: TOAST_SUMMARIES.SUCCESS,
-            detail: API_MESSAGES.EXPENSE.ADD_EXPENSE_SUCCESS,
+            detail: API_MESSAGES.ADVANCE.ADD_ADVANCE_SUCCESS,
           });
-          newExpense.id = response.data.id;
-          return newExpense;
+          newAdvance.id = response.data.id;
+          return newAdvance;
         }),
         catchError((err: HttpErrorResponse) => {
-          let errMsg = API_MESSAGES.EXPENSE.ADD_EXPENSE_ERROR;
+          let errMsg = API_MESSAGES.ADVANCE.ADD_ADVANCE_ERROR;
           if (err.status === HttpStatusCode.BadRequest) {
-            errMsg = API_MESSAGES.EXPENSE.ADD_EXPENSE_BAD_REQUEST;
+            errMsg = API_MESSAGES.ADVANCE.ADD_ADVANCE_BAD_REQUEST;
           }
           this.messageService.add({
             severity: TOAST_TYPES.ERROR,
@@ -92,12 +93,12 @@ export class ExpensesService {
       );
   }
 
-  NewExpense(expense: Partial<Expense>) {
+  NewAdvance(advance: Partial<Advance>) {
     return {
-      id: expense.id ?? Date.now().toString(),
-      purpose: expense.purpose ?? '',
-      amount: expense.amount ?? 0,
-      description: expense.description ?? '',
+      id: advance.id ?? Date.now().toString(),
+      purpose: advance.purpose ?? '',
+      amount: advance.amount ?? 0,
+      description: advance.description ?? '',
       userId: this.authService.user()?.id || '',
       status: RequestStatus.Pending,
       createdAt: Date.now(),
@@ -106,8 +107,6 @@ export class ExpensesService {
       approvedBy: null,
       reviewedAt: null,
       reviewedBy: null,
-      isReconcilled: false,
-      bills: [],
     };
   }
 }

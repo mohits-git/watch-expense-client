@@ -1,7 +1,7 @@
-import { ExpenseSummaryComponent } from '@/shared/components/expense-summary/expense-summary.component';
-import { NewExpenseFormComponent } from '@/shared/components/new-expense-form/new-expense-form.component';
-import { ExpensesService } from '@/shared/services/expenses.service';
-import { Expense, ExpenseStatusFilter, RequestStatus } from '@/shared/types';
+import { AdvanceSummaryComponent } from '@/shared/components/advance-summary/advance-summary.component';
+import { NewAdvanceFormComponent } from '@/shared/components/new-advance-form/new-advance-form.component';
+import { AdvancesService } from '@/shared/services/advances.service';
+import { Advance, AdvanceStatusFilter, RequestStatus } from '@/shared/types';
 import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,19 +13,18 @@ import { SpinnerComponent } from '@/shared/components/spinner/spinner.component'
 import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
+import { ADVANCE, PRIMENG } from '@/shared/constants';
 import {
-  EXPENSE,
-  PRIMENG,
   APP_ROUTES,
   NAVIGATION_OPTIONS,
-} from '@/shared/constants';
+} from '@/shared/constants/routes.constants';
 import { getRouteSegments } from '@/shared/utils/routes.util';
 
 @Component({
-  selector: 'app-expenses',
+  selector: 'app-advances',
   imports: [
-    ExpenseSummaryComponent,
-    NewExpenseFormComponent,
+    AdvanceSummaryComponent,
+    NewAdvanceFormComponent,
     TableModule,
     TagModule,
     SelectButtonModule,
@@ -36,41 +35,41 @@ import { getRouteSegments } from '@/shared/utils/routes.util';
     ButtonModule,
     PaginatorModule,
   ],
-  templateUrl: './expenses.component.html',
-  styleUrl: './expenses.component.scss',
+  templateUrl: './advances.component.html',
+  styleUrl: './advances.component.scss',
 })
-export class ExpensesComponent implements OnInit {
-  private expenseService = inject(ExpensesService);
+export class AdvancesComponent implements OnInit {
+  private advanceService = inject(AdvancesService);
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
 
   totalRecords = signal<number>(0);
-  expenses = signal<Expense[] | null>(null);
+  advances = signal<Advance[] | null>(null);
   loading = signal(true);
   dataFetchingError = signal('');
 
-  openNewExpenseForm = signal(false);
+  openNewAdvanceForm = signal(false);
 
   page = signal(0);
   limit = signal(5);
-  status = signal<ExpenseStatusFilter>(EXPENSE.STATUS_FILTER.ALL);
-  statusOptions = EXPENSE.STATUS_FILTER_OPTIONS;
+  status = signal<AdvanceStatusFilter>(ADVANCE.STATUS_FILTER.ALL);
+  statusOptions = ADVANCE.STATUS_FILTER_OPTIONS;
 
   ngOnInit(): void {
     const paramsSub = this.activatedRoute.queryParams.subscribe({
       next: (value) => {
-        const status = value[EXPENSE.QUERY_PARAMS.STATUS]
-          ? (String(value[EXPENSE.QUERY_PARAMS.STATUS]) as RequestStatus)
+        const status = value[ADVANCE.QUERY_PARAMS.STATUS]
+          ? (String(value[ADVANCE.QUERY_PARAMS.STATUS]) as RequestStatus)
           : undefined;
-        const page = Number(value[EXPENSE.QUERY_PARAMS.PAGE] ?? 1);
-        const limit = Number(value[EXPENSE.QUERY_PARAMS.LIMIT] ?? 10);
+        const page = Number(value[ADVANCE.QUERY_PARAMS.PAGE] ?? 1);
+        const limit = Number(value[ADVANCE.QUERY_PARAMS.LIMIT] ?? 10);
 
-        this.status.set(status ?? EXPENSE.STATUS_FILTER.ALL);
+        this.status.set(status ?? ADVANCE.STATUS_FILTER.ALL);
         this.page.set(page);
         this.loading.set(true);
-        this.expenses.set(null);
-        this.getExpenses(status, page, limit);
+        this.advances.set(null);
+        this.getAdvances(status, page, limit);
       },
     });
 
@@ -79,11 +78,11 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
-  getExpenses(status?: RequestStatus, page?: number, limit?: number) {
-    this.expenseService.fetchExpenses(status, page, limit).subscribe({
+  getAdvances(status?: RequestStatus, page?: number, limit?: number) {
+    this.advanceService.fetchAdvances(status, page, limit).subscribe({
       next: (val) => {
-        this.expenses.set(val.expenses);
-        this.totalRecords.set(val.totalExpenses);
+        this.advances.set(val.advances);
+        this.totalRecords.set(val.totalAdvances);
         this.loading.set(false);
       },
       error: (err) => {
@@ -108,12 +107,12 @@ export class ExpensesComponent implements OnInit {
     }
   }
 
-  openAddExpenseForm() {
-    this.openNewExpenseForm.set(true);
+  openAddAdvanceForm() {
+    this.openNewAdvanceForm.set(true);
   }
 
   onPageChange(event: PaginatorState) {
-    this.router.navigate(getRouteSegments(APP_ROUTES.EXPENSES), {
+    this.router.navigate(getRouteSegments(APP_ROUTES.ADVANCES), {
       queryParams: {
         page: `${(event.page ?? 0) + 1}`,
       },
@@ -121,10 +120,10 @@ export class ExpensesComponent implements OnInit {
     });
   }
 
-  onStatusChange(status: ExpenseStatusFilter) {
-    this.router.navigate(getRouteSegments(APP_ROUTES.EXPENSES), {
+  onStatusChange(status: AdvanceStatusFilter) {
+    this.router.navigate(getRouteSegments(APP_ROUTES.ADVANCES), {
       queryParams: {
-        status: status === EXPENSE.STATUS_FILTER.ALL ? null : status,
+        status: status === ADVANCE.STATUS_FILTER.ALL ? null : status,
         page: `${1}`,
       },
       queryParamsHandling: NAVIGATION_OPTIONS.QUERY_PARAMS_HANDLING.MERGE,
@@ -132,13 +131,13 @@ export class ExpensesComponent implements OnInit {
     this.page.set(0);
   }
 
-  addNewExpense(expense: Expense) {
+  addNewAdvance(advance: Advance) {
     if (
       !this.status() ||
-      this.status() === EXPENSE.STATUS_FILTER.ALL ||
-      this.status() === EXPENSE.STATUS_FILTER.PENDING
+      this.status() === ADVANCE.STATUS_FILTER.ALL ||
+      this.status() === ADVANCE.STATUS_FILTER.ALL
     ) {
-      this.expenses.update((expenses) => [expense, ...(expenses ?? [])]);
+      this.advances.update((advances) => [advance, ...(advances ?? [])]);
       this.totalRecords.update((total) => total + 1);
     }
   }

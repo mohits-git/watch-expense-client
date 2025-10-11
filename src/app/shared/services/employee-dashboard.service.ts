@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, throwError } from 'rxjs';
-import { APIBaseResponse } from '../types/api-base-response.type';
-import { ExpensesSummary } from '../types/expense.type';
-import { AdvanceSummary } from '../types/advance-summary.type';
+import { MessageService } from 'primeng/api';
+import {
+  APIBaseResponse,
+  ExpensesSummary,
+  AdvanceSummary,
+  BudgetSummary,
+} from '@/shared/types';
 import {
   API_ENDPOINTS,
   API_MESSAGES,
   TOAST_SUMMARIES,
   TOAST_TYPES,
-} from '../constants';
-import { MessageService } from 'primeng/api';
-import { BudgetSummary } from '../types/budget-summary.type';
+} from '@/shared/constants';
 
 @Injectable({
   providedIn: 'root',
