@@ -41,6 +41,20 @@ export const API_MESSAGES = {
     DELETE_SUCCESS: 'Image deleted successfully',
     DELETE_ERROR: 'Failed to delete image',
   },
+  ADMIN: {
+    USER: {
+      FETCH_ERROR: 'Failed to fetch users',
+      FETCH_SUMMARY_ERROR: 'Failed to fetch users summary',
+    },
+    DEPARTMENT: {
+      FETCH_ERROR: 'Failed to fetch departments',
+      FETCH_SUMMARY_ERROR: 'Failed to fetch departments summary',
+    },
+    PROJECT: {
+      FETCH_ERROR: 'Failed to fetch projects',
+      FETCH_SUMMARY_ERROR: 'Failed to fetch projects summary',
+    },
+  },
 };
 
 export const VALIDATION_ERROR_MESSAGES = {

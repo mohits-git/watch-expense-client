@@ -1,3 +1,4 @@
+import { CardType, CardVariant } from '@/shared/types';
 import { Component, input } from '@angular/core';
 
 @Component({
@@ -6,19 +7,17 @@ import { Component, input } from '@angular/core';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss',
   host: {
-    '[class.shadow]': "config() === 'shadow'",
-    '[class.summary-card]': "config() === 'summary'",
-    '[className]': "cardType()",
+    '[class.shadow]': "cardType() === 'shadow'",
+    '[class.summary-card]': "cardType() === 'summary'",
+    '[className]': 'variant()',
   },
 })
 export class CardComponent {
-  config = input<'' | 'shadow' | 'summary'>('', {
+  cardType = input<CardType>('', {
     alias: 'card',
   });
 
-  cardType = input<
-    '' | 'primary' | 'secondary' | 'warning' | 'error' | 'purple' | 'success' | 'pink' | 'red'
-  >('', {
+  variant = input<CardVariant>('', {
     alias: 'type',
   });
 }

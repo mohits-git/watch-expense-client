@@ -9,3 +9,5 @@ export * from './auth.type';
 export * from './project.type';
 export * from './department.type';
 export * from './service.type';
+export * from './admin-summary.type';
+export * from './card.type';

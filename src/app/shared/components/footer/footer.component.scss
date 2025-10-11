@@ -3,8 +3,14 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  border-top: 1px solid #d3d3d3;
+  border: none;
+  background-color: white;
 }
+
+html.dark :host {
+  background-color: var(--p-surface-900);
+}
+
 p {
   width: 100%;
   text-align: center;
