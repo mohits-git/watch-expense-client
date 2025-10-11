@@ -41,7 +41,7 @@
       <tr>
       <td></td>
       <td></td>
-      <td>
+      <td [colSpan]="2">
         @if(dataFetchingError()) {
           <p-message severity="error" size="small" variant="simple">
             {{ dataFetchingError() }}

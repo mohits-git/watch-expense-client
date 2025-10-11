@@ -1,6 +1,5 @@
 import { UserRole } from '@/shared/enums/user-role.enum';
-import { User } from '@/shared/types/user.type';
-import { JWTClaims } from '@/shared/types/jwt-claims.type';
+import { User, JWTClaims, APIBaseResponse } from '@/shared/types';
 import {
   HttpClient,
   HttpErrorResponse,
@@ -8,7 +7,6 @@ import {
 } from '@angular/common/http';
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
-import { APIBaseResponse } from '@/shared/types';
 import { MessageService } from 'primeng/api';
 import {
   API_ENDPOINTS,

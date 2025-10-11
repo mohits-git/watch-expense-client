@@ -1,7 +1,6 @@
 import { CardComponent } from '@/shared/components/card/card.component';
 import { EmployeeDashboardService } from '@/shared/services/employee-dashboard.service';
-import { ExpensesSummary } from '@/shared/types';
-import { BudgetSummary } from '@/shared/types/budget-summary.type';
+import { ExpensesSummary, BudgetSummary } from '@/shared/types';
 import { CurrencyPipe } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
 

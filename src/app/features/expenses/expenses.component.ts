@@ -5,7 +5,7 @@ import {
   Expense,
   ExpenseStatusFilter,
   RequestStatus,
-} from '@/shared/types/expense.type';
+} from '@/shared/types';
 import { DatePipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';

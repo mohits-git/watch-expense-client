@@ -1,4 +1,4 @@
-import { FormState } from '@/shared/types/form-state.type';
+import { FormState } from '@/shared/types';
 import { AdvanceSummary, ExpensesSummary } from '../types';
 
 export const DEFAULTS = {

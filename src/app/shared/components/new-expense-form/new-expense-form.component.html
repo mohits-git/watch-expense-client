@@ -1,18 +1,14 @@
-<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
+<p-dialog header="Add Expense" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
   <span>Create a new expense request</span>
 
   <form [formGroup]="formGroup">
     <div class="form-control">
-      <p-floatlabel variant="on" [style]="{ width: '100%' }">
-        <label for="amount" class="font-semibold w-24">Amount</label>
+      <p-floatlabel variant="on">
+        <label for="amount">Amount</label>
         <input pInputText type="number" id="amount" class="flex-auto" autocomplete="off" formControlName="amount" fluid />
       </p-floatlabel>
       @if (formState().submitted && isInvalidField('amount')) {
-      <div class="error-container">
-        <p-message severity="error" variant="simple" size="small">
-          Enter a valid amount.
-        </p-message>
-      </div>
+        <app-field-error-messages [errors]="getFieldErrors('amount')" />
       }
     </div>
 
@@ -22,11 +18,7 @@
         <input pInputText id="purpose" class="flex-auto" autocomplete="off" formControlName="purpose" fluid />
       </p-floatlabel>
       @if (formState().submitted && isInvalidField('purpose')) {
-      <div class="error-container">
-        <p-message severity="error" variant="simple" size="small">
-          Enter a valid Purpose.
-        </p-message>
-      </div>
+        <app-field-error-messages [errors]="getFieldErrors('purpose')" />
       }
     </div>
 
@@ -37,11 +29,7 @@
           formControlName="description" fluid></textarea>
       </p-floatlabel>
       @if (formState().submitted && isInvalidField('description')) {
-      <div class="error-container">
-        <p-message severity="error" variant="simple" size="small">
-          Enter a valid Description.
-        </p-message>
-      </div>
+        <app-field-error-messages [errors]="getFieldErrors('description')" />
       }
     </div>
 

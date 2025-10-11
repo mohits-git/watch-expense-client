@@ -1,5 +1,6 @@
 import { ExpensesService } from '@/shared/services/expenses.service';
-import { Expense } from '@/shared/types';
+import { AddNewExpenseFormFields, Expense } from '@/shared/types';
+import { getValidationErrors } from '@/shared/utils/validation.util';
 import { Component, inject, model, output, signal } from '@angular/core';
 import {
   FormArray,
@@ -15,6 +16,7 @@ import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { MessageModule } from 'primeng/message';
 import { TextareaModule } from 'primeng/textarea';
+import { FieldErrorMessagesComponent } from '../field-error-messages/field-error-messages.component';
 
 const defaultFormState = {
   loading: false,
@@ -31,6 +33,7 @@ const defaultFormState = {
     ReactiveFormsModule,
     FloatLabel,
     MessageModule,
+    FieldErrorMessagesComponent,
   ],
   templateUrl: './new-expense-form.component.html',
   styleUrl: './new-expense-form.component.scss',
@@ -111,11 +114,17 @@ export class NewExpenseFormComponent {
       });
   }
 
-  isInvalidField(field: 'amount' | 'purpose' | 'description') {
+  isInvalidField(field: AddNewExpenseFormFields) {
     return (
       this.formGroup.controls[field].invalid &&
       (this.formGroup.controls[field].touched ||
         this.formGroup.controls[field].dirty)
     );
+  }
+
+  getFieldErrors(field: AddNewExpenseFormFields): string[] {
+    const errors = this.formGroup.controls[field]?.errors;
+    if (!errors) return [];
+    return getValidationErrors(errors);
   }
 }

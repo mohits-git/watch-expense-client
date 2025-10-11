@@ -5,7 +5,7 @@ import {
   HEADERS,
   HTTP_METHODS,
 } from '@/shared/constants';
-import { RequestStatus } from '@/shared/types/expense.type';
+import { RequestStatus } from '@/shared/types';
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {

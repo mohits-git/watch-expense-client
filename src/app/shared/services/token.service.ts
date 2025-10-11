@@ -12,7 +12,6 @@ export class TokenService {
 
   constructor() {
     const savedToken = localStorage.getItem(this.tokenKey);
-    if (!savedToken) return;
     if (!this.isValidToken(savedToken)) {
       this.removeToken();
       return;
@@ -30,8 +29,11 @@ export class TokenService {
     this.token.set(null);
   }
 
-  isValidToken(token: string): boolean {
+  isValidToken(token?: string): boolean {
     try {
+      if (!token) {
+        return false;
+      }
       const decoded = jwtDecode<JWTClaims>(token);
       return (
         !!decoded?.sub && (!decoded.exp || decoded.exp * 1000 > Date.now())

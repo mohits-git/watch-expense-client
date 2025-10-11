@@ -1,4 +1,4 @@
-import { Expense } from '@/shared/types/expense.type';
+import { Expense } from '@/shared/types';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Component, input } from '@angular/core';
 import { CardComponent } from '../card/card.component';

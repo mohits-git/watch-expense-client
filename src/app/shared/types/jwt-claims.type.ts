@@ -5,6 +5,6 @@ export interface JWTClaims {
   name: string;
   role: UserRole;
   email: string;
-  iat: string;
+  iat: number;
   exp: number;
 }
