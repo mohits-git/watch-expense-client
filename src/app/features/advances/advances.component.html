@@ -3,9 +3,11 @@
 
   <div class="header">
     <h2>Advances</h2>
+    @if (!isAdmin()) {
     <p-button (click)="openAddAdvanceForm()">
       <i class="pi pi-plus"></i> New Advance
     </p-button>
+    }
   </div>
 
   <p-selectbutton
@@ -28,33 +30,30 @@
   >
     <ng-template #header>
       <tr>
-        <th pSortableColumn="createdAt" style="width:20%">
+        <th pSortableColumn="createdAt" style="width:15%">
           Requested On <p-sortIcon field="createdAt" />
         </th>
-        <th style="width:20%">Purpose</th>
-        <th style="width:15%">Advance</th>
+        <th style="width:15%">Purpose</th>
+        <th style="width:12%">Advance</th>
         <th style="width:10%">Status</th>
-        <th style="width:35%">Description</th>
+        <th style="width:38%">Description</th>
+        <th style="width:10%">Actions</th>
       </tr>
     </ng-template>
     <ng-template #loadingbody>
       <tr>
-      <td></td>
-      <td></td>
-      <td [colSpan]="2">
+        <td [colSpan]="6">
+          <div class='loading-body'>
         @if(dataFetchingError()) {
           <p-message severity="error" size="small" variant="simple">
             {{ dataFetchingError() }}
           </p-message>
         }
         @if(loading()) {
-          <div class='spinner-container'>
             <app-spinner />
-          </div>
         }
-      </td>
-      <td></td>
-      <td></td>
+          </div>
+        </td>
       </tr>
     </ng-template>
     <ng-template #body let-advance>
@@ -65,7 +64,21 @@
         <td>
           <p-tag [value]="advance.status" [severity]="getSeverity(advance.status)" [rounded]="true" />
         </td>
-        <td>{{ advance.description }}</td>
+        <td>
+          <span class="description" [pTooltip]="advance.description" tooltipPosition="top">
+            {{ advance.description }}
+          </span>
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-eye"
+            [text]="true"
+            [rounded]="true"
+            pTooltip="View Details"
+            tooltipPosition="top"
+            (click)="openAdvanceDetails(advance)"
+          />
+        </td>
       </tr>
     </ng-template>
   </p-table>
@@ -81,5 +94,12 @@
   <app-new-advance-form
     [(visible)]="openNewAdvanceForm"
     (onAddAdvance)="addNewAdvance($event)"
+  />
+
+  <app-advance-details-modal
+    [(visible)]="openAdvanceDetailsModal"
+    [advance]="selectedAdvance()"
+    [isAdmin]="isAdmin()"
+    (onStatusChange)="onAdvanceStatusChange($event)"
   />
 </div>

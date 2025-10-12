@@ -1,0 +1,111 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Advance Details"
+>
+  @if (advance()) {
+  <div class="advance-details">
+    <div class="detail-row">
+      <span class="label">Purpose:</span>
+      <span class="value">{{ advance()?.purpose }}</span>
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Amount:</span>
+      <span class="value amount">₹{{ advance()?.amount }}</span>
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Status:</span>
+      <p-tag
+        [value]="advance()?.status ?? ''"
+        [severity]="getSeverity(advance()?.status ?? RequestStatus.Pending)"
+        [rounded]="true"
+      />
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Description:</span>
+      <span class="value">{{ advance()?.description }}</span>
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Requested On:</span>
+      <span class="value">{{ advance()?.createdAt | date:'medium' }}</span>
+    </div>
+
+    @if (advance()?.approvedBy) {
+    <p-divider />
+    <div class="detail-row">
+      <span class="label">Approved By:</span>
+      <span class="value">{{ advance()?.approvedBy }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Approved At:</span>
+      <span class="value">{{ advance()?.approvedAt | date:'medium' }}</span>
+    </div>
+    }
+
+    @if (advance()?.reviewedBy) {
+    <p-divider />
+    <div class="detail-row">
+      <span class="label">Reviewed By:</span>
+      <span class="value">{{ advance()?.reviewedBy }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Reviewed At:</span>
+      <span class="value">{{ advance()?.reviewedAt | date:'medium' }}</span>
+    </div>
+    }
+  </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <div class="footer-actions">
+      @if (isAdmin()) {
+        @if (canApprove()) {
+        <p-button
+          label="Approve"
+          icon="pi pi-check"
+          severity="success"
+          (onClick)="approveAdvance()"
+          [disabled]="isProcessing()"
+        />
+        <p-button
+          label="Reject"
+          icon="pi pi-times"
+          severity="danger"
+          (onClick)="rejectAdvance()"
+          [disabled]="isProcessing()"
+        />
+        }
+        @if (canMarkReviewed()) {
+        <p-button
+          label="Mark as Reviewed"
+          icon="pi pi-check-circle"
+          severity="info"
+          (onClick)="markAsReviewed()"
+          [disabled]="isProcessing()"
+        />
+        }
+      }
+      <p-button
+        label="Close"
+        icon="pi pi-times"
+        [text]="true"
+        (onClick)="closeModal()"
+        [disabled]="isProcessing()"
+      />
+    </div>
+  </ng-template>
+</p-dialog>

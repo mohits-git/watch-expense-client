@@ -104,4 +104,20 @@ export class AdvancesService {
       reviewedBy: null,
     };
   }
+
+  updateAdvanceStatus(advanceId: string, status: RequestStatus): Observable<void> {
+    return this.httpClient
+      .patch<APIBaseResponse<void>>(
+        API_ENDPOINTS.ADVANCE.PATCH.replace(':id', advanceId),
+        { status }
+      )
+      .pipe(
+        map(() => undefined),
+        catchError((errorResponse: HttpErrorResponse) => {
+          const errorMessage =
+            errorResponse.error?.message || API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED;
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
+  }
 }

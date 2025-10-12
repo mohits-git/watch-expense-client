@@ -1,0 +1,44 @@
+.advance-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.detail-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+
+  .label {
+    font-weight: 600;
+    min-width: 150px;
+    color: var(--text-color-secondary);
+  }
+
+  .value {
+    flex: 1;
+    color: var(--text-color);
+
+    &.amount {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary-color);
+    }
+  }
+}
+
+.footer-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+::ng-deep {
+  .p-dialog {
+    width: 50rem;
+  }
+  .p-dialog-content {
+    overflow: visible !important;
+  }
+}

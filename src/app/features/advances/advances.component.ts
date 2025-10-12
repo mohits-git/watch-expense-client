@@ -1,9 +1,10 @@
 import { AdvanceSummaryComponent } from '@/shared/components/advance-summary/advance-summary.component';
 import { NewAdvanceFormComponent } from '@/shared/components/new-advance-form/new-advance-form.component';
+import { AdvanceDetailsModalComponent } from './components/advance-details-modal/advance-details-modal.component';
 import { AdvancesService } from '@/shared/services/advances.service';
 import { Advance, AdvanceStatusFilter, RequestStatus } from '@/shared/types';
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -14,6 +15,7 @@ import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
 import { getRouteSegments } from '@/shared/utils/routes.util';
 import {
   ADVANCE,
@@ -24,12 +26,15 @@ import {
   APP_ROUTES,
   NAVIGATION_OPTIONS,
 } from '@/shared/constants';
+import { AuthService } from '@/shared/services/auth.serivce';
+import { UserRole } from '@/shared/enums';
 
 @Component({
   selector: 'app-advances',
   imports: [
     AdvanceSummaryComponent,
     NewAdvanceFormComponent,
+    AdvanceDetailsModalComponent,
     TableModule,
     TagModule,
     SelectButtonModule,
@@ -39,6 +44,7 @@ import {
     MessageModule,
     ButtonModule,
     PaginatorModule,
+    TooltipModule,
   ],
   templateUrl: './advances.component.html',
   styleUrl: './advances.component.scss',
@@ -48,7 +54,10 @@ export class AdvancesComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private authService = inject(AuthService);
   private messageService = inject(MessageService);
+
+  isAdmin = computed(() => this.authService.hasRole(UserRole.Admin));
 
   totalRecords = signal<number>(0);
   advances = signal<Advance[] | null>(null);
@@ -61,6 +70,9 @@ export class AdvancesComponent implements OnInit {
   limit = signal(5);
   status = signal<AdvanceStatusFilter>(ADVANCE.STATUS_FILTER.ALL);
   statusOptions = ADVANCE.STATUS_FILTER_OPTIONS;
+
+  openAdvanceDetailsModal = signal(false);
+  selectedAdvance = signal<Advance | null>(null);
 
   ngOnInit(): void {
     const paramsSub = this.activatedRoute.queryParams.subscribe({
@@ -151,5 +163,25 @@ export class AdvancesComponent implements OnInit {
       this.advances.update((advances) => [advance, ...(advances ?? [])]);
       this.totalRecords.update((total) => total + 1);
     }
+  }
+
+  openAdvanceDetails(advance: Advance) {
+    this.selectedAdvance.set(advance);
+    this.openAdvanceDetailsModal.set(true);
+  }
+
+  onAdvanceStatusChange(status: RequestStatus) {
+    const selectedAdvance = this.selectedAdvance();
+    if (!selectedAdvance) return;
+    this.advances.update((advances) => {
+      if (!advances) return advances;
+      return advances.map((adv) => {
+        if (adv.id === selectedAdvance.id) {
+          return { ...adv, status };
+        }
+        return adv;
+      });
+    });
+    this.selectedAdvance.update((adv) => (adv ? { ...adv, status } : adv));
   }
 }

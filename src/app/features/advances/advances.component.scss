@@ -45,3 +45,19 @@
   align-items: center;
   margin-block: 1rem;
 }
+
+.loading-body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-block: 1rem;
+}
+
+.description {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  cursor: help;
+}
