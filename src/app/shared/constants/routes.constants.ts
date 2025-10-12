@@ -9,6 +9,7 @@ export const APP_ROUTES = {
   ADVANCES: 'advances',
   USERS: 'users',
   DEPARTMENTS: 'departments',
+  PROJECTS: 'projects',
 }
 
 export const NAVIGATION_OPTIONS = {

@@ -1,0 +1,168 @@
+<p-dialog
+  [draggable]="false"
+  [header]="editingProject() ? constants.ACTIONS.EDIT_PROJECT : constants.ACTIONS.ADD_PROJECT"
+  [modal]="true"
+  [(visible)]="visible"
+  (onHide)="onCancel()"
+  [closable]="true"
+  [dismissableMask]="false"
+  styleClass="project-form-modal">
+
+  <form [formGroup]="projectForm">
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="name">{{ constants.FORM_LABELS.NAME }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          name="name"
+          formControlName="name"
+          [disabled]="formState().loading"
+          fluid
+          autocomplete="off" />
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('name')) {
+        <app-field-error-messages [errors]="getFieldErrors('name')" />
+      }
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="description">{{ constants.FORM_LABELS.DESCRIPTION }}</label>
+        <textarea
+          pInputTextarea
+          id="description"
+          name="description"
+          formControlName="description"
+          [disabled]="formState().loading"
+          rows="3"
+          fluid
+          autocomplete="off"></textarea>
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('description')) {
+        <app-field-error-messages [errors]="getFieldErrors('description')" />
+      }
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          inputId="budget"
+          formControlName="budget"
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          [disabled]="formState().loading"
+          [min]="0"
+          fluid>
+        </p-inputNumber>
+        <label for="budget">{{ constants.FORM_LABELS.BUDGET }}</label>
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('budget')) {
+        <app-field-error-messages [errors]="getFieldErrors('budget')" />
+      }
+    </div>
+
+    <div class="form-row">
+      <div class="form-control">
+        <p-floatlabel variant="on">
+          <p-calendar
+            inputId="startDate"
+            formControlName="startDate"
+            [disabled]="formState().loading"
+            dateFormat="yy-mm-dd"
+            [showIcon]="true"
+            appendTo="body"
+            fluid>
+          </p-calendar>
+          <label for="startDate">{{ constants.FORM_LABELS.START_DATE }}</label>
+        </p-floatlabel>
+        @if (formState().submitted && isFieldInvalid('startDate')) {
+          <app-field-error-messages [errors]="getFieldErrors('startDate')" />
+        }
+      </div>
+
+      <div class="form-control">
+        <p-floatlabel variant="on">
+          <p-calendar
+            inputId="endDate"
+            formControlName="endDate"
+            [disabled]="formState().loading"
+            dateFormat="yy-mm-dd"
+            [showIcon]="true"
+            appendTo="body"
+            fluid>
+          </p-calendar>
+          <label for="endDate">{{ constants.FORM_LABELS.END_DATE }}</label>
+        </p-floatlabel>
+        @if (formState().submitted && isFieldInvalid('endDate')) {
+          <app-field-error-messages [errors]="getFieldErrors('endDate')" />
+        }
+      </div>
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <p-autoComplete
+          inputId="departmentId"
+          formControlName="departmentId"
+          [suggestions]="filteredDepartments"
+          (completeMethod)="filterDepartments($event)"
+          [dropdown]="true"
+          [forceSelection]="true"
+          [disabled]="formState().loading"
+          optionLabel="name"
+          dataKey="id"
+          appendTo="body"
+          fluid>
+        </p-autoComplete>
+        <label for="departmentId">{{ constants.FORM_LABELS.DEPARTMENT }}</label>
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('departmentId')) {
+        <app-field-error-messages [errors]="getFieldErrors('departmentId')" />
+      }
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <p-autoComplete
+          inputId="projectManagerId"
+          formControlName="projectManagerId"
+          [suggestions]="filteredManagers"
+          (completeMethod)="filterManagers($event)"
+          [dropdown]="true"
+          [forceSelection]="true"
+          [disabled]="formState().loading"
+          optionLabel="name"
+          dataKey="id"
+          appendTo="body"
+          fluid>
+          <ng-template let-user pTemplate="item">
+            <div class="manager-option">
+              <div class="manager-name">{{ user.name }}</div>
+              <div class="manager-email">{{ user.email }}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+        <label for="projectManagerId">{{ constants.FORM_LABELS.PROJECT_MANAGER }}</label>
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('projectManagerId')) {
+        <app-field-error-messages [errors]="getFieldErrors('projectManagerId')" />
+      }
+    </div>
+
+    <div class="button-container">
+      <p-button
+        [label]="constants.ACTIONS.CANCEL"
+        severity="secondary"
+        (onClick)="onCancel()"
+        [disabled]="formState().loading" />
+      <p-button
+        [label]="formState().loading ? (editingProject() ? 'Updating...' : 'Creating...') : (editingProject() ? constants.ACTIONS.UPDATE : constants.ACTIONS.CREATE)"
+        (onClick)="onSubmit()"
+        [loading]="formState().loading"
+        [disabled]="formState().loading" />
+    </div>
+  </form>
+</p-dialog>

@@ -36,7 +36,7 @@ export const routes: Routes = [
     canActivate: [authorizedOnly],
     loadComponent: () =>
       import('@/features/advances/advances.component').then(
-        (mod) => mod.AdvancesComponent
+        (mod) => mod.AdvancesComponent,
       ),
   },
   {
@@ -45,7 +45,7 @@ export const routes: Routes = [
     canActivate: [authorizedOnly],
     loadComponent: () =>
       import('@/features/users/users.component').then(
-        (mod) => mod.UsersComponent
+        (mod) => mod.UsersComponent,
       ),
   },
   {
@@ -54,7 +54,16 @@ export const routes: Routes = [
     canActivate: [authorizedOnly],
     loadComponent: () =>
       import('@/features/departments/departments.component').then(
-        (mod) => mod.DepartmentsComponent
+        (mod) => mod.DepartmentsComponent,
+      ),
+  },
+  {
+    path: APP_ROUTES.PROJECTS,
+    canMatch: [adminOnly],
+    canActivate: [authorizedOnly],
+    loadComponent: () =>
+      import('@/features/projects/projects.component').then(
+        (mod) => mod.ProjectsComponent,
       ),
   },
 ];

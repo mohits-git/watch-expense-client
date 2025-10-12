@@ -67,6 +67,13 @@ export const API_MESSAGES = {
     PROJECT: {
       FETCH_ERROR: 'Failed to fetch projects',
       FETCH_SUMMARY_ERROR: 'Failed to fetch projects summary',
+      CREATE_SUCCESS: 'Project created successfully',
+      CREATE_ERROR: 'Failed to create project',
+      UPDATE_SUCCESS: 'Project updated successfully',
+      UPDATE_ERROR: 'Failed to update project',
+      DELETE_SUCCESS: 'Project deleted successfully',
+      DELETE_ERROR: 'Failed to delete project',
+      DELETE_CONFIRMATION: 'Are you sure you want to delete this project?',
     },
   },
 };

@@ -36,6 +36,13 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
       req = req.clone({
         url: buildAPIEndpoint(API_ENDPOINTS.ADMIN.DEPARTMENT.GET_BY_ID, { id: 1 }),
       })
+    } else if (
+      url.startsWith(API_ENDPOINTS.ADMIN.PROJECT.GET_ALL) &&
+      (req.method === HTTP_METHODS.PUT || req.method === HTTP_METHODS.DELETE)
+    ) {
+      req = req.clone({
+        url: buildAPIEndpoint(API_ENDPOINTS.ADMIN.PROJECT.GET_BY_ID, { id: 1 }),
+      })
     }
   }
   return next(req);

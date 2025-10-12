@@ -1,0 +1,76 @@
+::ng-deep {
+  .p-dialog {
+    width: 30rem;
+    padding: 1rem;
+  }
+
+  .p-message {
+    margin: 0;
+  }
+
+  .project-form-modal {
+    .p-dialog-content {
+      overflow: visible !important;
+    }
+  }
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  margin-top: 1rem;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+:host ::ng-deep {
+  .p-message {
+    padding-left: 0.25rem;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.field-help {
+  color: var(--text-color-secondary);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  margin-top: 0.25rem;
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  gap: 1rem;
+}
+
+.manager-option {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.5rem 0;
+
+  .manager-name {
+    font-weight: 600;
+    color: var(--text-color);
+  }
+
+  .manager-email {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+  }
+}

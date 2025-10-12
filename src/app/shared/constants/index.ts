@@ -10,6 +10,7 @@ export * from './routes.constants';
 export * from './advance.constants';
 export * from './user.constants';
 export * from './department.constants';
+export * from './project.constants';
 export * from './expense-form.constants';
 export * from './advance-form.constants';
 export * from './login-form.constants';

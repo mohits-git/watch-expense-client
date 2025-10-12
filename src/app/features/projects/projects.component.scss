@@ -5,7 +5,7 @@
   overflow-y: auto;
 }
 
-.departments-page {
+.projects-page {
   .page-header {
     display: flex;
     justify-content: space-between;
@@ -15,22 +15,13 @@
     .header-title {
       display: flex;
       flex-direction: column;
-      gap: 0.5rem;
+      gap: 1rem;
 
       h1 {
         margin: 0;
         color: var(--text-color);
         font-size: 2rem;
         font-weight: 600;
-      }
-
-      .loading-text {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        color: var(--text-color-secondary);
-        font-size: 0.9rem;
-        font-weight: 400;
       }
     }
   }
@@ -69,63 +60,43 @@
         font-size: 1.1rem;
       }
     }
+  }
 
-    :host ::ng-deep {
-      .p-datatable {
-        .p-datatable-header {
-          background: var(--surface-section);
-          border-bottom: 1px solid var(--surface-border);
-        }
+  .project-name {
+    font-weight: 600;
+    color: var(--text-color);
+  }
 
-        .p-datatable-thead>tr>th {
-          background: var(--surface-section);
-          border-color: var(--surface-border);
-          font-weight: 600;
-          padding: 1rem;
-        }
+  .description {
+    color: var(--text-color-secondary);
+    font-size: 0.875rem;
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 250px;
+    cursor: help;
+  }
 
-        .p-datatable-tbody>tr>td {
-          padding: 1rem;
-          border-color: var(--surface-border);
-        }
+  .budget {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
 
-        .p-datatable-tbody>tr:hover {
-          background: var(--surface-hover);
-        }
-      }
+  .action-column {
+    width: 120px;
+    text-align: center;
+  }
 
-      .p-paginator {
-        background: var(--surface-section);
-        border-top: 1px solid var(--surface-border);
-        padding: 1rem;
-      }
-    }
+  .action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    align-items: center;
 
-    .department-name {
-      font-weight: 600;
-      color: var(--text-color);
-    }
-
-    .budget {
-      font-family: 'Courier New', monospace;
-      font-weight: 600;
-      color: var(--primary-color);
-    }
-
-    .action-column {
-      width: 120px;
-      text-align: center;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 0.5rem;
-      justify-content: center;
-      align-items: center;
-
-      i {
-        font-size: 1rem;
-      }
+    i {
+      font-size: 1rem;
     }
   }
 
@@ -154,7 +125,7 @@
   }
 }
 
-tr {
+tr{
   th {
     padding: 1rem;
   }

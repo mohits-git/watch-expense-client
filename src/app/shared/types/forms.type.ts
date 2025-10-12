@@ -50,3 +50,15 @@ export interface DepartmentForm {
 }
 export type DepartmentFormFields = keyof DepartmentForm;
 
+export interface ProjectForm {
+  name: FormControl<string>;
+  description: FormControl<string>;
+  budget: FormControl<number>;
+  startDate: FormControl<Date | null>;
+  endDate: FormControl<Date | null>;
+  projectManagerId: FormControl<string | { id: string; name: string } | null>;
+  departmentId: FormControl<string | { id: string; name: string } | null>;
+}
+export type ProjectFormFields = keyof ProjectForm;
+
+

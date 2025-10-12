@@ -57,6 +57,11 @@ export class HeaderComponent {
         visible: isAuthenticated && user?.role === UserRole.Admin,
         routerLink: getRouteSegments(APP_ROUTES.DEPARTMENTS),
       },
+      {
+        label: 'Projects',
+        visible: isAuthenticated && user?.role === UserRole.Admin,
+        routerLink: getRouteSegments(APP_ROUTES.PROJECTS),
+      }
     ];
   });
 

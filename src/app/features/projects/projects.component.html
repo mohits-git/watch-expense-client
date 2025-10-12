@@ -1,0 +1,166 @@
+<div class="container">
+  <div class="projects-page">
+    <div class="page-header">
+      <div class="header-title">
+        <h1>{{ constants.PAGE_TITLE }}</h1>
+      </div>
+      <p-button
+        [label]="constants.ACTIONS.ADD_PROJECT"
+        icon="pi pi-plus"
+        (onClick)="openAddProjectModal()"
+        [disabled]="loading() || submitting()"
+        styleClass="p-button-primary">
+      </p-button>
+    </div>
+
+    @if (loading() && projects().length === 0) {
+      <div class="initial-loading">
+        <div class="spinner-container">
+          <app-spinner size="large" />
+          <p>Loading projects...</p>
+        </div>
+      </div>
+    }
+
+    @if (!loading() || projects().length > 0) {
+      <div class="table-container">
+        <p-table
+        [value]="projects()"
+        [loading]="loading()"
+        [showLoader]="false"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20, 50]"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} projects"
+        styleClass="p-datatable-gridlines"
+        sortMode="single">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name" width="15%">
+              {{ constants.TABLE_HEADERS.NAME }}
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th width="20%">{{ constants.TABLE_HEADERS.DESCRIPTION }}</th>
+            <th pSortableColumn="budget" width="12%">
+              {{ constants.TABLE_HEADERS.BUDGET }}
+              <p-sortIcon field="budget"></p-sortIcon>
+            </th>
+            <th pSortableColumn="startDate" width="12%">
+              {{ constants.TABLE_HEADERS.START_DATE }}
+              <p-sortIcon field="startDate"></p-sortIcon>
+            </th>
+            <th pSortableColumn="endDate" width="12%">
+              {{ constants.TABLE_HEADERS.END_DATE }}
+              <p-sortIcon field="endDate"></p-sortIcon>
+            </th>
+            <th width="12%">{{ constants.TABLE_HEADERS.PROJECT_MANAGER }}</th>
+            <th width="12%">{{ constants.TABLE_HEADERS.DEPARTMENT }}</th>
+            <th width="10%">{{ constants.TABLE_HEADERS.ACTIONS }}</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td></td>
+            <td></td>
+            <td [colSpan]="2">
+              @if(loading()) {
+                <div class='spinner-container'>
+                  <app-spinner />
+                </div>
+              }
+            </td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-project>
+          <tr>
+            <td>
+              <span class="project-name">{{ project.name }}</span>
+            </td>
+            <td>
+              <span
+                class="description"
+                [pTooltip]="project.description"
+                tooltipPosition="top">
+                {{ project.description }}
+              </span>
+            </td>
+            <td>
+              <span class="budget">{{ project.budget | currency:'USD':'symbol':'1.2-2' }}</span>
+            </td>
+            <td>
+              <span>{{ project.startDate | date:'MMM d, y' }}</span>
+            </td>
+            <td>
+              <span>{{ project.endDate | date:'MMM d, y' }}</span>
+            </td>
+            <td>
+              <span>{{ getProjectManager(project) }}</span>
+            </td>
+            <td>
+              <span>{{ getProjectDepartment(project) }}</span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <p-button
+                  icon="pi pi-pencil"
+                  pTooltip="{{ constants.ACTIONS.EDIT }}"
+                  tooltipPosition="top"
+                  (onClick)="openEditProjectModal(project)"
+                  [disabled]="submitting() || loading()"
+                  styleClass="p-button-text p-button-sm p-button-info">
+                </p-button>
+
+                <p-button
+                  icon="pi pi-trash"
+                  pTooltip="{{ constants.ACTIONS.DELETE }}"
+                  tooltipPosition="top"
+                  (onClick)="confirmDeleteProject(project)"
+                  [disabled]="submitting() || loading()"
+                  [loading]="submitting()"
+                  styleClass="p-button-text p-button-sm p-button-danger">
+                </p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+      </div>
+    }
+
+    @if (!loading() && projects().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-briefcase"></i>
+        <h3>No Projects Yet</h3>
+        <p>Get started by adding your first project to the system.</p>
+        <p-button
+          [label]="constants.ACTIONS.ADD_PROJECT"
+          icon="pi pi-plus"
+          (onClick)="openAddProjectModal()"
+          styleClass="p-button-primary mt-3">
+        </p-button>
+      </div>
+    }
+
+  </div>
+
+  <app-project-form-modal
+    [(visible)]="projectFormVisible"
+    [editingProject]="editingProject()"
+    [users]="users()"
+    [departments]="departments()"
+    (projectSaved)="onProjectSaved($event)"
+    (formClose)="onProjectFormClose()">
+  </app-project-form-modal>
+
+  <p-confirmDialog></p-confirmDialog>
+
+</div>
