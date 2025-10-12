@@ -72,6 +72,7 @@
           [disabled]="formState().loading"
           optionLabel="label"
           optionValue="value"
+          appendTo="body"
           fluid>
         </p-autoComplete>
         <label for="role">{{ constants.FORM_LABELS.ROLE }}</label>
@@ -93,6 +94,7 @@
             [disabled]="formState().loading"
             optionLabel="name"
             dataKey="id"
+            appendTo="body"
             fluid>
           </p-autoComplete>
           <label for="departmentId">{{ constants.FORM_LABELS.DEPARTMENT }}</label>
@@ -113,6 +115,7 @@
             [disabled]="!userForm.get('departmentId')?.value || formState().loading"
             optionLabel="name"
             dataKey="id"
+            appendTo="body"
             fluid>
           </p-autoComplete>
           <label for="projectId">{{ constants.FORM_LABELS.PROJECT }}</label>

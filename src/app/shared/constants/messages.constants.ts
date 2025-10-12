@@ -56,6 +56,13 @@ export const API_MESSAGES = {
     DEPARTMENT: {
       FETCH_ERROR: 'Failed to fetch departments',
       FETCH_SUMMARY_ERROR: 'Failed to fetch departments summary',
+      CREATE_SUCCESS: 'Department created successfully',
+      CREATE_ERROR: 'Failed to create department',
+      UPDATE_SUCCESS: 'Department updated successfully',
+      UPDATE_ERROR: 'Failed to update department',
+      DELETE_SUCCESS: 'Department deleted successfully',
+      DELETE_ERROR: 'Failed to delete department',
+      DELETE_CONFIRMATION: 'Are you sure you want to delete this department?',
     },
     PROJECT: {
       FETCH_ERROR: 'Failed to fetch projects',

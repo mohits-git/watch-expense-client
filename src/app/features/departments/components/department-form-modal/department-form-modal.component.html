@@ -1,0 +1,90 @@
+<p-dialog
+  [draggable]="false"
+  [header]="editingDepartment() ? constants.ACTIONS.EDIT_DEPARTMENT : constants.ACTIONS.ADD_DEPARTMENT"
+  [modal]="true"
+  [(visible)]="visible"
+  (onHide)="onCancel()"
+  [closable]="true"
+  [dismissableMask]="false"
+  styleClass="department-form-modal">
+
+  <form [formGroup]="departmentForm">
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="name">{{ constants.FORM_LABELS.NAME }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          name="name"
+          formControlName="name"
+          [disabled]="formState().loading"
+          fluid
+          autocomplete="off" />
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('name')) {
+        <app-field-error-messages [errors]="getFieldErrors('name')" />
+      }
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <p-inputNumber
+          inputId="budget"
+          formControlName="budget"
+          mode="currency"
+          currency="USD"
+          locale="en-US"
+          [disabled]="formState().loading"
+          [min]="0"
+          fluid>
+        </p-inputNumber>
+        <label for="budget">{{ constants.FORM_LABELS.BUDGET }}</label>
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('budget')) {
+        <app-field-error-messages [errors]="getFieldErrors('budget')" />
+      }
+    </div>
+
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <p-autoComplete
+          inputId="managerId"
+          formControlName="managerId"
+          [suggestions]="filteredManagers"
+          (completeMethod)="filterManagers($event)"
+          [dropdown]="true"
+          [forceSelection]="true"
+          [disabled]="formState().loading"
+          optionLabel="name"
+          dataKey="id"
+          appendTo="body"
+          fluid>
+          <ng-template let-user pTemplate="item">
+            <div class="manager-option">
+              <div class="manager-name">{{ user.name }}</div>
+              <div class="manager-email">{{ user.email }}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+        <label for="managerId">{{ constants.FORM_LABELS.MANAGER }}</label>
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('managerId')) {
+        <app-field-error-messages [errors]="getFieldErrors('managerId')" />
+      }
+    </div>
+
+    <div class="button-container">
+      <p-button
+        [label]="constants.ACTIONS.CANCEL"
+        severity="secondary"
+        (onClick)="onCancel()"
+        [disabled]="formState().loading" />
+      <p-button
+        [label]="formState().loading ? (editingDepartment() ? 'Updating...' : 'Creating...') : (editingDepartment() ? constants.ACTIONS.UPDATE : constants.ACTIONS.CREATE)"
+        (onClick)="onSubmit()"
+        [loading]="formState().loading"
+        [disabled]="formState().loading" />
+    </div>
+  </form>
+</p-dialog>

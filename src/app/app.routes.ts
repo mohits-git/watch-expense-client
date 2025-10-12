@@ -48,4 +48,13 @@ export const routes: Routes = [
         (mod) => mod.UsersComponent
       ),
   },
+  {
+    path: APP_ROUTES.DEPARTMENTS,
+    canMatch: [adminOnly],
+    canActivate: [authorizedOnly],
+    loadComponent: () =>
+      import('@/features/departments/departments.component').then(
+        (mod) => mod.DepartmentsComponent
+      ),
+  },
 ];

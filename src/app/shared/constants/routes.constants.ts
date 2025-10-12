@@ -8,6 +8,7 @@ export const APP_ROUTES = {
   EXPENSES: 'expenses',
   ADVANCES: 'advances',
   USERS: 'users',
+  DEPARTMENTS: 'departments',
 }
 
 export const NAVIGATION_OPTIONS = {

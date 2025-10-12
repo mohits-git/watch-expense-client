@@ -46,7 +46,6 @@ type UserRoleFilter = UserRole | 'ALL';
   ],
   templateUrl: './users.component.html',
   styleUrl: './users.component.scss',
-  providers: [ConfirmationService]
 })
 export class UsersComponent implements OnInit {
   private userService = inject(UserService);

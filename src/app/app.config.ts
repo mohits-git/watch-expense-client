@@ -11,7 +11,7 @@ import { providePrimeNG } from 'primeng/config';
 
 import { routes } from '@/app.routes';
 import { loggingInterceptor } from '@/interceptors/logging.interceptor';
-import { MessageService } from 'primeng/api';
+import { MessageService, ConfirmationService } from 'primeng/api';
 import { apiProxyInterceptor } from './interceptors/api-proxy.interceptor';
 import { authInterceptor } from './interceptors/auth.interceptor';
 import { mockApiInterceptor } from './interceptors/mock-api-server.interceptor';
@@ -47,5 +47,6 @@ export const appConfig: ApplicationConfig = {
       },
     }),
     MessageService,
+    ConfirmationService
   ],
 };

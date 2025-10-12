@@ -29,6 +29,13 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
       req = req.clone({
         url: buildAPIEndpoint(API_ENDPOINTS.USERS.GET_BY_ID, { id: 1 }),
       })
+    } else if (
+      url.startsWith(API_ENDPOINTS.ADMIN.DEPARTMENT.GET_ALL) &&
+      (req.method === HTTP_METHODS.PUT || req.method === HTTP_METHODS.DELETE)
+    ) {
+      req = req.clone({
+        url: buildAPIEndpoint(API_ENDPOINTS.ADMIN.DEPARTMENT.GET_BY_ID, { id: 1 }),
+      })
     }
   }
   return next(req);
@@ -39,16 +46,16 @@ const handleGetExpenseRoute: HttpInterceptorFn = (req, next) => {
   let responseId: string = '';
   switch (status) {
     case RequestStatus.Pending:
-      responseId = '31709050-6764df8a-006e-4a9a-b771-174374ceda80';
+      responseId = '30505855-e2b05e18-5a36-4f0d-b5ac-183da6dee84f';
       break;
     case RequestStatus.Approved:
-      responseId = '31709050-11fbf86b-db56-4f68-b25b-9fd4da719761';
+      responseId = '30505855-8d4914af-d2a0-43fb-85bf-83f2ff93ffca';
       break;
     case RequestStatus.Rejected:
-      responseId = '31709050-0750af94-5999-4854-b4c5-5771d0911776';
+      responseId = '30505855-29308cb1-2557-4d7b-85e1-64edec8a8b08';
       break;
     case RequestStatus.Reviewed:
-      responseId = '31709050-727aa39a-5879-43f2-940d-d2431c4810dc';
+      responseId = '30505855-5d257fcd-95c6-4d52-9540-d4eb21bc9969';
       break;
   }
   if (responseId) {
@@ -64,16 +71,16 @@ const handleGetAdvanceRoute: HttpInterceptorFn = (req, next) => {
   let responseId: string = '';
   switch (status) {
     case RequestStatus.Pending:
-      responseId = '31709050-0156583d-2d2b-489f-bed9-9ce73d5f870a';
+      responseId = '30505855-922c5675-7bbc-418e-b81c-5ccaf00f5e0e';
       break;
     case RequestStatus.Approved:
-      responseId = '31709050-49696233-2748-48fe-85ff-b8950a9ca4d2';
+      responseId = '30505855-1797fac0-7ed5-4892-bbc3-ec6954ce224d';
       break;
     case RequestStatus.Rejected:
-      responseId = '31709050-2da81f8b-36af-4575-bb19-872882157647';
+      responseId = '30505855-9751166d-e60f-482d-9d21-ca50c261b794';
       break;
     case RequestStatus.Reviewed:
-      responseId = '31709050-4fa87047-d2f5-4729-8ea9-ede426145a1c';
+      responseId = '30505855-525503b9-1c8c-4f90-8391-2cee4301da23';
       break;
   }
   if (responseId) {

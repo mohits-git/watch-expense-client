@@ -1,0 +1,135 @@
+<div class="container">
+  <div class="departments-page">
+    <div class="page-header">
+      <div class="header-title">
+        <h1>{{ constants.PAGE_TITLE }}</h1>
+      </div>
+      <p-button
+        [label]="constants.ACTIONS.ADD_DEPARTMENT"
+        icon="pi pi-plus"
+        (onClick)="openAddDepartmentModal()"
+        [disabled]="loading() || submitting()"
+        styleClass="p-button-primary">
+      </p-button>
+    </div>
+
+    @if (loading() && departments().length === 0) {
+      <div class="initial-loading">
+        <div class="spinner-container">
+          <app-spinner size="large" />
+          <p>Loading departments...</p>
+        </div>
+      </div>
+    }
+
+    @if (!loading() || departments().length > 0) {
+      <div class="table-container">
+        <p-table
+        [value]="departments()"
+        [loading]="loading()"
+        [showLoader]="false"
+        [paginator]="true"
+        [rows]="10"
+        [rowsPerPageOptions]="[5, 10, 20, 50]"
+        [showCurrentPageReport]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} departments"
+        styleClass="p-datatable-gridlines"
+        sortMode="single">
+
+        <ng-template pTemplate="header">
+          <tr>
+            <th pSortableColumn="name" width="30%">
+              {{ constants.TABLE_HEADERS.NAME }}
+              <p-sortIcon field="name"></p-sortIcon>
+            </th>
+            <th pSortableColumn="budget" width="25%">
+              {{ constants.TABLE_HEADERS.BUDGET }}
+              <p-sortIcon field="budget"></p-sortIcon>
+            </th>
+            <th width="30%">{{ constants.TABLE_HEADERS.MANAGER }}</th>
+            <th width="15%">{{ constants.TABLE_HEADERS.ACTIONS }}</th>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="loadingbody">
+          <tr>
+            <td></td>
+            <td [colSpan]="1">
+              @if(loading()) {
+                <div class='spinner-container'>
+                  <app-spinner />
+                </div>
+              }
+            </td>
+            <td></td>
+            <td></td>
+          </tr>
+        </ng-template>
+
+        <ng-template pTemplate="body" let-department>
+          <tr>
+            <td>
+              <span class="department-name">{{ department.name }}</span>
+            </td>
+            <td>
+              <span class="budget">{{ department.budget | currency:"USD" }}</span>
+            </td>
+            <td>
+              <span>{{ getDepartmentManager(department) }}</span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <p-button
+                  icon="pi pi-pencil"
+                  pTooltip="{{ constants.ACTIONS.EDIT }}"
+                  tooltipPosition="top"
+                  (onClick)="openEditDepartmentModal(department)"
+                  [disabled]="submitting() || loading()"
+                  styleClass="p-button-text p-button-sm p-button-info">
+                </p-button>
+
+                <p-button
+                  icon="pi pi-trash"
+                  pTooltip="{{ constants.ACTIONS.DELETE }}"
+                  tooltipPosition="top"
+                  (onClick)="confirmDeleteDepartment(department)"
+                  [disabled]="submitting() || loading()"
+                  [loading]="submitting()"
+                  styleClass="p-button-text p-button-sm p-button-danger">
+                </p-button>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+
+      </p-table>
+      </div>
+    }
+
+    @if (!loading() && departments().length === 0) {
+      <div class="empty-state">
+        <i class="pi pi-building"></i>
+        <h3>No Departments Yet</h3>
+        <p>Get started by adding your first department to the system.</p>
+        <p-button
+          [label]="constants.ACTIONS.ADD_DEPARTMENT"
+          icon="pi pi-plus"
+          (onClick)="openAddDepartmentModal()"
+          styleClass="p-button-primary mt-3">
+        </p-button>
+      </div>
+    }
+
+  </div>
+
+  <app-department-form-modal
+    [(visible)]="departmentFormVisible"
+    [editingDepartment]="editingDepartment()"
+    [users]="users()"
+    (departmentSaved)="onDepartmentSaved($event)"
+    (formClose)="onDepartmentFormClose()">
+  </app-department-form-modal>
+
+  <p-confirmDialog></p-confirmDialog>
+
+</div>

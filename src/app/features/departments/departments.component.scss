@@ -5,7 +5,7 @@
   overflow-y: auto;
 }
 
-.users-page {
+.departments-page {
   .page-header {
     display: flex;
     justify-content: space-between;
@@ -31,25 +31,6 @@
         color: var(--text-color-secondary);
         font-size: 0.9rem;
         font-weight: 400;
-      }
-    }
-  }
-
-  .filters-section {
-    background: var(--surface-card);
-    border: 1px solid var(--surface-border);
-    border-radius: 8px;
-    margin-bottom: 1rem;
-
-    .filter-group {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-
-      label {
-        font-weight: 600;
-        color: var(--text-color);
-        min-width: 50px;
       }
     }
   }
@@ -120,7 +101,12 @@
       }
     }
 
-    .employee-id {
+    .department-name {
+      font-weight: 600;
+      color: var(--text-color);
+    }
+
+    .budget {
       font-family: 'Courier New', monospace;
       font-weight: 600;
       color: var(--primary-color);
@@ -167,8 +153,9 @@
     }
   }
 }
+
 :host ::ng-deep {
-  .user-form-modal {
+  .department-form-modal {
     .p-dialog {
       min-width: 500px;
       max-width: 90vw;
@@ -183,91 +170,37 @@
       padding: 0;
     }
 
-    .modal-placeholder {
-      padding: 2rem;
-      text-align: center;
+    .p-dialog-footer {
+      background: var(--surface-section);
+      border-top: 1px solid var(--surface-border);
+      padding: 1rem 1.5rem;
     }
   }
 
-  .p-confirm-dialog {
-    .p-dialog-header {
+  .p-datatable {
+    .p-datatable-header {
       background: var(--surface-section);
       border-bottom: 1px solid var(--surface-border);
     }
 
-    .p-confirm-dialog-icon {
-      color: var(--red-500);
+    .p-datatable-thead>tr>th {
+      background: var(--surface-section);
+      font-weight: 600;
+      padding: 1rem;
     }
 
-    .p-button-danger {
-      background: var(--red-500);
-      border-color: var(--red-500);
-
-      &:hover {
-        background: var(--red-600);
-        border-color: var(--red-600);
-      }
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .users-page {
-    .page-header {
-      flex-direction: column;
-      gap: 1rem;
-      align-items: stretch;
-
-      h1 {
-        text-align: center;
-        font-size: 1.5rem;
-      }
+    .p-datatable-tbody>tr>td {
+      padding: 1rem;
     }
 
-    .filters-section {
-      .filter-group {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
-
-        label {
-          min-width: auto;
-        }
-      }
-    }
-
-    .table-container {
-      :host ::ng-deep {
-        .p-datatable {
-
-          .p-datatable-thead>tr>th,
-          .p-datatable-tbody>tr>td {
-            padding: 0.75rem 0.5rem;
-          }
-        }
-      }
-
-      .user-info {
-        .email {
-          font-size: 0.8rem;
-        }
-      }
-
-      .action-buttons {
-        flex-direction: column;
-        gap: 0.25rem;
-
-        .p-button {
-          padding: 0.25rem;
-        }
-      }
+    .p-datatable-tbody>tr:hover {
+      background: var(--surface-hover);
     }
   }
 
-  :host ::ng-deep {
-    .user-form-modal .p-dialog {
-      min-width: 95vw;
-      margin: 0.5rem;
-    }
+  .p-paginator {
+    background: var(--surface-section);
+    border-top: 1px solid var(--surface-border);
+    padding: 1rem;
   }
 }

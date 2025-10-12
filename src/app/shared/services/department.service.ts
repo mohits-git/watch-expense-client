@@ -10,6 +10,7 @@ import {
   API_ENDPOINTS,
   API_MESSAGES,
 } from '@/shared/constants';
+import { buildAPIEndpoint } from '@/shared/utils/api.util';
 
 @Injectable({
   providedIn: 'root',
@@ -40,5 +41,43 @@ export class DepartmentService {
         };
       })
     );
+  }
+
+  createDepartment(department: Omit<Department, 'id' | 'createdAt' | 'updatedAt'>): Observable<string> {
+    return this.httpClient
+      .post<APIBaseResponse<{ id: string }>>(API_ENDPOINTS.ADMIN.DEPARTMENT.CREATE, department)
+      .pipe(
+        map((response) => response.data.id),
+        catchError((error: HttpErrorResponse) => {
+          const errorMessage = error.error?.message || API_MESSAGES.ADMIN.DEPARTMENT.CREATE_ERROR;
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
+  }
+
+  updateDepartment(id: string, department: Partial<Omit<Department, 'id' | 'createdAt' | 'updatedAt'>>): Observable<void> {
+    const endpoint = buildAPIEndpoint(API_ENDPOINTS.ADMIN.DEPARTMENT.UPDATE, { id });
+    return this.httpClient
+      .put<APIBaseResponse<void>>(endpoint, department)
+      .pipe(
+        map(() => undefined),
+        catchError((error: HttpErrorResponse) => {
+          const errorMessage = error.error?.message || API_MESSAGES.ADMIN.DEPARTMENT.UPDATE_ERROR;
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
+  }
+
+  deleteDepartment(id: string): Observable<void> {
+    const endpoint = buildAPIEndpoint(API_ENDPOINTS.ADMIN.DEPARTMENT.DELETE, { id });
+    return this.httpClient
+      .delete<APIBaseResponse<void>>(endpoint)
+      .pipe(
+        map(() => undefined),
+        catchError((error: HttpErrorResponse) => {
+          const errorMessage = error.error?.message || API_MESSAGES.ADMIN.DEPARTMENT.DELETE_ERROR;
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
   }
 }
