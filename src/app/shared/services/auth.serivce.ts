@@ -24,7 +24,7 @@ export class AuthService {
 
   private token = this.tokenService.token;
 
-  readonly user: Signal<User | null> = computed((): User | null => {
+  readonly user: Signal<Partial<User> | null> = computed((): Partial<User> | null => {
     if (!this.token()) return null;
     const decoded: JWTClaims | null = this.tokenService.parseToken(
       this.token()!,

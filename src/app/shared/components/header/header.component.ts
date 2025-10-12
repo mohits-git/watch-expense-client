@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { DarkModeToggleComponent } from '../dark-mode-toggle/dark-mode-toggle.component';
 import { getRouteSegments } from '@/shared/utils/routes.util';
 import { APP_ROUTES } from '@/shared/constants';
+import { UserRole } from '@/shared/enums';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +30,7 @@ export class HeaderComponent {
 
   items = computed((): MenuItem[] => {
     const isAuthenticated = this.isAuthenticated();
+    const user = this.authService.user();
     return [
       {
         label: 'Dashboard',
@@ -44,6 +46,11 @@ export class HeaderComponent {
         label: 'Advance',
         visible: isAuthenticated,
         routerLink: getRouteSegments(APP_ROUTES.ADVANCES),
+      },
+      {
+        label: 'Users',
+        visible: isAuthenticated && user?.role === UserRole.Admin,
+        routerLink: getRouteSegments(APP_ROUTES.USERS),
       },
     ];
   });

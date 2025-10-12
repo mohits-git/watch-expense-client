@@ -1,0 +1,143 @@
+<p-dialog
+  [draggable]="false"
+  [header]="editingUser() ? constants.ACTIONS.EDIT_USER : constants.ACTIONS.ADD_USER"
+  [modal]="true"
+  [(visible)]="visible"
+  (onHide)="onCancel()"
+  [closable]="true"
+  [dismissableMask]="false"
+  styleClass="user-form-modal">
+
+  <form [formGroup]="userForm">
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="employeeId">{{ constants.FORM_LABELS.EMPLOYEE_ID }}</label>
+        <input
+          pInputText
+          type="text"
+          id="employeeId"
+          name="employeeId"
+          formControlName="employeeId"
+          [disabled]="formState().loading"
+          fluid
+          autocomplete="off" />
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('employeeId')) {
+        <app-field-error-messages [errors]="getFieldErrors('employeeId')" />
+      }
+    </div>
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="name">{{ constants.FORM_LABELS.NAME }}</label>
+        <input
+          pInputText
+          type="text"
+          id="name"
+          name="name"
+          formControlName="name"
+          [disabled]="formState().loading"
+          fluid
+          autocomplete="off" />
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('name')) {
+        <app-field-error-messages [errors]="getFieldErrors('name')" />
+      }
+    </div>
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <label for="email">{{ constants.FORM_LABELS.EMAIL }}</label>
+        <input
+          pInputText
+          type="email"
+          id="email"
+          name="name"
+          formControlName="email"
+          [disabled]="formState().loading"
+          fluid
+          autocomplete="off" />
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('email')) {
+        <app-field-error-messages [errors]="getFieldErrors('email')" />
+      }
+    </div>
+    <div class="form-control">
+      <p-floatlabel variant="on">
+        <p-autoComplete
+          inputId="role"
+          formControlName="role"
+          [suggestions]="roles"
+          (completeMethod)="filterRoles($event)"
+          [dropdown]="true"
+          [forceSelection]="true"
+          [disabled]="formState().loading"
+          optionLabel="label"
+          optionValue="value"
+          fluid>
+        </p-autoComplete>
+        <label for="role">{{ constants.FORM_LABELS.ROLE }}</label>
+      </p-floatlabel>
+      @if (formState().submitted && isFieldInvalid('role')) {
+        <app-field-error-messages [errors]="getFieldErrors('role')" />
+      }
+    </div>
+    @if (isEmployeeRole()) {
+      <div class="form-control">
+        <p-floatlabel variant="on">
+          <p-autoComplete
+            inputId="departmentId"
+            formControlName="departmentId"
+            [suggestions]="filteredDepartments"
+            (completeMethod)="filterDepartments($event)"
+            [dropdown]="true"
+            [forceSelection]="true"
+            [disabled]="formState().loading"
+            optionLabel="name"
+            dataKey="id"
+            fluid>
+          </p-autoComplete>
+          <label for="departmentId">{{ constants.FORM_LABELS.DEPARTMENT }}</label>
+        </p-floatlabel>
+        @if (formState().submitted && isFieldInvalid('departmentId')) {
+          <app-field-error-messages [errors]="getFieldErrors('departmentId')" />
+        }
+      </div>
+      <div class="form-control">
+        <p-floatlabel variant="on">
+          <p-autoComplete
+            inputId="projectId"
+            formControlName="projectId"
+            [suggestions]="filteredProjectsList"
+            (completeMethod)="filterProjects($event)"
+            [dropdown]="true"
+            [forceSelection]="true"
+            [disabled]="!userForm.get('departmentId')?.value || formState().loading"
+            optionLabel="name"
+            dataKey="id"
+            fluid>
+          </p-autoComplete>
+          <label for="projectId">{{ constants.FORM_LABELS.PROJECT }}</label>
+        </p-floatlabel>
+        @if (formState().submitted && isFieldInvalid('projectId')) {
+          <app-field-error-messages [errors]="getFieldErrors('projectId')" />
+        }
+        @if (!userForm.get('departmentId')?.value) {
+          <small class="field-help">
+            Please select a department first to see available projects
+          </small>
+        }
+      </div>
+    }
+    <div class="button-container">
+      <p-button
+        [label]="constants.ACTIONS.CANCEL"
+        severity="secondary"
+        (onClick)="onCancel()"
+        [disabled]="formState().loading" />
+      <p-button
+        [label]="formState().loading ? (editingUser() ? 'Updating...' : 'Creating...') : (editingUser() ? constants.ACTIONS.UPDATE : constants.ACTIONS.CREATE)"
+        (onClick)="onSubmit()"
+        [loading]="formState().loading"
+        [disabled]="formState().loading" />
+    </div>
+  </form>
+</p-dialog>

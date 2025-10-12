@@ -6,7 +6,8 @@ import {
   NewExpenseForm,
   ExpenseCreateResult,
 } from '@/shared/types';
-import { getValidationErrors } from '@/shared/utils/validation.util';
+import { getFieldValidationErrors, isFieldInvalid } from '@/shared/utils/validation.util';
+import { EXPENSE_FORM_CONSTANTS } from '@/shared/constants';
 import { Component, inject, model, output, signal } from '@angular/core';
 import {
   FormArray,
@@ -154,16 +155,16 @@ export class NewExpenseFormComponent {
   }
 
   isInvalidField(field: AddNewExpenseFormFields) {
-    return (
-      this.formGroup.controls[field].invalid &&
-      (this.formGroup.controls[field].touched ||
-        this.formGroup.controls[field].dirty)
-    );
+    return isFieldInvalid(this.formGroup.controls[field]);
   }
 
   getFieldErrors(field: AddNewExpenseFormFields): string[] {
-    const errors = this.formGroup.controls[field]?.errors;
-    if (!errors) return [];
-    return getValidationErrors(errors);
+    const control = this.formGroup.controls[field];
+    const fieldLabels: { [key: string]: string } = {
+      amount: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.AMOUNT,
+      purpose: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.PURPOSE,
+      description: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.DESCRIPTION
+    };
+    return getFieldValidationErrors(control, fieldLabels[field]);
   }
 }

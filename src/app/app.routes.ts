@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authorizedOnly } from './guards/authorized-only.guard';
 import { employeeOnly } from './guards/employee-only.guard';
+import { adminOnly } from './guards/admin-only.guard';
 import { APP_ROUTES } from './shared/constants';
 
 export const routes: Routes = [
@@ -36,6 +37,15 @@ export const routes: Routes = [
     loadComponent: () =>
       import('@/features/advances/advances.component').then(
         (mod) => mod.AdvancesComponent
+      ),
+  },
+  {
+    path: APP_ROUTES.USERS,
+    canMatch: [adminOnly],
+    canActivate: [authorizedOnly],
+    loadComponent: () =>
+      import('@/features/users/users.component').then(
+        (mod) => mod.UsersComponent
       ),
   },
 ];

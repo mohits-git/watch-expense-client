@@ -16,7 +16,8 @@ import {
 } from 'primeng/fileupload';
 import { FieldErrorMessagesComponent } from '../../field-error-messages/field-error-messages.component';
 import { AddNewBillFormFields, FormState, NewBillForm } from '@/shared/types';
-import { getValidationErrors } from '@/shared/utils/validation.util';
+import { getFieldValidationErrors, isFieldInvalid } from '@/shared/utils/validation.util';
+import { EXPENSE_FORM_CONSTANTS } from '@/shared/constants';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
@@ -66,16 +67,16 @@ export class BillFormComponent {
   }
 
   isInvalidField(field: AddNewBillFormFields): boolean {
-    return (
-      this.formGroup().controls[field].invalid &&
-      (this.formGroup().controls[field].touched ||
-        this.formGroup().controls[field].dirty)
-    );
+    return isFieldInvalid(this.formGroup().controls[field]);
   }
 
   getFieldErrors(field: AddNewBillFormFields): string[] {
-    const errors = this.formGroup().controls[field]?.errors;
-    if (!errors) return [];
-    return getValidationErrors(errors);
+    const control = this.formGroup().controls[field];
+    const fieldLabels: { [key: string]: string } = {
+      amount: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.BILL_AMOUNT,
+      description: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.BILL_DESCRIPTION,
+      attachmentUrl: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.ATTACHMENT
+    };
+    return getFieldValidationErrors(control, fieldLabels[field]);
   }
 }

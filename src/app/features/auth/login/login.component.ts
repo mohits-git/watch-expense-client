@@ -17,10 +17,11 @@ import {
   AUTH_MESSAGES,
   TOAST_SUMMARIES,
   TOAST_TYPES,
+  LOGIN_FORM_CONSTANTS,
 } from '@/shared/constants';
 import { FormState, LoginForm, LoginFormFields } from '@/shared/types';
 import { getRouteSegments } from '@/shared/utils/routes.util';
-import { getValidationErrors } from '@/shared/utils/validation.util';
+import { getFieldValidationErrors, isFieldInvalid } from '@/shared/utils/validation.util';
 import { FieldErrorMessagesComponent } from '@/shared/components/field-error-messages/field-error-messages.component';
 import { FloatLabel } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -98,15 +99,15 @@ export class LoginComponent {
   }
 
   isInvalidField(field: LoginFormFields) {
-    return (
-      this.form.controls[field].invalid &&
-      (this.form.controls[field].dirty || this.form.controls[field].touched)
-    );
+    return isFieldInvalid(this.form.controls[field]);
   }
 
   getFieldErrors(field: LoginFormFields): string[] {
-    const errors = this.form.controls[field]?.errors;
-    if (!errors) return [];
-    return getValidationErrors(errors);
+    const control = this.form.controls[field];
+    const fieldLabels: { [key: string]: string } = {
+      email: LOGIN_FORM_CONSTANTS.FIELD_LABELS.EMAIL,
+      password: LOGIN_FORM_CONSTANTS.FIELD_LABELS.PASSWORD
+    };
+    return getFieldValidationErrors(control, fieldLabels[field]);
   }
 }

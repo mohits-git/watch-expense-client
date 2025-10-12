@@ -32,3 +32,13 @@ export interface NewAdvanceForm {
   description: FormControl<string | null>;
 }
 export type AddNewAdvanceFormFields = keyof NewAdvanceForm;
+
+export interface UserForm {
+  employeeId: FormControl<string>;
+  name: FormControl<string>;
+  email: FormControl<string>;
+  role: FormControl<string | { label: string; value: string } | null>;
+  departmentId: FormControl<string | { id: string; name: string } | null>;
+  projectId: FormControl<string | { id: string; name: string } | null>;
+}
+export type UserFormFields = keyof UserForm;

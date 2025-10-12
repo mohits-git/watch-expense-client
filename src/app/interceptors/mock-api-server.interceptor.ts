@@ -6,6 +6,7 @@ import {
   HTTP_METHODS,
 } from '@/shared/constants';
 import { RequestStatus } from '@/shared/types';
+import { buildAPIEndpoint } from '@/shared/utils/api.util';
 import { HttpInterceptorFn } from '@angular/common/http';
 
 export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
@@ -21,6 +22,13 @@ export const mockApiInterceptor: HttpInterceptorFn = (req, next) => {
       req.method === HTTP_METHODS.GET
     ) {
       return handleGetAdvanceRoute(req, next);
+    } else if (
+      url.startsWith(API_ENDPOINTS.USERS.GET_ALL) &&
+      (req.method === HTTP_METHODS.PUT || req.method === HTTP_METHODS.DELETE)
+    ) {
+      req = req.clone({
+        url: buildAPIEndpoint(API_ENDPOINTS.USERS.GET_BY_ID, { id: 1 }),
+      })
     }
   }
   return next(req);

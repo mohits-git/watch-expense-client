@@ -3,7 +3,6 @@ export interface Project {
   name: string;
   description: string;
   budget: number;
-  // spent: number;
   startDate: number;
   endDate: number;
   projectManagerId: string;

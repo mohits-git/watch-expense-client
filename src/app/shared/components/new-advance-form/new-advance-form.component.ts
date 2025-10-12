@@ -5,7 +5,8 @@ import {
   NewAdvanceForm,
   AdvanceCreateResult,
 } from '@/shared/types';
-import { getValidationErrors } from '@/shared/utils/validation.util';
+import { getFieldValidationErrors, isFieldInvalid } from '@/shared/utils/validation.util';
+import { ADVANCE_FORM_CONSTANTS } from '@/shared/constants';
 import { API_MESSAGES, TOAST_SUMMARIES, TOAST_TYPES } from '@/shared/constants';
 import { Component, inject, model, output, signal } from '@angular/core';
 import {
@@ -123,16 +124,15 @@ export class NewAdvanceFormComponent {
   }
 
   isInvalidField(field: AddNewAdvanceFormFields) {
-    return (
-      this.formGroup.controls[field].invalid &&
-      (this.formGroup.controls[field].touched ||
-        this.formGroup.controls[field].dirty)
-    );
+    return isFieldInvalid(this.formGroup.controls[field]);
   }
 
   getFieldErrors(field: AddNewAdvanceFormFields): string[] {
-    const errors = this.formGroup.controls[field]?.errors;
-    if (!errors) return [];
-    return getValidationErrors(errors);
+    const control = this.formGroup.controls[field];
+    const fieldLabels: { [key: string]: string } = {
+      amount: ADVANCE_FORM_CONSTANTS.FIELD_LABELS.AMOUNT,
+      reason: ADVANCE_FORM_CONSTANTS.FIELD_LABELS.REASON
+    };
+    return getFieldValidationErrors(control, fieldLabels[field]);
   }
 }

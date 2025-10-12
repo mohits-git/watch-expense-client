@@ -45,6 +45,13 @@ export const API_MESSAGES = {
     USER: {
       FETCH_ERROR: 'Failed to fetch users',
       FETCH_SUMMARY_ERROR: 'Failed to fetch users summary',
+      CREATE_SUCCESS: 'User created successfully',
+      CREATE_ERROR: 'Failed to create user',
+      UPDATE_SUCCESS: 'User updated successfully',
+      UPDATE_ERROR: 'Failed to update user',
+      DELETE_SUCCESS: 'User deleted successfully',
+      DELETE_ERROR: 'Failed to delete user',
+      DELETE_CONFIRMATION: 'Are you sure you want to delete this user?',
     },
     DEPARTMENT: {
       FETCH_ERROR: 'Failed to fetch departments',
@@ -58,7 +65,7 @@ export const API_MESSAGES = {
 };
 
 export const VALIDATION_ERROR_MESSAGES = {
-  [ValidationError.Email]: ['Enter a valid email.'] as const,
+  [ValidationError.Email]: ['Enter a valid email address.'] as const,
   [ValidationError.InvalidPassword]: [
     'Invalid Password. Password must have:',
     '- At least 8 characters.',
@@ -67,6 +74,9 @@ export const VALIDATION_ERROR_MESSAGES = {
     '- At least one upper and lower case.',
   ] as const,
   [ValidationError.Required]: ['This field is required.'] as const,
-  [ValidationError.Min]: ['Value too small.'] as const,
-  [ValidationError.MinLength]: ['Value too short'] as const,
+  [ValidationError.Min]: ['Value is too small.'] as const,
+  [ValidationError.Max]: ['Value is too large.'] as const,
+  [ValidationError.MinLength]: ['Value is too short.'] as const,
+  [ValidationError.MaxLength]: ['Value is too long.'] as const,
+  [ValidationError.Pattern]: ['Invalid format.'] as const,
 } as const;
