@@ -3,9 +3,11 @@
 
   <div class="header">
     <h2>Expenses</h2>
+    @if (!isAdmin()) {
     <p-button (click)="openAddExpenseForm()">
       <i class="pi pi-plus"></i> New Expense
     </p-button>
+    }
   </div>
 
   <p-selectbutton
@@ -28,33 +30,30 @@
   >
     <ng-template #header>
       <tr>
-        <th pSortableColumn="createdAt" style="width:20%">
+        <th pSortableColumn="createdAt" style="width:15%">
           Requested On <p-sortIcon field="createdAt" />
         </th>
-        <th style="width:20%">Purpose</th>
-        <th style="width:15%">Expense</th>
+        <th style="width:15%">Purpose</th>
+        <th style="width:12%">Expense</th>
         <th style="width:10%">Status</th>
-        <th style="width:35%">Description</th>
+        <th style="width:38%">Description</th>
+        <th style="width:10%">Actions</th>
       </tr>
     </ng-template>
     <ng-template #loadingbody>
-      <tr>
-      <td></td>
-      <td></td>
-      <td [colSpan]="2">
+<tr>
+        <td [colSpan]="6">
+          <div class='loading-body'>
         @if(dataFetchingError()) {
           <p-message severity="error" size="small" variant="simple">
             {{ dataFetchingError() }}
           </p-message>
         }
         @if(loading()) {
-          <div class='spinner-container'>
             <app-spinner />
-          </div>
         }
-      </td>
-      <td></td>
-      <td></td>
+          </div>
+        </td>
       </tr>
     </ng-template>
     <ng-template #body let-expense>
@@ -65,7 +64,21 @@
         <td>
           <p-tag [value]="expense.status" [severity]="getSeverity(expense.status)" [rounded]="true" />
         </td>
-        <td>{{ expense.description }}</td>
+        <td>
+          <span class="description" [pTooltip]="expense.description" tooltipPosition="top">
+            {{ expense.description }}
+          </span>
+        </td>
+        <td>
+          <p-button
+            icon="pi pi-eye"
+            [text]="true"
+            [rounded]="true"
+            pTooltip="View Details"
+            tooltipPosition="top"
+            (click)="openExpenseDetails(expense)"
+          />
+        </td>
       </tr>
     </ng-template>
   </p-table>
@@ -81,5 +94,12 @@
   <app-new-expense-form
     [(visible)]="openNewExpenseForm"
     (onAddExpense)="addNewExpense($event)"
+  />
+
+  <app-expense-details-modal
+    [(visible)]="openExpenseDetailsModal"
+    [expense]="selectedExpense()"
+    [isAdmin]="isAdmin()"
+    (onStatusChange)="onExpenseStatusChange($event)"
   />
 </div>

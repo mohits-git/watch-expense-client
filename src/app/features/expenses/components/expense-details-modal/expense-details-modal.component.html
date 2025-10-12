@@ -1,0 +1,128 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  header="Expense Details"
+>
+  @if (expense()) {
+  <div class="expense-details">
+    <div class="detail-row">
+      <span class="label">Purpose:</span>
+      <span class="value">{{ expense()?.purpose }}</span>
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Amount:</span>
+      <span class="value amount">₹{{ expense()?.amount }}</span>
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Status:</span>
+      <p-tag
+        [value]="expense()?.status ?? ''"
+        [severity]="getSeverity(expense()?.status ?? RequestStatus.Pending)"
+        [rounded]="true"
+      />
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Description:</span>
+      <span class="value">{{ expense()?.description }}</span>
+    </div>
+
+    <p-divider />
+
+    <div class="detail-row">
+      <span class="label">Requested On:</span>
+      <span class="value">{{ expense()?.createdAt | date:'medium' }}</span>
+    </div>
+
+    @if (expense()?.approvedBy) {
+    <p-divider />
+    <div class="detail-row">
+      <span class="label">Approved By:</span>
+      <span class="value">{{ expense()?.approvedBy }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Approved At:</span>
+      <span class="value">{{ expense()?.approvedAt | date:'medium' }}</span>
+    </div>
+    }
+
+    @if (expense()?.reviewedBy) {
+    <p-divider />
+    <div class="detail-row">
+      <span class="label">Reviewed By:</span>
+      <span class="value">{{ expense()?.reviewedBy }}</span>
+    </div>
+    <div class="detail-row">
+      <span class="label">Reviewed At:</span>
+      <span class="value">{{ expense()?.reviewedAt | date:'medium' }}</span>
+    </div>
+    }
+
+    @if (expense()?.bills && expense()!.bills.length > 0) {
+    <p-divider />
+    <div class="detail-row bills-section">
+      <span class="label">Bills:</span>
+      <div class="bills-list">
+        @for (bill of expense()?.bills; track bill.id) {
+          <div class="bill-item">
+            <a [href]="bill.attachmentUrl" [download]="bill.description || 'Bill_' + bill.id">
+              <i class="pi pi-file"></i> {{ bill.description || 'Bill #' + bill.id }}
+            </a>
+            <span class="bill-amount">₹{{ bill.amount }}</span>
+          </div>
+        }
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <ng-template pTemplate="footer">
+    <div class="footer-actions">
+      @if (isAdmin()) {
+        @if (canApprove()) {
+        <p-button
+          label="Approve"
+          icon="pi pi-check"
+          severity="success"
+          (onClick)="approveExpense()"
+          [disabled]="isProcessing()"
+        />
+        <p-button
+          label="Reject"
+          icon="pi pi-times"
+          severity="danger"
+          (onClick)="rejectExpense()"
+          [disabled]="isProcessing()"
+        />
+        }
+        @if (canMarkReviewed()) {
+        <p-button
+          label="Mark as Reviewed"
+          icon="pi pi-check-circle"
+          severity="info"
+          (onClick)="markAsReviewed()"
+          [disabled]="isProcessing()"
+        />
+        }
+      }
+      <p-button
+        label="Close"
+        icon="pi pi-times"
+        [text]="true"
+        (onClick)="closeModal()"
+        [disabled]="isProcessing()"
+      />
+    </div>
+  </ng-template>
+</p-dialog>

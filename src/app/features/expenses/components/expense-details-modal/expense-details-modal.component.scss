@@ -1,0 +1,86 @@
+.expense-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem 0;
+}
+
+.detail-row {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+
+  &.bills-section {
+    flex-direction: column;
+  }
+
+  .label {
+    font-weight: 600;
+    min-width: 150px;
+    color: var(--text-color-secondary);
+  }
+
+  .value {
+    flex: 1;
+    color: var(--text-color);
+
+    &.amount {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--primary-color);
+    }
+  }
+}
+
+.bills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .bill-item {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem;
+    border: 1px solid var(--surface-border);
+    border-radius: 6px;
+
+    a {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      margin-right: 1rem;
+
+      &:hover {
+        text-decoration: underline;
+      }
+
+      i {
+        font-size: 1.2rem;
+      }
+    }
+
+    .bill-amount {
+      font-weight: 600;
+      color: var(--text-color);
+    }
+  }
+}
+
+.footer-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+::ng-deep {
+  .p-dialog {
+    width: 50rem;
+  }
+  .p-dialog-content {
+    overflow-y: auto;
+  }
+}

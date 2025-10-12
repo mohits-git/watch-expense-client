@@ -23,6 +23,10 @@ export const API_MESSAGES = {
     ADD_EXPENSE_ERROR: 'Failed to add expense',
     ADD_EXPENSE_BAD_REQUEST:
       'Invalid expense data. Please check and try again.',
+    EXPENSE_APPROVED: 'Expense approved successfully',
+    EXPENSE_REJECTED: 'Expense rejected successfully',
+    EXPENSE_REVIEWED: 'Expense marked as reviewed successfully',
+    EXPENSE_UPDATE_FAILED: 'Failed to update expense status',
   },
   ADVANCE: {
     FETCH_ERROR: 'Failed to fetch advances',

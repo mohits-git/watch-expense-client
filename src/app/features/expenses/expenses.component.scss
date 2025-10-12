@@ -2,7 +2,8 @@
 
 .container {
   height: 85vh;
-  width: 96vw;
+  width: 100vw;
+  padding: 1rem;
   overflow-y: auto;
 }
 
@@ -17,9 +18,18 @@
   margin-bottom: 1rem;
 }
 
-.spinner-container {
+.loading-body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-block: 1rem;
+  height: 30vh;
+}
+
+.description {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  cursor: help;
 }

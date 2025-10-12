@@ -1,9 +1,17 @@
 import { ExpenseSummaryComponent } from '@/shared/components/expense-summary/expense-summary.component';
 import { NewExpenseFormComponent } from '@/shared/components/new-expense-form/new-expense-form.component';
+import { ExpenseDetailsModalComponent } from './components/expense-details-modal/expense-details-modal.component';
 import { ExpensesService } from '@/shared/services/expenses.service';
 import { Expense, ExpenseStatusFilter, RequestStatus } from '@/shared/types';
 import { DatePipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -14,6 +22,7 @@ import { MessageModule } from 'primeng/message';
 import { ButtonModule } from 'primeng/button';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { MessageService } from 'primeng/api';
+import { TooltipModule } from 'primeng/tooltip';
 import {
   EXPENSE,
   PRIMENG,
@@ -24,12 +33,15 @@ import {
   API_MESSAGES,
 } from '@/shared/constants';
 import { getRouteSegments } from '@/shared/utils/routes.util';
+import { AuthService } from '@/shared/services/auth.serivce';
+import { UserRole } from '@/shared/enums';
 
 @Component({
   selector: 'app-expenses',
   imports: [
     ExpenseSummaryComponent,
     NewExpenseFormComponent,
+    ExpenseDetailsModalComponent,
     TableModule,
     TagModule,
     SelectButtonModule,
@@ -39,6 +51,7 @@ import { getRouteSegments } from '@/shared/utils/routes.util';
     MessageModule,
     ButtonModule,
     PaginatorModule,
+    TooltipModule,
   ],
   templateUrl: './expenses.component.html',
   styleUrl: './expenses.component.scss',
@@ -48,7 +61,10 @@ export class ExpensesComponent implements OnInit {
   private activatedRoute = inject(ActivatedRoute);
   private router = inject(Router);
   private destroyRef = inject(DestroyRef);
+  private authService = inject(AuthService);
   private messageService = inject(MessageService);
+
+  isAdmin = computed(() => this.authService.hasRole(UserRole.Admin));
 
   totalRecords = signal<number>(0);
   expenses = signal<Expense[] | null>(null);
@@ -61,6 +77,9 @@ export class ExpensesComponent implements OnInit {
   limit = signal(5);
   status = signal<ExpenseStatusFilter>(EXPENSE.STATUS_FILTER.ALL);
   statusOptions = EXPENSE.STATUS_FILTER_OPTIONS;
+
+  openExpenseDetailsModal = signal(false);
+  selectedExpense = signal<Expense | null>(null);
 
   ngOnInit(): void {
     const paramsSub = this.activatedRoute.queryParams.subscribe({
@@ -151,5 +170,25 @@ export class ExpensesComponent implements OnInit {
       this.expenses.update((expenses) => [expense, ...(expenses ?? [])]);
       this.totalRecords.update((total) => total + 1);
     }
+  }
+
+  openExpenseDetails(expense: Expense) {
+    this.selectedExpense.set(expense);
+    this.openExpenseDetailsModal.set(true);
+  }
+
+  onExpenseStatusChange(status: RequestStatus) {
+    const selectedExpense = this.selectedExpense();
+    if (!selectedExpense) return;
+    this.expenses.update((expenses) => {
+      if (!expenses) return expenses;
+      return expenses.map((exp) => {
+        if (exp.id === selectedExpense.id) {
+          return { ...exp, status };
+        }
+        return exp;
+      });
+    });
+    this.selectedExpense.update((exp) => (exp ? { ...exp, status } : exp));
   }
 }

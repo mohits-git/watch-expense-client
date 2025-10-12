@@ -110,4 +110,20 @@ export class ExpensesService {
       bills: [],
     } as Expense;
   }
+
+  updateExpenseStatus(expenseId: string, status: RequestStatus): Observable<void> {
+    return this.httpClient
+      .patch<APIBaseResponse<void>>(
+        API_ENDPOINTS.EXPENSE.PATCH.replace(':id', expenseId),
+        { status }
+      )
+      .pipe(
+        map(() => undefined),
+        catchError((errorResponse: HttpErrorResponse) => {
+          const errorMessage =
+            errorResponse.error?.message || API_MESSAGES.EXPENSE.EXPENSE_UPDATE_FAILED;
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
+  }
 }
