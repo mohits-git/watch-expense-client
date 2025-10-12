@@ -13,6 +13,7 @@ export interface Advance {
   approvedAt: number | null;
   reviewedBy: string | null;
   reviewedAt: number | null;
+  reconciledExpenseId: string | null;
 }
 
 export interface AdvanceSummary {

@@ -1,7 +1,14 @@
-<p-dialog [draggable]="false" header="Add Expense" [modal]="true" [(visible)]="visible">
+<p-dialog [draggable]="false" [header]="isReconciliationExpense() ? 'Reconcile Advance' : 'Add Expense'" [modal]="true" [(visible)]="visible">
   <form [formGroup]="formGroup">
       <div class="main-section">
-        <span>Create a new expense request</span>
+        @if (isReconciliationExpense()) {
+          <div class="reconciliation-info">
+            <i class="pi pi-info-circle"></i>
+            <span>You are creating an expense to reconcile an advance request</span>
+          </div>
+        } @else {
+          <span>Create a new expense request</span>
+        }
 
         <div class="form-control">
           <p-floatlabel variant="on">

@@ -1,8 +1,9 @@
 import { AdvanceSummaryComponent } from '@/shared/components/advance-summary/advance-summary.component';
 import { NewAdvanceFormComponent } from '@/shared/components/new-advance-form/new-advance-form.component';
 import { AdvanceDetailsModalComponent } from './components/advance-details-modal/advance-details-modal.component';
+import { NewExpenseFormComponent } from '@/shared/components/new-expense-form/new-expense-form.component';
 import { AdvancesService } from '@/shared/services/advances.service';
-import { Advance, AdvanceStatusFilter, RequestStatus } from '@/shared/types';
+import { Advance, AdvanceStatusFilter, RequestStatus, Expense } from '@/shared/types';
 import { DatePipe } from '@angular/common';
 import { Component, computed, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -35,6 +36,7 @@ import { UserRole } from '@/shared/enums';
     AdvanceSummaryComponent,
     NewAdvanceFormComponent,
     AdvanceDetailsModalComponent,
+    NewExpenseFormComponent,
     TableModule,
     TagModule,
     SelectButtonModule,
@@ -73,6 +75,9 @@ export class AdvancesComponent implements OnInit {
 
   openAdvanceDetailsModal = signal(false);
   selectedAdvance = signal<Advance | null>(null);
+
+  openReconciliationExpenseForm = signal(false);
+  reconciliationAdvanceId = signal<string | null>(null);
 
   ngOnInit(): void {
     const paramsSub = this.activatedRoute.queryParams.subscribe({
@@ -183,5 +188,27 @@ export class AdvancesComponent implements OnInit {
       });
     });
     this.selectedAdvance.update((adv) => (adv ? { ...adv, status } : adv));
+  }
+
+  onReconcileAdvance(advanceId: string) {
+    this.reconciliationAdvanceId.set(advanceId);
+    this.openReconciliationExpenseForm.set(true);
+  }
+
+  onReconciliationExpenseAdded(expense: Expense) {
+    const advanceId = this.reconciliationAdvanceId();
+    if (!advanceId) return;
+
+    this.advances.update((advances) => {
+      if (!advances) return advances;
+      return advances.map((adv) => {
+        if (adv.id === advanceId) {
+          return { ...adv, reconciledExpenseId: expense.id };
+        }
+        return adv;
+      });
+    });
+
+    this.reconciliationAdvanceId.set(null);
   }
 }

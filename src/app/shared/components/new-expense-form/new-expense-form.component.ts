@@ -6,9 +6,20 @@ import {
   NewExpenseForm,
   ExpenseCreateResult,
 } from '@/shared/types';
-import { getFieldValidationErrors, isFieldInvalid } from '@/shared/utils/validation.util';
+import {
+  getFieldValidationErrors,
+  isFieldInvalid,
+} from '@/shared/utils/validation.util';
 import { EXPENSE_FORM_CONSTANTS } from '@/shared/constants';
-import { Component, inject, model, output, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  model,
+  output,
+  signal,
+  input,
+  effect,
+} from '@angular/core';
 import {
   FormArray,
   FormControl,
@@ -55,12 +66,23 @@ const defaultFormState = {
 })
 export class NewExpenseFormComponent {
   visible = model.required<boolean>();
+  advanceId = input<string | null>(null);
+
   private expenseService = inject(ExpensesService);
   private router = inject(Router);
   private messageService = inject(MessageService);
   onAddExpense = output<Expense>();
 
   formState = signal(defaultFormState);
+
+  isReconciliationExpense = signal(false);
+
+  constructor() {
+    effect(() => {
+      const currentAdvanceId = this.advanceId();
+      this.isReconciliationExpense.set(!!currentAdvanceId);
+    });
+  }
 
   formGroup: FormGroup<NewExpenseForm> = new FormGroup({
     amount: new FormControl(0, {
@@ -110,48 +132,53 @@ export class NewExpenseFormComponent {
       return;
     }
     this.formState.set({ submitted: true, loading: true });
-    this.expenseService
-      .addNewExpense({
-        amount: this.formGroup.value.amount!,
-        purpose: this.formGroup.value.purpose!,
-        description: this.formGroup.value.description || '',
-        bills: this.formGroup.value.bills! as Bill[],
-      })
-      .subscribe({
-        next: (result: ExpenseCreateResult) => {
-          if (result.success && result.data) {
-            this.messageService.add({
-              severity: TOAST_TYPES.SUCCESS,
-              summary: TOAST_SUMMARIES.SUCCESS,
-              detail: API_MESSAGES.EXPENSE.ADD_EXPENSE_SUCCESS,
-            });
 
-            this.visible.set(false);
-            this.formGroup.reset();
-            this.router.navigate(['/expenses'], {
-              queryParamsHandling: 'preserve',
-              skipLocationChange: true,
-            });
-            this.formState.set(defaultFormState);
-            this.onAddExpense.emit(result.data);
-          } else {
-            this.messageService.add({
-              severity: TOAST_TYPES.ERROR,
-              summary: TOAST_SUMMARIES.ERROR,
-              detail: result.message || API_MESSAGES.EXPENSE.ADD_EXPENSE_ERROR,
-            });
-            this.formState.update((state) => ({ ...state, loading: false }));
-          }
-        },
-        error: (result: ExpenseCreateResult) => {
-          this.formState.update((state) => ({ ...state, loading: false }));
+    const expenseData: Partial<Expense> = {
+      amount: this.formGroup.value.amount!,
+      purpose: this.formGroup.value.purpose!,
+      description: this.formGroup.value.description || '',
+      bills: this.formGroup.value.bills! as Bill[],
+    };
+
+    if (this.advanceId()) {
+      expenseData.advanceId = this.advanceId()!;
+    }
+
+    this.expenseService.addNewExpense(expenseData).subscribe({
+      next: (result: ExpenseCreateResult) => {
+        if (result.success && result.data) {
+          this.messageService.add({
+            severity: TOAST_TYPES.SUCCESS,
+            summary: TOAST_SUMMARIES.SUCCESS,
+            detail: API_MESSAGES.EXPENSE.ADD_EXPENSE_SUCCESS,
+          });
+
+          this.visible.set(false);
+          this.formGroup.reset();
+          this.router.navigate(['/expenses'], {
+            queryParamsHandling: 'preserve',
+            skipLocationChange: true,
+          });
+          this.formState.set(defaultFormState);
+          this.onAddExpense.emit(result.data);
+        } else {
           this.messageService.add({
             severity: TOAST_TYPES.ERROR,
             summary: TOAST_SUMMARIES.ERROR,
             detail: result.message || API_MESSAGES.EXPENSE.ADD_EXPENSE_ERROR,
           });
-        },
-      });
+          this.formState.update((state) => ({ ...state, loading: false }));
+        }
+      },
+      error: (result: ExpenseCreateResult) => {
+        this.formState.update((state) => ({ ...state, loading: false }));
+        this.messageService.add({
+          severity: TOAST_TYPES.ERROR,
+          summary: TOAST_SUMMARIES.ERROR,
+          detail: result.message || API_MESSAGES.EXPENSE.ADD_EXPENSE_ERROR,
+        });
+      },
+    });
   }
 
   isInvalidField(field: AddNewExpenseFormFields) {
@@ -163,7 +190,7 @@ export class NewExpenseFormComponent {
     const fieldLabels: { [key: string]: string } = {
       amount: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.AMOUNT,
       purpose: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.PURPOSE,
-      description: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.DESCRIPTION
+      description: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.DESCRIPTION,
     };
     return getFieldValidationErrors(control, fieldLabels[field]);
   }

@@ -101,5 +101,12 @@
     [advance]="selectedAdvance()"
     [isAdmin]="isAdmin()"
     (onStatusChange)="onAdvanceStatusChange($event)"
+    (onReconcile)="onReconcileAdvance($event)"
+  />
+
+  <app-new-expense-form
+    [(visible)]="openReconciliationExpenseForm"
+    [advanceId]="reconciliationAdvanceId()"
+    (onAddExpense)="onReconciliationExpenseAdded($event)"
   />
 </div>

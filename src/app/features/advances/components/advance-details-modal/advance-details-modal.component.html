@@ -67,6 +67,14 @@
       <span class="value">{{ advance()?.reviewedAt | date:'medium' }}</span>
     </div>
     }
+    
+    @if (advance()?.reconciledExpenseId) {
+    <p-divider />
+    <div class="detail-row">
+      <span class="label">Reconciliation Status:</span>
+      <span class="value reconciled">✓ Reconciled</span>
+    </div>
+    }
   </div>
   }
 
@@ -96,6 +104,15 @@
           severity="info"
           (onClick)="markAsReviewed()"
           [disabled]="isProcessing()"
+        />
+        }
+      } @else {
+        @if (canReconcile()) {
+        <p-button
+          label="Reconcile"
+          icon="pi pi-receipt"
+          severity="success"
+          (onClick)="reconcileAdvance()"
         />
         }
       }

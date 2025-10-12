@@ -45,6 +45,27 @@ form {
   gap: 2rem;
 }
 
+.reconciliation-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  background-color: var(--primary-50);
+  border: 1px solid var(--primary-200);
+  border-radius: 6px;
+  color: var(--primary-700);
+  font-size: 0.95rem;
+  
+  i {
+    font-size: 1.25rem;
+    color: var(--primary-500);
+  }
+  
+  span {
+    font-weight: 500;
+  }
+}
+
 .bills-section {
   display: flex;
   flex-direction: column;

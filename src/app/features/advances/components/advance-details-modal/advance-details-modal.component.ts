@@ -1,4 +1,12 @@
-import { Component, inject, signal, input, model, computed, output } from '@angular/core';
+import {
+  Component,
+  inject,
+  signal,
+  input,
+  model,
+  computed,
+  output,
+} from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -26,7 +34,7 @@ import {
     DatePipe,
   ],
   templateUrl: './advance-details-modal.component.html',
-  styleUrl: './advance-details-modal.component.scss'
+  styleUrl: './advance-details-modal.component.scss',
 })
 export class AdvanceDetailsModalComponent {
   visible = model.required<boolean>();
@@ -34,6 +42,7 @@ export class AdvanceDetailsModalComponent {
   isAdmin = input<boolean>(false);
 
   onStatusChange = output<RequestStatus>();
+  onReconcile = output<string>();
 
   private advancesService = inject(AdvancesService);
   private messageService = inject(MessageService);
@@ -43,7 +52,10 @@ export class AdvanceDetailsModalComponent {
 
   canApprove = computed(() => {
     const adv = this.advance();
-    return adv?.status === RequestStatus.Pending || adv?.status === RequestStatus.Reviewed;
+    return (
+      adv?.status === RequestStatus.Pending ||
+      adv?.status === RequestStatus.Reviewed
+    );
   });
 
   canReject = computed(() => {
@@ -54,6 +66,15 @@ export class AdvanceDetailsModalComponent {
   canMarkReviewed = computed(() => {
     const adv = this.advance();
     return adv?.status === RequestStatus.Pending;
+  });
+
+  canReconcile = computed(() => {
+    const adv = this.advance();
+    return (
+      adv?.status === RequestStatus.Approved &&
+      !adv?.reconciledExpenseId &&
+      !this.isAdmin()
+    );
   });
 
   getSeverity(status: RequestStatus): string {
@@ -80,26 +101,30 @@ export class AdvanceDetailsModalComponent {
     if (!adv) return;
 
     this.isProcessing.set(true);
-    this.advancesService.updateAdvanceStatus(adv.id, RequestStatus.Approved).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: TOAST_TYPES.SUCCESS,
-          summary: TOAST_SUMMARIES.SUCCESS,
-          detail: API_MESSAGES.ADVANCE.ADVANCE_APPROVED,
-        });
-        this.isProcessing.set(false);
-        this.onStatusChange.emit(RequestStatus.Approved);
-        this.closeModal();
-      },
-      error: (error: any) => {
-        this.messageService.add({
-          severity: TOAST_TYPES.ERROR,
-          summary: TOAST_SUMMARIES.ERROR,
-          detail: error?.error?.message || API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED,
-        });
-        this.isProcessing.set(false);
-      },
-    });
+    this.advancesService
+      .updateAdvanceStatus(adv.id, RequestStatus.Approved)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: TOAST_TYPES.SUCCESS,
+            summary: TOAST_SUMMARIES.SUCCESS,
+            detail: API_MESSAGES.ADVANCE.ADVANCE_APPROVED,
+          });
+          this.isProcessing.set(false);
+          this.onStatusChange.emit(RequestStatus.Approved);
+          this.closeModal();
+        },
+        error: (error: any) => {
+          this.messageService.add({
+            severity: TOAST_TYPES.ERROR,
+            summary: TOAST_SUMMARIES.ERROR,
+            detail:
+              error?.error?.message ||
+              API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED,
+          });
+          this.isProcessing.set(false);
+        },
+      });
   }
 
   rejectAdvance(): void {
@@ -107,26 +132,30 @@ export class AdvanceDetailsModalComponent {
     if (!adv) return;
 
     this.isProcessing.set(true);
-    this.advancesService.updateAdvanceStatus(adv.id, RequestStatus.Rejected).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: TOAST_TYPES.SUCCESS,
-          summary: TOAST_SUMMARIES.SUCCESS,
-          detail: API_MESSAGES.ADVANCE.ADVANCE_REJECTED,
-        });
-        this.isProcessing.set(false);
-        this.onStatusChange.emit(RequestStatus.Rejected);
-        this.closeModal();
-      },
-      error: (error: any) => {
-        this.messageService.add({
-          severity: TOAST_TYPES.ERROR,
-          summary: TOAST_SUMMARIES.ERROR,
-          detail: error?.error?.message || API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED,
-        });
-        this.isProcessing.set(false);
-      },
-    });
+    this.advancesService
+      .updateAdvanceStatus(adv.id, RequestStatus.Rejected)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: TOAST_TYPES.SUCCESS,
+            summary: TOAST_SUMMARIES.SUCCESS,
+            detail: API_MESSAGES.ADVANCE.ADVANCE_REJECTED,
+          });
+          this.isProcessing.set(false);
+          this.onStatusChange.emit(RequestStatus.Rejected);
+          this.closeModal();
+        },
+        error: (error: any) => {
+          this.messageService.add({
+            severity: TOAST_TYPES.ERROR,
+            summary: TOAST_SUMMARIES.ERROR,
+            detail:
+              error?.error?.message ||
+              API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED,
+          });
+          this.isProcessing.set(false);
+        },
+      });
   }
 
   markAsReviewed(): void {
@@ -134,25 +163,37 @@ export class AdvanceDetailsModalComponent {
     if (!adv) return;
 
     this.isProcessing.set(true);
-    this.advancesService.updateAdvanceStatus(adv.id, RequestStatus.Reviewed).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: TOAST_TYPES.SUCCESS,
-          summary: TOAST_SUMMARIES.SUCCESS,
-          detail: API_MESSAGES.ADVANCE.ADVANCE_REVIEWED,
-        });
-        this.isProcessing.set(false);
-        this.onStatusChange.emit(RequestStatus.Reviewed);
-        this.closeModal();
-      },
-      error: (error: any) => {
-        this.messageService.add({
-          severity: TOAST_TYPES.ERROR,
-          summary: TOAST_SUMMARIES.ERROR,
-          detail: error?.error?.message || API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED,
-        });
-        this.isProcessing.set(false);
-      },
-    });
+    this.advancesService
+      .updateAdvanceStatus(adv.id, RequestStatus.Reviewed)
+      .subscribe({
+        next: () => {
+          this.messageService.add({
+            severity: TOAST_TYPES.SUCCESS,
+            summary: TOAST_SUMMARIES.SUCCESS,
+            detail: API_MESSAGES.ADVANCE.ADVANCE_REVIEWED,
+          });
+          this.isProcessing.set(false);
+          this.onStatusChange.emit(RequestStatus.Reviewed);
+          this.closeModal();
+        },
+        error: (error: any) => {
+          this.messageService.add({
+            severity: TOAST_TYPES.ERROR,
+            summary: TOAST_SUMMARIES.ERROR,
+            detail:
+              error?.error?.message ||
+              API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED,
+          });
+          this.isProcessing.set(false);
+        },
+      });
+  }
+
+  reconcileAdvance(): void {
+    const adv = this.advance();
+    if (!adv) return;
+
+    this.onReconcile.emit(adv.id);
+    this.closeModal();
   }
 }
