@@ -33,3 +33,8 @@
   max-width: 100%;
   cursor: help;
 }
+
+.not-reconciled {
+  color: var(--text-color-secondary);
+  font-style: italic;
+}

@@ -30,19 +30,20 @@
   >
     <ng-template #header>
       <tr>
-        <th pSortableColumn="createdAt" style="width:15%">
+        <th pSortableColumn="createdAt" style="width:13%">
           Requested On <p-sortIcon field="createdAt" />
         </th>
-        <th style="width:15%">Purpose</th>
-        <th style="width:12%">Expense</th>
+        <th style="width:13%">Purpose</th>
+        <th style="width:10%">Expense</th>
         <th style="width:10%">Status</th>
-        <th style="width:38%">Description</th>
+        <th style="width:12%">Reconciliation</th>
+        <th style="width:32%">Description</th>
         <th style="width:10%">Actions</th>
       </tr>
     </ng-template>
     <ng-template #loadingbody>
 <tr>
-        <td [colSpan]="6">
+        <td [colSpan]="7">
           <div class='loading-body'>
         @if(dataFetchingError()) {
           <p-message severity="error" size="small" variant="simple">
@@ -63,6 +64,13 @@
         <td>{{ expense.amount }}</td>
         <td>
           <p-tag [value]="expense.status" [severity]="getSeverity(expense.status)" [rounded]="true" />
+        </td>
+        <td>
+          @if (expense.advanceId) {
+            <p-tag value="Reconciled" severity="info" [rounded]="true" icon="pi pi-check" />
+          } @else {
+            <span class="not-reconciled">-</span>
+          }
         </td>
         <td>
           <span class="description" [pTooltip]="expense.description" tooltipPosition="top">

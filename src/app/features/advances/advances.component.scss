@@ -61,3 +61,23 @@
   max-width: 100%;
   cursor: help;
 }
+
+.not-reconciled {
+  color: var(--text-color-secondary);
+  font-style: italic;
+}
+
+.reconciled-id {
+  display: inline-block;
+  font-family: monospace;
+  font-size: 0.9rem;
+  color: var(--blue-700);
+  background: var(--blue-50);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  cursor: help;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
