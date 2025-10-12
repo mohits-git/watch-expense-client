@@ -4,6 +4,17 @@
   left: 0;
   z-index: 1000;
   width: 100%;
+
+  .logout-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+
+  .logout-button:hover {
+    border: none;
+    outline: none;
+  }
 }
 
 .end-container {
@@ -14,20 +25,15 @@
   gap: 1rem;
 }
 
-:host ::ng-deep.active {
-  background-color: grey;
-}
-
-:host ::ng-deep .logout-button {
-  background-color: transparent;
-  border: none;
-  outline: none;
-}
-:host ::ng-deep .logout-button:hover {
-  border: none;
-  outline: none;
-}
-
 .toggle-button {
   margin-left: 95vw;
+}
+
+::ng-deep .active-menu-item {
+  background-color: var(--p-surface-100);
+  border-radius: 8px;
+}
+
+:host-context(html.dark) ::ng-deep .active-menu-item {
+  background-color: var(--p-surface-800);
 }

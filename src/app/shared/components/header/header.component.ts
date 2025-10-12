@@ -1,45 +1,49 @@
 import { AuthService } from '@/shared/services/auth.serivce';
 import { Component, computed, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, UrlTree } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { UserRole } from '@/shared/enums/user-role.enum';
 import { DarkModeToggleComponent } from '../dark-mode-toggle/dark-mode-toggle.component';
 import { getRouteSegments } from '@/shared/utils/routes.util';
 import { APP_ROUTES } from '@/shared/constants';
 
 @Component({
   selector: 'app-header',
-  imports: [RouterLink, MenubarModule, AvatarModule, ButtonModule, DarkModeToggleComponent],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    MenubarModule,
+    AvatarModule,
+    ButtonModule,
+    DarkModeToggleComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  authService = inject(AuthService);
-  router = inject(Router);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  isAuthenticated = this.authService.isAuthenticated;
 
   items = computed((): MenuItem[] => {
-    const isAuthenticated = this.authService.isAuthenticated();
+    const isAuthenticated = this.isAuthenticated();
     return [
       {
         label: 'Dashboard',
         visible: isAuthenticated,
         routerLink: getRouteSegments(APP_ROUTES.DASHBOARD),
-        routerLinkActiveOptions: {exact: true},
       },
       {
         label: 'Expenses',
-        visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
+        visible: isAuthenticated,
         routerLink: getRouteSegments(APP_ROUTES.EXPENSES),
-        routerLinkActiveOptions: {exact: true}
       },
       {
         label: 'Advance',
-        visible: isAuthenticated && this.authService.hasRole(UserRole.Employee),
+        visible: isAuthenticated,
         routerLink: getRouteSegments(APP_ROUTES.ADVANCES),
-        routerLinkActiveOptions: {exact: true}
       },
     ];
   });

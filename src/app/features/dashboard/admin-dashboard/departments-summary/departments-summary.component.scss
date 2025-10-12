@@ -4,6 +4,10 @@
   gap: 1rem;
 }
 
+i {
+  font-size: 1.25rem;
+}
+
 @media (max-width: 768px) {
   .summary {
     grid-template-columns: 1fr 1fr;

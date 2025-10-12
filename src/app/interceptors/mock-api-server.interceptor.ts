@@ -2,7 +2,7 @@ import {
   API_ENDPOINTS,
   API_PREFIX,
   API_QUERY_PARAMS,
-  HEADERS,
+  HTTP_HEADERS,
   HTTP_METHODS,
 } from '@/shared/constants';
 import { RequestStatus } from '@/shared/types';
@@ -45,7 +45,7 @@ const handleGetExpenseRoute: HttpInterceptorFn = (req, next) => {
   }
   if (responseId) {
     req = req.clone({
-      headers: req.headers.append(HEADERS.X_MOCK_RESPONSE_ID, responseId),
+      headers: req.headers.append(HTTP_HEADERS.X_MOCK_RESPONSE_ID, responseId),
     });
   }
   return next(req);
@@ -70,7 +70,7 @@ const handleGetAdvanceRoute: HttpInterceptorFn = (req, next) => {
   }
   if (responseId) {
     req = req.clone({
-      headers: req.headers.append(HEADERS.X_MOCK_RESPONSE_ID, responseId),
+      headers: req.headers.append(HTTP_HEADERS.X_MOCK_RESPONSE_ID, responseId),
     });
   }
   return next(req);

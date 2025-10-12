@@ -1,5 +1,5 @@
 import { AuthService } from '@/shared/services/auth.serivce';
-import { API_PREFIX, HEADERS, AUTH_STRATEGY } from '@/shared/constants';
+import { API_PREFIX, HTTP_HEADERS, AUTH_STRATEGY } from '@/shared/constants';
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 
@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const token = authService.getToken();
     if (token) {
       req = req.clone({
-        headers: req.headers.append(HEADERS.AUTHORIZATION, `${AUTH_STRATEGY} ${token}`),
+        headers: req.headers.append(HTTP_HEADERS.AUTHORIZATION, `${AUTH_STRATEGY} ${token}`),
       })
     }
   }

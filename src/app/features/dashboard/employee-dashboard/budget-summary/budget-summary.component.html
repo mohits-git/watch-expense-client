@@ -9,28 +9,28 @@
   <div class="summary">
     <div card="summary" type="primary">
       <div class="summary-icon">
-        <i class="pi pi-wallet" style="font-size: 1.25rem;"></i>
+        <i class="pi pi-wallet"></i>
       </div>
       <p class="summary-title">Allocated Budget</p>
       <p class="summary-data">{{ budgetSummary().allocatedBudget | currency:"INR" }}</p>
     </div>
     <div card="summary" type="secondary">
       <div class="summary-icon">
-        <i class="pi pi-indian-rupee" style="font-size: 1.25rem;"></i>
+        <i class="pi pi-indian-rupee"></i>
       </div>
       <p class="summary-title">Used Budget</p>
       <p class="summary-data">{{ budgetSummary().usedBudget | currency:"INR" }}</p>
     </div>
     <div card="summary" type="success">
       <div class="summary-icon">
-        <i class="pi pi-money-bill" style="font-size: 1.25rem;"></i>
+        <i class="pi pi-money-bill"></i>
       </div>
       <p class="summary-title">Remaining Budget</p>
       <p class="summary-data">{{ budgetSummary().remainingBudget | currency:"INR" }}</p>
     </div>
     <div card="summary" type="warning">
       <div class="summary-icon">
-        <i class="pi pi-percentage" style="font-size: 1.25rem;"></i>
+        <i class="pi pi-percentage"></i>
       </div>
       <p class="summary-title">Usage</p>
       <p class="summary-data">{{ budgetSummary().usagePercentage }}%</p>

@@ -22,7 +22,7 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.EXPENSES,
-    canMatch: [employeeOnly],
+    // canMatch: [employeeOnly],
     canActivate: [authorizedOnly],
     loadComponent: () =>
       import('@/features/expenses/expenses.component').then(
@@ -31,7 +31,7 @@ export const routes: Routes = [
   },
   {
     path: APP_ROUTES.ADVANCES,
-    canMatch: [employeeOnly],
+    // canMatch: [employeeOnly],
     canActivate: [authorizedOnly],
     loadComponent: () =>
       import('@/features/advances/advances.component').then(

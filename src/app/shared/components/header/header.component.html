@@ -1,5 +1,10 @@
-@if (this.authService.isAuthenticated()) {
+@if (this.isAuthenticated()) {
 <p-menubar [model]="items()">
+  <ng-template #item let-item>
+      <a [routerLink]="item.routerLink" class="p-menubar-item-link" routerLinkActive="active-menu-item">
+          <span>{{ item.label }}</span>
+      </a>
+  </ng-template>
   <ng-template #end>
     <div class="end-container">
       <p-button styleClass="logout-button" size="small" label="Logout" severity="secondary" (onClick)="onLogout()"/>

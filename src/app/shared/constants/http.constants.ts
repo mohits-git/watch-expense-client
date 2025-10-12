@@ -27,3 +27,10 @@ export const HTTP_STATUS_CODES = {
   GATEWAY_TIMEOUT: 504,
   NETWORK_ERROR: 0,
 } as const;
+
+export const HTTP_HEADERS = {
+  AUTHORIZATION: 'Authorization',
+  CONTENT_TYPE: 'Content-Type',
+  ACCEPT: 'Accept',
+  X_MOCK_RESPONSE_ID: 'X-Mock-Response-ID',
+};
