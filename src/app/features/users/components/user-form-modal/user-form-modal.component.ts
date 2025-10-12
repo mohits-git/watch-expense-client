@@ -8,7 +8,6 @@ import { MessageModule } from 'primeng/message';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
-import { SpinnerComponent } from '@/shared/components/spinner/spinner.component';
 import { User, Project, Department } from '@/shared/types';
 import { UserRole } from '@/shared/enums';
 import { UserService } from '@/shared/services/user.service';
@@ -39,7 +38,6 @@ import { FormState, UserForm } from '@/shared/types';
     MessageModule,
     DialogModule,
     FloatLabelModule,
-    SpinnerComponent,
     FieldErrorMessagesComponent,
   ],
   templateUrl: './user-form-modal.component.html',
