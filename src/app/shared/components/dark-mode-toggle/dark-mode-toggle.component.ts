@@ -1,5 +1,7 @@
 import { Component, DestroyRef, effect, inject, signal } from '@angular/core';
 
+const DARK_MODE_KEY = 'darkMode';
+
 @Component({
   selector: 'app-dark-mode-toggle',
   imports: [],
@@ -24,7 +26,15 @@ export class DarkModeToggleComponent {
     });
   }
 
+  ngOnInit() {
+    const savedMode = localStorage.getItem(DARK_MODE_KEY);
+    if (savedMode !== null) {
+      this.darkMode.set(savedMode === 'true');
+    }
+  }
+
   toggleDarkMode() {
     this.darkMode.update((v) => !v);
+    localStorage.setItem('darkMode', this.darkMode() ? 'true' : 'false');
   }
 }
