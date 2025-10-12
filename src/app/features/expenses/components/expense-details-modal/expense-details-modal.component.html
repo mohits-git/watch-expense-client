@@ -3,10 +3,19 @@
   [modal]="true"
   [draggable]="false"
   [resizable]="false"
+  [style]="{ width: '50rem' }"
   header="Expense Details"
 >
   @if (expense()) {
   <div class="expense-details">
+    @if (expense()?.advanceId) {
+    <div class="reconciliation-badge">
+      <i class="pi pi-link"></i>
+      <span>This expense is reconciling an advance request</span>
+    </div>
+    <p-divider />
+    }
+
     <div class="detail-row">
       <span class="label">Purpose:</span>
       <span class="value">{{ expense()?.purpose }}</span>
@@ -81,6 +90,50 @@
             <span class="bill-amount">₹{{ bill.amount }}</span>
           </div>
         }
+      </div>
+    </div>
+    }
+
+    @if (expense()?.advanceId && relatedAdvance()) {
+    <p-divider />
+    <div class="advance-section">
+      <h4>Related Advance Details</h4>
+      <div class="advance-details-card">
+        <div class="detail-row">
+          <span class="label">Advance ID:</span>
+          <span class="value">{{ relatedAdvance()?.id }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Purpose:</span>
+          <span class="value">{{ relatedAdvance()?.purpose }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Amount:</span>
+          <span class="value amount-small">₹{{ relatedAdvance()?.amount }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="label">Status:</span>
+          <p-tag
+            [value]="relatedAdvance()?.status ?? ''"
+            [severity]="getSeverity(relatedAdvance()?.status ?? RequestStatus.Pending)"
+            [rounded]="true"
+          />
+        </div>
+        <div class="detail-row">
+          <span class="label">Description:</span>
+          <span class="value">{{ relatedAdvance()?.description }}</span>
+        </div>
+      </div>
+    </div>
+    }
+
+    @if (expense()?.advanceId && loadingAdvance()) {
+    <p-divider />
+    <div class="advance-section">
+      <h4>Related Advance Details</h4>
+      <div class="loading-advance">
+        <i class="pi pi-spin pi-spinner"></i>
+        <span>Loading advance details...</span>
       </div>
     </div>
     }

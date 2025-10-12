@@ -6,7 +6,6 @@ import {
   RequestStatus,
   APIBaseResponse,
   AdvanceCreateResult,
-  AdvanceFetchResult,
 } from '@/shared/types';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { catchError, map, Observable, throwError } from 'rxjs';
@@ -116,6 +115,21 @@ export class AdvancesService {
         catchError((errorResponse: HttpErrorResponse) => {
           const errorMessage =
             errorResponse.error?.message || API_MESSAGES.ADVANCE.ADVANCE_UPDATE_FAILED;
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
+  }
+
+  fetchAdvanceById(advanceId: string): Observable<Advance> {
+    return this.httpClient
+      .get<APIBaseResponse<Advance>>(
+        API_ENDPOINTS.ADVANCE.GET_BY_ID.replace(':id', advanceId)
+      )
+      .pipe(
+        map((response) => response.data),
+        catchError((errorResponse: HttpErrorResponse) => {
+          const errorMessage =
+            errorResponse.error?.message || API_MESSAGES.ADVANCE.FETCH_ERROR;
           return throwError(() => new Error(errorMessage));
         }),
       );

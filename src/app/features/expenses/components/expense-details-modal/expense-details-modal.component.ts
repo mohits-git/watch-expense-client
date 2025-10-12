@@ -1,12 +1,13 @@
-import { Component, inject, signal, input, model, computed, output } from '@angular/core';
+import { Component, inject, signal, input, model, computed, output, effect } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
 import { MessageService } from 'primeng/api';
-import { Expense, RequestStatus } from '@/shared/types';
+import { Expense, RequestStatus, Advance } from '@/shared/types';
 import { ExpensesService } from '@/shared/services/expenses.service';
+import { AdvancesService } from '@/shared/services/advances.service';
 import {
   API_MESSAGES,
   TOAST_TYPES,
@@ -36,10 +37,38 @@ export class ExpenseDetailsModalComponent {
   onStatusChange = output<RequestStatus>();
 
   private expensesService = inject(ExpensesService);
+  private advancesService = inject(AdvancesService);
   private messageService = inject(MessageService);
 
   isProcessing = signal(false);
+  relatedAdvance = signal<Advance | null>(null);
+  loadingAdvance = signal(false);
   RequestStatus = RequestStatus;
+
+  constructor() {
+    effect(() => {
+      const exp = this.expense();
+      if (exp?.advanceId) {
+        this.fetchRelatedAdvance(exp.advanceId);
+      } else {
+        this.relatedAdvance.set(null);
+      }
+    });
+  }
+
+  fetchRelatedAdvance(advanceId: string): void {
+    this.loadingAdvance.set(true);
+    this.advancesService.fetchAdvanceById(advanceId).subscribe({
+      next: (advance) => {
+        this.relatedAdvance.set(advance);
+        this.loadingAdvance.set(false);
+      },
+      error: (error) => {
+        console.error('Failed to fetch related advance:', error);
+        this.loadingAdvance.set(false);
+      },
+    });
+  }
 
   canApprove = computed(() => {
     const exp = this.expense();
