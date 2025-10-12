@@ -126,4 +126,19 @@ export class ExpensesService {
         }),
       );
   }
+
+  fetchExpenseById(expenseId: string): Observable<Expense> {
+    return this.httpClient
+      .get<APIBaseResponse<Expense>>(
+        API_ENDPOINTS.EXPENSE.GET_BY_ID.replace(':id', expenseId)
+      )
+      .pipe(
+        map((response) => response.data),
+        catchError((errorResponse: HttpErrorResponse) => {
+          const errorMessage =
+            errorResponse.error?.message || API_MESSAGES.EXPENSE.FETCH_ERROR;
+          return throwError(() => new Error(errorMessage));
+        }),
+      );
+  }
 }

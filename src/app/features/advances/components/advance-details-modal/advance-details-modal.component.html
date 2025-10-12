@@ -67,7 +67,7 @@
       <span class="value">{{ advance()?.reviewedAt | date:'medium' }}</span>
     </div>
     }
-    
+
     @if (advance()?.reconciledExpenseId) {
     <p-divider />
     <div class="detail-row">
@@ -76,6 +76,65 @@
     </div>
     }
   </div>
+
+  @if (advance()?.reconciledExpenseId) {
+  <div class="reconciled-expense-section">
+    <div class="reconciliation-badge">
+      <i class="pi pi-receipt"></i>
+      <span>This advance has been reconciled</span>
+    </div>
+
+    @if (loadingExpense()) {
+    <div class="loading-state">
+      <i class="pi pi-spin pi-spinner" style="font-size: 2rem"></i>
+      <p>Loading reconciled expense details...</p>
+    </div>
+    } @else if (reconciledExpense()) {
+    <div class="reconciled-expense-card">
+      <h3>Reconciled Expense Details</h3>
+
+      <div class="expense-details">
+        <div class="detail-row">
+          <span class="label">Expense ID:</span>
+          <span class="value">{{ reconciledExpense()?.id }}</span>
+        </div>
+
+        <p-divider />
+
+        <div class="detail-row">
+          <span class="label">Purpose:</span>
+          <span class="value">{{ reconciledExpense()?.purpose }}</span>
+        </div>
+
+        <p-divider />
+
+        <div class="detail-row">
+          <span class="label">Amount:</span>
+          <span class="value amount-small">₹{{ reconciledExpense()?.amount }}</span>
+        </div>
+
+        <p-divider />
+
+        <div class="detail-row">
+          <span class="label">Status:</span>
+          <p-tag
+            [value]="reconciledExpense()?.status ?? ''"
+            [severity]="getSeverity(reconciledExpense()?.status ?? RequestStatus.Pending)"
+            [rounded]="true"
+          />
+        </div>
+
+        <p-divider />
+
+        <div class="detail-row">
+          <span class="label">Description:</span>
+          <span class="value">{{ reconciledExpense()?.description }}</span>
+        </div>
+      </div>
+    </div>
+    }
+  </div>
+  }
   }
 
   <ng-template pTemplate="footer">

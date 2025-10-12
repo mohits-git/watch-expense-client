@@ -6,6 +6,7 @@ import {
   model,
   computed,
   output,
+  effect,
 } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -13,8 +14,9 @@ import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { DividerModule } from 'primeng/divider';
 import { MessageService } from 'primeng/api';
-import { Advance, RequestStatus } from '@/shared/types';
+import { Advance, RequestStatus, Expense } from '@/shared/types';
 import { AdvancesService } from '@/shared/services/advances.service';
+import { ExpensesService } from '@/shared/services/expenses.service';
 import {
   API_MESSAGES,
   TOAST_TYPES,
@@ -45,10 +47,38 @@ export class AdvanceDetailsModalComponent {
   onReconcile = output<string>();
 
   private advancesService = inject(AdvancesService);
+  private expensesService = inject(ExpensesService);
   private messageService = inject(MessageService);
 
   isProcessing = signal(false);
+  reconciledExpense = signal<Expense | null>(null);
+  loadingExpense = signal(false);
   RequestStatus = RequestStatus;
+
+  constructor() {
+    effect(() => {
+      const adv = this.advance();
+      if (adv?.reconciledExpenseId) {
+        this.fetchReconciledExpense(adv.reconciledExpenseId);
+      } else {
+        this.reconciledExpense.set(null);
+      }
+    });
+  }
+
+  fetchReconciledExpense(expenseId: string): void {
+    this.loadingExpense.set(true);
+    this.expensesService.fetchExpenseById(expenseId).subscribe({
+      next: (expense) => {
+        this.reconciledExpense.set(expense);
+        this.loadingExpense.set(false);
+      },
+      error: (error) => {
+        console.error('Failed to fetch reconciled expense:', error);
+        this.loadingExpense.set(false);
+      },
+    });
+  }
 
   canApprove = computed(() => {
     const adv = this.advance();

@@ -19,13 +19,13 @@
   .value {
     flex: 1;
     color: var(--text-color);
-    
+
     &.amount {
       font-weight: 700;
       font-size: 1.2rem;
       color: var(--primary-color);
     }
-    
+
     &.reconciled {
       font-weight: 600;
       color: var(--green-600);
@@ -39,11 +39,84 @@
   justify-content: flex-end;
 }
 
+.reconciled-expense-section {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--surface-border);
+
+  .reconciliation-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--blue-50);
+    border: 1px solid var(--blue-200);
+    border-radius: 6px;
+    margin-bottom: 1rem;
+
+    i {
+      color: var(--blue-600);
+    }
+
+    span {
+      color: var(--blue-700);
+      font-weight: 600;
+    }
+  }
+
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1rem;
+
+    i {
+      color: var(--primary-color);
+    }
+
+    p {
+      color: var(--text-color-secondary);
+      margin: 0;
+    }
+  }
+
+  .reconciled-expense-card {
+    background: var(--surface-ground);
+    border: 1px solid var(--surface-border);
+    border-radius: 8px;
+    padding: 1.5rem;
+
+    h3 {
+      margin: 0 0 1rem 0;
+      color: var(--blue-700);
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .expense-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      .detail-row {
+        .value.amount-small {
+          font-weight: 600;
+          font-size: 1.1rem;
+          color: var(--primary-color);
+        }
+      }
+    }
+  }
+}
+
 ::ng-deep {
   .p-dialog {
     width: 50rem;
   }
+
   .p-dialog-content {
-    overflow: visible !important;
+    overflow-y: auto;
   }
 }
