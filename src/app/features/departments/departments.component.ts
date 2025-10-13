@@ -70,7 +70,6 @@ export class DepartmentsComponent implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
-        console.error('Failed to load initial data:', error);
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
@@ -145,7 +144,6 @@ export class DepartmentsComponent implements OnInit {
         );
       },
       error: (error) => {
-        console.error('Failed to delete department:', error);
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,

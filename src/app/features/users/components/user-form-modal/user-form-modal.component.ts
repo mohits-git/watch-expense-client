@@ -167,9 +167,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
       ? selectedDepartment
       : selectedDepartment?.id;
 
-    console.log('Selected Department ID:', departmentId);
     if (departmentId) {
-      console.log('Projects List:', this.projects());
       const filtered = this.projects().filter((project: Project) =>
         project.departmentId === departmentId
       );

@@ -89,7 +89,6 @@ export class UsersComponent implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
-        console.error('Failed to load initial data:', error);
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
@@ -173,7 +172,6 @@ export class UsersComponent implements OnInit {
         this.applyFilters();
       },
       error: (error) => {
-        console.error('Failed to delete user:', error);
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,

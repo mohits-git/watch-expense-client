@@ -84,7 +84,7 @@ const handleGetAdvanceRoute: HttpInterceptorFn = (req, next) => {
       responseId = '30505855-1797fac0-7ed5-4892-bbc3-ec6954ce224d';
       break;
     case RequestStatus.Rejected:
-      responseId = '30505855-9751166d-e60f-482d-9d21-ca50c261b794';
+      responseId = '30505855-5404b0da-9451-4ae1-97e8-1d1ceaf6ed8c';
       break;
     case RequestStatus.Reviewed:
       responseId = '30505855-525503b9-1c8c-4f90-8391-2cee4301da23';

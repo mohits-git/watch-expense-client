@@ -74,7 +74,6 @@ export class ProjectsComponent implements OnInit {
         this.loading.set(false);
       },
       error: (error) => {
-        console.error('Failed to load initial data:', error);
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
@@ -142,7 +141,6 @@ export class ProjectsComponent implements OnInit {
         this.projects.update(projects => projects.filter(p => p.id !== project.id));
       },
       error: (error) => {
-        console.error('Failed to delete project:', error);
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,

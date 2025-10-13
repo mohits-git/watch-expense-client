@@ -64,7 +64,6 @@ export class ExpenseDetailsModalComponent {
         this.loadingAdvance.set(false);
       },
       error: (error) => {
-        console.error('Failed to fetch related advance:', error);
         this.loadingAdvance.set(false);
       },
     });

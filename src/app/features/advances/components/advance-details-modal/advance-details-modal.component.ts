@@ -74,7 +74,6 @@ export class AdvanceDetailsModalComponent {
         this.loadingExpense.set(false);
       },
       error: (error) => {
-        console.error('Failed to fetch reconciled expense:', error);
         this.loadingExpense.set(false);
       },
     });
