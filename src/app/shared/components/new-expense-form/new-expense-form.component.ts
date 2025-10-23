@@ -127,6 +127,7 @@ export class NewExpenseFormComponent {
   }
 
   onSubmit() {
+    this.formGroup.markAsTouched();
     if (this.formGroup.invalid) {
       this.formState.update((state) => ({ ...state, submitted: true }));
       return;
