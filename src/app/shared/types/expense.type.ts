@@ -18,7 +18,7 @@ export interface Expense {
   approvedAt: number | null;
   reviewedBy: string | null;
   reviewedAt: number | null;
-  isReconcilled: boolean;
+  isReconciled: boolean;
   advanceId: string | null;
   bills: Bill[];
 }

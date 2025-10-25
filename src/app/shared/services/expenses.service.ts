@@ -105,7 +105,7 @@ export class ExpensesService {
       approvedBy: null,
       reviewedAt: null,
       reviewedBy: null,
-      isReconcilled: false,
+      isReconciled: false,
       advanceId: null,
       bills: [],
     } as Expense;
