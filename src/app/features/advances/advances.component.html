@@ -67,9 +67,7 @@
         </td>
         <td>
           @if (advance.reconciledExpenseId) {
-            <span class="reconciled-id" [pTooltip]="'Expense ID: ' + advance.reconciledExpenseId" tooltipPosition="top">
-              {{ advance.reconciledExpenseId }}
-            </span>
+            <p-tag value="Reconciled" severity="info" [rounded]="true" icon="pi pi-check" />
           } @else {
             <span class="not-reconciled">-</span>
           }

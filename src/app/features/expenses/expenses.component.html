@@ -36,7 +36,7 @@
         <th style="width:13%">Purpose</th>
         <th style="width:10%">Expense</th>
         <th style="width:10%">Status</th>
-        <th style="width:12%">Reconciliation</th>
+        <th style="width:12%">Type</th>
         <th style="width:32%">Description</th>
         <th style="width:10%">Actions</th>
       </tr>
@@ -67,9 +67,9 @@
         </td>
         <td>
           @if (expense.isReconciled) {
-            <p-tag value="Reconciled" severity="info" [rounded]="true" icon="pi pi-check" />
+            <p-tag value="Reconciliation" severity="info" [rounded]="true" />
           } @else {
-            <span class="not-reconciled">-</span>
+            <p-tag value="Expense" severity="secondary" [rounded]="true" />
           }
         </td>
         <td>

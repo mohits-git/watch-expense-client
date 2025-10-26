@@ -138,6 +138,8 @@ export class NewExpenseFormComponent {
       amount: this.formGroup.value.amount!,
       purpose: this.formGroup.value.purpose!,
       description: this.formGroup.value.description || '',
+      isReconciled: this.isReconciliationExpense(),
+      advanceId: this.advanceId() || undefined,
       bills: this.formGroup.value.bills! as Bill[],
     };
 
