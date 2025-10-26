@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         loggingInterceptor,
-        mockApiInterceptor,
+        // mockApiInterceptor,
         authInterceptor,
         apiProxyInterceptor,
         errorInterceptor,

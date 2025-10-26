@@ -66,7 +66,7 @@
           <p-tag [value]="expense.status" [severity]="getSeverity(expense.status)" [rounded]="true" />
         </td>
         <td>
-          @if (expense.advanceId) {
+          @if (expense.isReconciled) {
             <p-tag value="Reconciled" severity="info" [rounded]="true" icon="pi pi-check" />
           } @else {
             <span class="not-reconciled">-</span>

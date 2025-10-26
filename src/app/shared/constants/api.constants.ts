@@ -1,6 +1,7 @@
 export const BASE_URL = {
   // API: 'https://82dd37f6-b9eb-4ab1-a310-d21c4435b365.mock.pstmn.io/api/v1',
-  API: 'https://130e7b99-5bc9-49c6-89e5-5e4585d6035a.mock.pstmn.io/api/v1',
+  // API: 'https://130e7b99-5bc9-49c6-89e5-5e4585d6035a.mock.pstmn.io/api/v1',
+  API: 'http://localhost:8080/api',
   IMAGE_UPLOAD: 'http://localhost:8080/api/images',
 } as const;
 
