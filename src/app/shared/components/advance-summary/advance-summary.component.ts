@@ -26,8 +26,7 @@ export class AdvanceSummaryComponent implements OnInit {
     if (!this.summary()) return 0;
     return (
       this.summary().approved -
-      this.summary().reconciled -
-      this.summary().pendingReconciliation
+      this.summary().reconciled
     );
   });
 

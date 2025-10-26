@@ -88,7 +88,7 @@ export class ExpensesComponent implements OnInit {
           ? (String(value[EXPENSE.QUERY_PARAMS.STATUS]) as RequestStatus)
           : undefined;
         const page = Number(value[EXPENSE.QUERY_PARAMS.PAGE] ?? 1);
-        const limit = Number(value[EXPENSE.QUERY_PARAMS.LIMIT] ?? 10);
+        const limit = Number(value[EXPENSE.QUERY_PARAMS.LIMIT] ?? this.limit());
 
         this.status.set(status ?? EXPENSE.STATUS_FILTER.ALL);
         this.page.set(page);
