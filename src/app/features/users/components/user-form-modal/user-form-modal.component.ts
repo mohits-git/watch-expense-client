@@ -95,6 +95,10 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         validators: [Validators.required, Validators.email],
         nonNullable: true
       }),
+      password: this.fb.control('', {
+        validators: [Validators.required, Validators.minLength(8)],
+        nonNullable: true
+      }),
       role: this.fb.control<string | { label: string; value: string } | null>(null, {
         validators: [Validators.required]
       }),
@@ -140,12 +144,15 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         employeeId: editingUserValue.employeeId,
         name: editingUserValue.name,
         email: editingUserValue.email,
+        password: '',
         role: roleObj,
         departmentId: departmentObj,
         projectId: projectObj || null
       });
       if (editingUserValue) {
         this.userForm.get('employeeId')?.disable();
+        this.userForm.get('password')?.clearValidators();
+        this.userForm.get('password')?.updateValueAndValidity();
       }
     } else {
       const defaultRole = this.roleOptions.find(r => r.value === UserRole.Employee);
@@ -153,11 +160,14 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         employeeId: '',
         name: '',
         email: '',
+        password: '',
         role: defaultRole,
         departmentId: null,
         projectId: null
       });
       this.userForm.get('employeeId')?.enable();
+      this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
+      this.userForm.get('password')?.updateValueAndValidity();
     }
   }
 
@@ -250,6 +260,10 @@ export class UserFormModalComponent implements OnInit, OnChanges {
       departmentId: departmentIdValue,
       projectId: projectIdValue
     };
+
+    if (rawFormValue.password && rawFormValue.password.trim() !== '') {
+      (formValue as any).password = rawFormValue.password;
+    }
 
     if (!formValue.departmentId) {
       delete formValue.departmentId;
@@ -350,6 +364,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
       employeeId: this.constants.FORM_LABELS.EMPLOYEE_ID,
       name: this.constants.FORM_LABELS.NAME,
       email: this.constants.FORM_LABELS.EMAIL,
+      password: this.constants.FORM_LABELS.PASSWORD,
       role: this.constants.FORM_LABELS.ROLE,
       departmentId: this.constants.FORM_LABELS.DEPARTMENT,
       projectId: this.constants.FORM_LABELS.PROJECT

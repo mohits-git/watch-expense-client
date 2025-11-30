@@ -3,6 +3,8 @@ export const BASE_URL = {
   // API: 'https://130e7b99-5bc9-49c6-89e5-5e4585d6035a.mock.pstmn.io/api/v1',
   API: 'http://localhost:8080/api',
   IMAGE_UPLOAD: 'http://localhost:8080/api/images',
+  // API: 'http://api.watchexpense.mohits.me/api',
+  // IMAGE_UPLOAD: 'http://api.watchexpense.mohits.me/api/images',
 } as const;
 
 export const API_PREFIX = '/api';

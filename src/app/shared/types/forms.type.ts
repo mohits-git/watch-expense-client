@@ -37,6 +37,7 @@ export interface UserForm {
   employeeId: FormControl<string>;
   name: FormControl<string>;
   email: FormControl<string>;
+  password: FormControl<string>;
   role: FormControl<string | { label: string; value: string } | null>;
   departmentId: FormControl<string | { id: string; name: string } | null>;
   projectId: FormControl<string | { id: string; name: string } | null>;
