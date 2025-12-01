@@ -19,8 +19,10 @@ export class ImageUploadService {
   private imageUploadUrl: string = BASE_URL.IMAGE_UPLOAD;
 
   uploadImage(file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file, file.name)
     return this.httpClient
-      .post<APIBaseResponse<{ image_url: string }>>(this.imageUploadUrl, file)
+      .post<APIBaseResponse<{ image_url: string }>>(this.imageUploadUrl, formData)
       .pipe(
         map((response) => {
           this.messageService.add({
