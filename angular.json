@@ -54,6 +54,17 @@
               "extractLicenses": false,
               "sourceMap": true
             },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ],
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -110,6 +121,9 @@
             },
             "development": {
               "buildTarget": "watch-expense-client:build:development"
+            },
+            "test": {
+              "buildTarget": "watch-expense-client:build:test"
             }
           },
           "defaultConfiguration": "development"
