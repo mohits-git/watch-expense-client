@@ -170,17 +170,16 @@ export class UsersComponent implements OnInit {
         });
         this.users.update(users => users.filter(u => u.id !== user.id));
         this.applyFilters();
+        this.submitting.set(false);
       },
-      error: (error) => {
+      error: (error: Error) => {
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
-          detail: API_MESSAGES.ADMIN.USER.DELETE_ERROR
+          detail: `${API_MESSAGES.ADMIN.USER.DELETE_ERROR}\n${error.message}`
         });
-      },
-      complete: () => {
         this.submitting.set(false);
-      }
+      },
     });
   }
 

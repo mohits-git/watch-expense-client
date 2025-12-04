@@ -92,17 +92,6 @@ export class UserService {
       );
   }
 
-  getUsersByRole(role: UserRole): Observable<User[]> {
-    return this.httpClient
-      .get<
-        APIBaseResponse<User[]>
-      >(`${API_ENDPOINTS.USERS.GET_BY_ROLE}?role=${role}`)
-      .pipe(
-        map((response) => response.data),
-        catchError(this.handleError),
-      );
-  }
-
   private handleError = (error: HttpErrorResponse): Observable<never> => {
     const errorMessage = error.error?.message || 'An unexpected error occurred';
     return throwError(() => new Error(errorMessage));

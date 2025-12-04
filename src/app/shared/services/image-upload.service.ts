@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import {
+    API_ENDPOINTS,
   API_MESSAGES,
   BASE_URL,
   TOAST_SUMMARIES,
@@ -16,7 +17,7 @@ import { MessageService } from 'primeng/api';
 export class ImageUploadService {
   private httpClient: HttpClient = inject(HttpClient);
   private messageService: MessageService = inject(MessageService);
-  private imageUploadUrl: string = BASE_URL.IMAGE_UPLOAD;
+  private imageUploadUrl: string = `${BASE_URL.API}/${API_ENDPOINTS.IMAGE.UPLOAD}`;
 
   uploadImage(file: File): Observable<string> {
     const formData = new FormData();

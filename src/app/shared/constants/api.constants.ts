@@ -1,10 +1,7 @@
+import { environment } from '../../../environments/environment';
+
 export const BASE_URL = {
-  // API: 'https://82dd37f6-b9eb-4ab1-a310-d21c4435b365.mock.pstmn.io/api/v1',
-  // API: 'https://130e7b99-5bc9-49c6-89e5-5e4585d6035a.mock.pstmn.io/api/v1',
-  API: 'http://localhost:8080/api',
-  IMAGE_UPLOAD: 'http://localhost:8080/api/images',
-  // API: 'http://api.watchexpense.mohits.me/api',
-  // IMAGE_UPLOAD: 'http://api.watchexpense.mohits.me/api/images',
+  API: environment.apiBaseUrl,
 } as const;
 
 export const API_PREFIX = '/api';
@@ -41,10 +38,6 @@ export const API_ENDPOINTS = {
     CREATE: `${API_PREFIX}/users`,
     UPDATE: `${API_PREFIX}/users/:id`,
     DELETE: `${API_PREFIX}/users/:id`,
-    GET_BY_ROLE: `${API_PREFIX}/users/role`,
-    GET_BY_DEPARTMENT: `${API_PREFIX}/users/department`,
-    GET_BY_PROJECT: `${API_PREFIX}/users/project`,
-    CHECK_EMPLOYEE_ID: `${API_PREFIX}/users/check-employee-id`,
     BUDGET: `${API_PREFIX}/users/budget`,
   },
   ADMIN: {
