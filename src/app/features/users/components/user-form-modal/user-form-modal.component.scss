@@ -10,7 +10,7 @@
 
   .user-form-modal {
     .p-dialog-content {
-      overflow: visible !important;
+      overflow-y: auto !important;
     }
   }
 }

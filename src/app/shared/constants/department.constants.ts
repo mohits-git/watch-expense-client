@@ -3,12 +3,10 @@ export const DEPARTMENT_CONSTANTS = {
   FORM_LABELS: {
     NAME: 'Department Name',
     BUDGET: 'Budget',
-    MANAGER: 'Department Manager',
   },
   TABLE_HEADERS: {
     NAME: 'Department Name',
     BUDGET: 'Budget',
-    MANAGER: 'Manager',
     ACTIONS: 'Actions',
   },
   ACTIONS: {
@@ -24,6 +22,5 @@ export const DEPARTMENT_CONSTANTS = {
     SEARCH: 'Search departments...',
     NAME: 'Enter department name',
     BUDGET: 'Enter budget amount',
-    MANAGER: 'Select department manager',
   },
 } as const;

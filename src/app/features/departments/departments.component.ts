@@ -143,22 +143,16 @@ export class DepartmentsComponent implements OnInit {
           departments.filter((d) => d.id !== department.id),
         );
       },
-      error: (error) => {
+      error: (error: Error) => {
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
-          detail: API_MESSAGES.ADMIN.DEPARTMENT.DELETE_ERROR,
+          detail: `${API_MESSAGES.ADMIN.DEPARTMENT.DELETE_ERROR}\n${error.message}`,
         });
       },
       complete: () => {
         this.submitting.set(false);
       },
     });
-  }
-
-  getDepartmentManager(department: Department): string {
-    if (!department.managerId) return '-';
-    const manager = this.users().find((u) => u.id === department.managerId);
-    return manager?.name || 'Unknown Manager';
   }
 }

@@ -20,14 +20,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import {
   AutoCompleteModule,
-  AutoCompleteCompleteEvent,
 } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { MessageModule } from 'primeng/message';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
-import { Department, User } from '@/shared/types';
+import { Department } from '@/shared/types';
 import { DepartmentService } from '@/shared/services/department.service';
 import { FieldErrorMessagesComponent } from '@/shared/components/field-error-messages/field-error-messages.component';
 import {
@@ -65,7 +64,6 @@ import { FormState, DepartmentForm } from '@/shared/types';
 export class DepartmentFormModalComponent implements OnInit, OnChanges {
   visible = model.required<boolean>();
   editingDepartment = input<Department | null>(null);
-  users = input<User[]>([]);
 
   departmentSaved = output<Department>();
   formClose = output<void>();
@@ -76,7 +74,6 @@ export class DepartmentFormModalComponent implements OnInit, OnChanges {
 
   departmentForm!: FormGroup<DepartmentForm>;
   formState = signal<FormState>(DEFAULTS.FORM_STATE);
-  filteredManagers: User[] = [];
   readonly constants = DEPARTMENT_CONSTANTS;
 
   ngOnInit(): void {
@@ -86,9 +83,6 @@ export class DepartmentFormModalComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['editingDepartment'] && this.departmentForm) {
       this.populateForm();
-    }
-    if (changes['users']) {
-      this.filteredManagers = [...this.users()];
     }
   }
 
@@ -106,12 +100,6 @@ export class DepartmentFormModalComponent implements OnInit, OnChanges {
         validators: [Validators.required, Validators.min(0)],
         nonNullable: true,
       }),
-      managerId: this.fb.control<string | { id: string; name: string } | null>(
-        null,
-        {
-          validators: [Validators.required],
-        },
-      ),
     });
     this.populateForm();
   }
@@ -120,34 +108,15 @@ export class DepartmentFormModalComponent implements OnInit, OnChanges {
     this.formState.set(DEFAULTS.FORM_STATE);
     const editingDepartmentValue = this.editingDepartment();
     if (editingDepartmentValue && this.departmentForm) {
-      const managerObj = this.users().find(
-        (u) => u.id === editingDepartmentValue.managerId,
-      );
       this.departmentForm.patchValue({
         name: editingDepartmentValue.name,
         budget: editingDepartmentValue.budget,
-        managerId: managerObj || null,
       });
     } else {
       this.departmentForm?.patchValue({
         name: '',
         budget: 0,
-        managerId: null,
       });
-    }
-  }
-
-  filterManagers(event: AutoCompleteCompleteEvent): void {
-    const query = event.query.toLowerCase().trim();
-    const allUsers = this.users();
-    if (!query) {
-      this.filteredManagers = [...allUsers];
-    } else {
-      this.filteredManagers = allUsers.filter(
-        (user) =>
-          user.name.toLowerCase().includes(query) ||
-          user.email.toLowerCase().includes(query),
-      );
     }
   }
 
@@ -162,15 +131,9 @@ export class DepartmentFormModalComponent implements OnInit, OnChanges {
     const rawFormValue = this.departmentForm.getRawValue();
     const editingDepartmentValue = this.editingDepartment();
 
-    const managerIdValue =
-      typeof rawFormValue.managerId === 'string'
-        ? rawFormValue.managerId
-        : (rawFormValue.managerId?.id ?? '');
-
     const formValue: Partial<Department> = {
       name: rawFormValue.name,
       budget: rawFormValue.budget,
-      managerId: managerIdValue,
     };
 
     if (editingDepartmentValue) {
@@ -267,7 +230,6 @@ export class DepartmentFormModalComponent implements OnInit, OnChanges {
     const labels: { [key: string]: string } = {
       name: this.constants.FORM_LABELS.NAME,
       budget: this.constants.FORM_LABELS.BUDGET,
-      managerId: this.constants.FORM_LABELS.MANAGER,
     };
     return labels[fieldName] || fieldName;
   }

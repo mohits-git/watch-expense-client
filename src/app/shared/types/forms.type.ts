@@ -47,7 +47,6 @@ export type UserFormFields = keyof UserForm;
 export interface DepartmentForm {
   name: FormControl<string>;
   budget: FormControl<number>;
-  managerId: FormControl<string | { id: string; name: string } | null>;
 }
 export type DepartmentFormFields = keyof DepartmentForm;
 

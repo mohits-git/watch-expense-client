@@ -38,15 +38,14 @@
 
         <ng-template pTemplate="header">
           <tr>
-            <th pSortableColumn="name" width="30%">
+            <th pSortableColumn="name" width="40%">
               {{ constants.TABLE_HEADERS.NAME }}
               <p-sortIcon field="name"></p-sortIcon>
             </th>
-            <th pSortableColumn="budget" width="25%">
+            <th pSortableColumn="budget" width="35%">
               {{ constants.TABLE_HEADERS.BUDGET }}
               <p-sortIcon field="budget"></p-sortIcon>
             </th>
-            <th width="30%">{{ constants.TABLE_HEADERS.MANAGER }}</th>
             <th width="15%">{{ constants.TABLE_HEADERS.ACTIONS }}</th>
           </tr>
         </ng-template>
@@ -73,9 +72,6 @@
             </td>
             <td>
               <span class="budget">{{ department.budget | currency:"USD" }}</span>
-            </td>
-            <td>
-              <span>{{ getDepartmentManager(department) }}</span>
             </td>
             <td>
               <div class="action-buttons">
