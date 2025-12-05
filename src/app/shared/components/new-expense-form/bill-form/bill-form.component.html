@@ -39,35 +39,46 @@
       }
     </div>
   </div>
-      @if (formState().submitted && isInvalidField('amount')) {
-        <app-field-error-messages
-          [errors]="getFieldErrors('amount')"
-        />
-      }
-
-  <div class='file-upload-container'>
-  <p-fileupload
-    #fu
-    mode="basic"
-    chooseLabel="Choose"
-    chooseIcon="pi pi-upload"
-    name="attachment"
-    accept="image/*"
-    maxFileSize="1024 * 1024 * 5"
-    [customUpload]="true"
-    (onSelect)="uploadHandler($event)"
-  />
-    @if(fu.files && fu.files.length > 0) {
-    <p-button
-      severity="secondary"
-      variant="text"
-      icon="pi pi-times"
-      size="small"
-      [rounded]="true"
-      (click)="clearFile()"
-      [disabled]="formState().loading"
+  @if (formState().submitted && isInvalidField('amount')) {
+    <app-field-error-messages
+      [errors]="getFieldErrors('amount')"
     />
-    }
+  }
+
+  <div class="file-upload-container">
+    <p-fileupload
+      #fu
+      mode="basic"
+      chooseLabel="Choose"
+      chooseIcon="pi pi-upload"
+      name="attachment"
+      accept="image/*,application/pdf"
+      maxFileSize="1024 * 1024 * 5"
+      [disabled]="loading()"
+      [customUpload]="true"
+      (onSelect)="uploadHandler($event)"
+    >
+      <ng-template #filelabel let-files>
+        @if(files && files.length > 0) {
+        <div class='file-info-container'>
+            <span>
+              {{ files[0].name }}
+            </span>
+            <p-button
+              severity="secondary"
+              variant="text"
+              icon="pi pi-times"
+              [rounded]="true"
+              (click)="clearFile()"
+              [disabled]="formState().loading"
+            />
+        </div>
+        }
+        @else {
+          <span>No file selected</span>
+        }
+      </ng-template>
+    </p-fileupload>
   </div>
 
   <div class="justify-content-between">

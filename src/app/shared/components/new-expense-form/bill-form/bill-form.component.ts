@@ -1,9 +1,9 @@
 import {
   Component,
-  ElementRef,
   inject,
   input,
   output,
+  signal,
   viewChild,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +16,10 @@ import {
 } from 'primeng/fileupload';
 import { FieldErrorMessagesComponent } from '../../field-error-messages/field-error-messages.component';
 import { AddNewBillFormFields, FormState, NewBillForm } from '@/shared/types';
-import { getFieldValidationErrors, isFieldInvalid } from '@/shared/utils/validation.util';
+import {
+  getFieldValidationErrors,
+  isFieldInvalid,
+} from '@/shared/utils/validation.util';
 import { EXPENSE_FORM_CONSTANTS } from '@/shared/constants';
 import { TextareaModule } from 'primeng/textarea';
 import { ButtonModule } from 'primeng/button';
@@ -46,14 +49,18 @@ export class BillFormComponent {
   remove = output<void>();
   removeable = input.required<boolean>();
   formState = input.required<FormState>();
+  loading = signal(false);
 
   uploadHandler(event: FileSelectEvent) {
+    this.loading.set(true);
     this.imageUploadService.uploadImage(event.files[0]).subscribe({
       next: (imageUrl) => {
         this.formGroup().patchValue({ attachmentUrl: imageUrl });
+        this.loading.set(false);
       },
       error: () => {
         this.fileUploadRef()?.clear();
+        this.loading.set(false);
       },
     });
   }
@@ -63,7 +70,7 @@ export class BillFormComponent {
     this.formGroup().patchValue({ attachmentUrl: '' });
     this.fileUploadRef()?.clear();
     if (!attachmentUrl) return;
-    this.imageUploadService.deleteImage(attachmentUrl, true).subscribe()
+    this.imageUploadService.deleteImage(attachmentUrl, true).subscribe();
   }
 
   isInvalidField(field: AddNewBillFormFields): boolean {
@@ -75,7 +82,7 @@ export class BillFormComponent {
     const fieldLabels: { [key: string]: string } = {
       amount: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.BILL_AMOUNT,
       description: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.BILL_DESCRIPTION,
-      attachmentUrl: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.ATTACHMENT
+      attachmentUrl: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.ATTACHMENT,
     };
     return getFieldValidationErrors(control, fieldLabels[field]);
   }

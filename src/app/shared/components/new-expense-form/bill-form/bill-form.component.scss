@@ -37,13 +37,30 @@
   align-items: center;
   width: 100%;
   gap: 8px;
-  flex-wrap: wrap;
+}
+
+::ng-deep .p-fileupload {
+  .file-info-container {
+    display: flex;
+    align-items: center;
+    max-width: 70%;
+    gap: 8px;
+
+    span {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+  }
 }
 
 ::ng-deep {
   .p-fileupload-choose-button {
     padding: 0.3rem 0.5rem;
   }
+
   .p-textarea {
     margin-top: 2px;
     padding-block: 0.55rem;
