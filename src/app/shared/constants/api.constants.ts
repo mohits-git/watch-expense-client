@@ -2,6 +2,7 @@ import { environment } from '../../../environments/environment';
 
 export const BASE_URL = {
   API: environment.apiBaseUrl,
+  IMAGE_UPLOAD: environment.apiImageUploadBaseUrl
 } as const;
 
 export const API_PREFIX = '/api';
