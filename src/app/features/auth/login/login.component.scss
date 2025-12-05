@@ -1,3 +1,11 @@
+.page-container {
+  width: 1200px;
+  height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .card {
   padding-top: 1rem;
   padding-bottom: 2rem;

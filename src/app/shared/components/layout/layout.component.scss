@@ -1,0 +1,18 @@
+:host ::ng-deep {
+  display: flex;
+  width: 100%;
+  min-height: 98vh;
+  justify-content: center;
+}
+
+.page-container {
+  min-height: 100%;
+  width: 100%;
+  max-width: 1250px;
+}
+
+.main-container {
+  padding: 1rem;
+  overflow-y: auto;
+  min-height: calc(100vh - 72px);
+}
