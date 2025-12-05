@@ -91,6 +91,22 @@
     </ng-template>
   </p-table>
 
+  @if (!loading() && advances()?.length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-briefcase"></i>
+      <h3>No Advances Yet</h3>
+      @if (!isAdmin()) {
+        <p>Get started by adding your first advance request.</p>
+        <p-button
+          [label]="'Advances'"
+          icon="pi pi-plus"
+          (onClick)="openAddAdvanceForm()"
+          styleClass="p-button-primary mt-3">
+        </p-button>
+      }
+    </div>
+  }
+
   @if(totalRecords()) {
   <p-paginator
     [totalRecords]="totalRecords()"

@@ -124,6 +124,15 @@
       }
     }
 
+    span {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--primary-color);
+      text-decoration: none;
+      margin-right: 1rem;
+    }
+
     .bill-amount {
       font-weight: 600;
       color: var(--text-color);

@@ -84,9 +84,16 @@
       <div class="bills-list">
         @for (bill of expense()?.bills; track bill.id) {
           <div class="bill-item">
+            @if (bill.attachmentUrl) {
             <a [href]="bill.attachmentUrl" [download]="bill.description || 'Bill_' + bill.id">
               <i class="pi pi-file"></i> {{ bill.description || 'Bill #' + bill.id }}
             </a>
+            }
+            @else {
+            <span class="empty-bill">
+              {{ bill.description || 'Bill #' + bill.id }}
+            </span>
+            }
             <span class="bill-amount">₹{{ bill.amount }}</span>
           </div>
         }

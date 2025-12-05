@@ -55,9 +55,8 @@
               {{ constants.TABLE_HEADERS.END_DATE }}
               <p-sortIcon field="endDate"></p-sortIcon>
             </th>
-            <th width="12%">{{ constants.TABLE_HEADERS.PROJECT_MANAGER }}</th>
-            <th width="12%">{{ constants.TABLE_HEADERS.DEPARTMENT }}</th>
-            <th width="10%">{{ constants.TABLE_HEADERS.ACTIONS }}</th>
+            <th width="18%">{{ constants.TABLE_HEADERS.DEPARTMENT }}</th>
+            <th width="16%">{{ constants.TABLE_HEADERS.ACTIONS }}</th>
           </tr>
         </ng-template>
 
@@ -100,9 +99,6 @@
             </td>
             <td>
               <span>{{ project.endDate | date:'MMM d, y' }}</span>
-            </td>
-            <td>
-              <span>{{ getProjectManager(project) }}</span>
             </td>
             <td>
               <span>{{ getProjectDepartment(project) }}</span>
@@ -155,7 +151,6 @@
   <app-project-form-modal
     [(visible)]="projectFormVisible"
     [editingProject]="editingProject()"
-    [users]="users()"
     [departments]="departments()"
     (projectSaved)="onProjectSaved($event)"
     (formClose)="onProjectFormClose()">

@@ -124,34 +124,6 @@
       }
     </div>
 
-    <div class="form-control">
-      <p-floatlabel variant="on">
-        <p-autoComplete
-          inputId="projectManagerId"
-          formControlName="projectManagerId"
-          [suggestions]="filteredManagers"
-          (completeMethod)="filterManagers($event)"
-          [dropdown]="true"
-          [forceSelection]="true"
-          [disabled]="formState().loading"
-          optionLabel="name"
-          dataKey="id"
-          appendTo="body"
-          fluid>
-          <ng-template let-user pTemplate="item">
-            <div class="manager-option">
-              <div class="manager-name">{{ user.name }}</div>
-              <div class="manager-email">{{ user.email }}</div>
-            </div>
-          </ng-template>
-        </p-autoComplete>
-        <label for="projectManagerId">{{ constants.FORM_LABELS.PROJECT_MANAGER }}</label>
-      </p-floatlabel>
-      @if (formState().submitted && isFieldInvalid('projectManagerId')) {
-        <app-field-error-messages [errors]="getFieldErrors('projectManagerId')" />
-      }
-    </div>
-
     <div class="button-container">
       <p-button
         [label]="constants.ACTIONS.CANCEL"

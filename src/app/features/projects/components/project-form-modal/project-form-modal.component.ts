@@ -11,7 +11,7 @@ import { MessageModule } from 'primeng/message';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { MessageService } from 'primeng/api';
-import { Project, User, Department } from '@/shared/types';
+import { Project, Department } from '@/shared/types';
 import { ProjectService } from '@/shared/services/project.service';
 import { FieldErrorMessagesComponent } from '@/shared/components/field-error-messages/field-error-messages.component';
 import {
@@ -51,7 +51,6 @@ import { FormState, ProjectForm } from '@/shared/types';
 export class ProjectFormModalComponent implements OnInit, OnChanges {
   visible = model.required<boolean>();
   editingProject = input<Project | null>(null);
-  users = input<User[]>([]);
   departments = input<Department[]>([]);
 
   projectSaved = output<Project>();
@@ -63,7 +62,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
 
   projectForm!: FormGroup<ProjectForm>;
   formState = signal<FormState>(DEFAULTS.FORM_STATE);
-  filteredManagers: User[] = [];
   filteredDepartments: Department[] = [];
   readonly constants = PROJECT_CONSTANTS;
 
@@ -74,9 +72,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['editingProject'] && this.projectForm) {
       this.populateForm();
-    }
-    if (changes['users']) {
-      this.filteredManagers = [...this.users()];
     }
     if (changes['departments']) {
       this.filteredDepartments = [...this.departments()];
@@ -103,9 +98,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
       endDate: this.fb.control<Date | null>(null, {
         validators: [Validators.required]
       }),
-      projectManagerId: this.fb.control<string | { id: string; name: string } | null>(null, {
-        validators: [Validators.required]
-      }),
       departmentId: this.fb.control<string | { id: string; name: string } | null>(null, {
         validators: [Validators.required]
       })
@@ -117,7 +109,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
     this.formState.set(DEFAULTS.FORM_STATE);
     const editingProjectValue = this.editingProject();
     if (editingProjectValue && this.projectForm) {
-      const managerObj = this.users().find(u => u.id === editingProjectValue.projectManagerId);
       const departmentObj = this.departments().find(d => d.id === editingProjectValue.departmentId);
       this.projectForm.patchValue({
         name: editingProjectValue.name,
@@ -125,7 +116,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
         budget: editingProjectValue.budget,
         startDate: new Date(editingProjectValue.startDate),
         endDate: new Date(editingProjectValue.endDate),
-        projectManagerId: managerObj || null,
         departmentId: departmentObj || null
       });
     } else {
@@ -135,22 +125,8 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
         budget: 0,
         startDate: null,
         endDate: null,
-        projectManagerId: null,
         departmentId: null
       });
-    }
-  }
-
-  filterManagers(event: AutoCompleteCompleteEvent): void {
-    const query = event.query.toLowerCase().trim();
-    const allUsers = this.users();
-    if (!query) {
-      this.filteredManagers = [...allUsers];
-    } else {
-      this.filteredManagers = allUsers.filter(user =>
-        user.name.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query)
-      );
     }
   }
 
@@ -177,9 +153,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
     const rawFormValue = this.projectForm.getRawValue();
     const editingProjectValue = this.editingProject();
 
-    const managerIdValue = typeof rawFormValue.projectManagerId === 'string'
-      ? rawFormValue.projectManagerId
-      : rawFormValue.projectManagerId?.id ?? '';
     const departmentIdValue = typeof rawFormValue.departmentId === 'string'
       ? rawFormValue.departmentId
       : rawFormValue.departmentId?.id ?? '';
@@ -190,7 +163,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
       budget: rawFormValue.budget,
       startDate: rawFormValue.startDate?.getTime() ?? Date.now(),
       endDate: rawFormValue.endDate?.getTime() ?? Date.now(),
-      projectManagerId: managerIdValue,
       departmentId: departmentIdValue
     };
 
@@ -283,7 +255,6 @@ export class ProjectFormModalComponent implements OnInit, OnChanges {
       budget: this.constants.FORM_LABELS.BUDGET,
       startDate: this.constants.FORM_LABELS.START_DATE,
       endDate: this.constants.FORM_LABELS.END_DATE,
-      projectManagerId: this.constants.FORM_LABELS.PROJECT_MANAGER,
       departmentId: this.constants.FORM_LABELS.DEPARTMENT
     };
     return labels[fieldName] || fieldName;

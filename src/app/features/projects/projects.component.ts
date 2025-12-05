@@ -8,9 +8,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
-import { Project, User, Department } from '@/shared/types';
+import { Project, Department } from '@/shared/types';
 import { ProjectService } from '@/shared/services/project.service';
-import { UserService } from '@/shared/services/user.service';
 import { DepartmentService } from '@/shared/services/department.service';
 import { SpinnerComponent } from '@/shared/components/spinner/spinner.component';
 import { ProjectFormModalComponent } from './components/project-form-modal/project-form-modal.component';
@@ -40,13 +39,11 @@ import {
 })
 export class ProjectsComponent implements OnInit {
   private projectService = inject(ProjectService);
-  private userService = inject(UserService);
   private departmentService = inject(DepartmentService);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
 
   projects = signal<Project[]>([]);
-  users = signal<User[]>([]);
   departments = signal<Department[]>([]);
   loading = signal<boolean>(false);
   submitting = signal<boolean>(false);
@@ -64,16 +61,14 @@ export class ProjectsComponent implements OnInit {
 
     forkJoin({
       projects: this.projectService.getProjects(),
-      users: this.userService.getUsers(),
       departments: this.departmentService.getDepartments()
     }).subscribe({
-      next: ({ projects, users, departments }) => {
+      next: ({ projects, departments }) => {
         this.projects.set(projects);
-        this.users.set(users);
         this.departments.set(departments);
         this.loading.set(false);
       },
-      error: (error) => {
+      error: () => {
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
@@ -140,7 +135,7 @@ export class ProjectsComponent implements OnInit {
         });
         this.projects.update(projects => projects.filter(p => p.id !== project.id));
       },
-      error: (error) => {
+      error: () => {
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
@@ -151,12 +146,6 @@ export class ProjectsComponent implements OnInit {
         this.submitting.set(false);
       }
     });
-  }
-
-  getProjectManager(project: Project): string {
-    if (!project.projectManagerId) return '-';
-    const manager = this.users().find(u => u.id === project.projectManagerId);
-    return manager?.name || 'Unknown Manager';
   }
 
   getProjectDepartment(project: Project): string {

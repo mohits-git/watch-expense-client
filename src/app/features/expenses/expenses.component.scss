@@ -38,3 +38,27 @@
   color: var(--text-color-secondary);
   font-style: italic;
 }
+
+.empty-state {
+  text-align: center;
+  padding: 3rem 2rem;
+  color: var(--text-color-secondary);
+
+  i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    color: var(--surface-400);
+  }
+
+  h3 {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+    font-weight: 600;
+  }
+
+  p {
+    margin: 0;
+    margin-block: 1rem;
+    font-size: 0.875rem;
+  }
+}

@@ -57,20 +57,3 @@ form {
   justify-content: end;
   gap: 1rem;
 }
-
-.manager-option {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 0.5rem 0;
-
-  .manager-name {
-    font-weight: 600;
-    color: var(--text-color);
-  }
-
-  .manager-email {
-    font-size: 0.875rem;
-    color: var(--text-color-secondary);
-  }
-}

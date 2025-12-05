@@ -91,6 +91,22 @@
     </ng-template>
   </p-table>
 
+  @if (!loading() && expenses()?.length === 0) {
+    <div class="empty-state">
+      <i class="pi pi-briefcase"></i>
+      <h3>No Expenses Yet</h3>
+      @if (!isAdmin()) {
+        <p>Get started by adding your first expense request.</p>
+        <p-button
+          [label]="'Expenses'"
+          icon="pi pi-plus"
+          (onClick)="openAddExpenseForm()"
+          styleClass="p-button-primary mt-3">
+        </p-button>
+      }
+    </div>
+  }
+
   @if(totalRecords()) {
   <p-paginator
     [totalRecords]="totalRecords()"

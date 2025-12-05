@@ -5,7 +5,6 @@ export interface Project {
   budget: number;
   startDate: number;
   endDate: number;
-  projectManagerId: string;
   departmentId: string;
   createdAt: number;
   updatedAt: number;

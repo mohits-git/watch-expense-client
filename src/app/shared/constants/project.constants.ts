@@ -6,7 +6,6 @@ export const PROJECT_CONSTANTS = {
     BUDGET: 'Budget',
     START_DATE: 'Start Date',
     END_DATE: 'End Date',
-    PROJECT_MANAGER: 'Project Manager',
     DEPARTMENT: 'Department',
   },
   TABLE_HEADERS: {
@@ -15,7 +14,6 @@ export const PROJECT_CONSTANTS = {
     BUDGET: 'Budget',
     START_DATE: 'Start Date',
     END_DATE: 'End Date',
-    PROJECT_MANAGER: 'Manager',
     DEPARTMENT: 'Department',
     ACTIONS: 'Actions',
   },
@@ -35,7 +33,6 @@ export const PROJECT_CONSTANTS = {
     BUDGET: 'Enter budget amount',
     START_DATE: 'Select start date',
     END_DATE: 'Select end date',
-    PROJECT_MANAGER: 'Select project manager',
     DEPARTMENT: 'Select department',
   },
 } as const;

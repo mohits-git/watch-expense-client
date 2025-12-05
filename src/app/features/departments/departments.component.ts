@@ -8,9 +8,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
-import { Department, User } from '@/shared/types';
+import { Department } from '@/shared/types';
 import { DepartmentService } from '@/shared/services/department.service';
-import { UserService } from '@/shared/services/user.service';
 import { SpinnerComponent } from '@/shared/components/spinner/spinner.component';
 import { DepartmentFormModalComponent } from './components/department-form-modal/department-form-modal.component';
 import {
@@ -40,12 +39,10 @@ import {
 })
 export class DepartmentsComponent implements OnInit {
   private departmentService = inject(DepartmentService);
-  private userService = inject(UserService);
   private messageService = inject(MessageService);
   private confirmationService = inject(ConfirmationService);
 
   departments = signal<Department[]>([]);
-  users = signal<User[]>([]);
   loading = signal<boolean>(false);
   submitting = signal<boolean>(false);
   departmentFormVisible = signal<boolean>(false);
@@ -60,16 +57,12 @@ export class DepartmentsComponent implements OnInit {
   private loadInitialData(): void {
     this.loading.set(true);
 
-    forkJoin({
-      departments: this.departmentService.getDepartments(),
-      users: this.userService.getUsers(),
-    }).subscribe({
-      next: ({ departments, users }) => {
+    this.departmentService.getDepartments().subscribe({
+      next: (departments) => {
         this.departments.set(departments);
-        this.users.set(users);
         this.loading.set(false);
       },
-      error: (error) => {
+      error: () => {
         this.messageService.add({
           severity: TOAST_TYPES.ERROR,
           summary: TOAST_SUMMARIES.ERROR,
