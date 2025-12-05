@@ -1,7 +1,11 @@
 import { HttpEventType, HttpInterceptorFn } from '@angular/common/http';
 import { tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 export const loggingInterceptor: HttpInterceptorFn = (req, next) => {
+  if (environment.production) {
+    return next(req);
+  }
   console.log('HTTP Request: making request: ' + req.url);
   return next(req).pipe(
     tap({
