@@ -227,12 +227,29 @@ form {
   }
 }
 
-:host-context(.dark-mode) {
+:host-context(.dark) .login-page {
   .login-container {
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   }
 
+  .form-section {
+    background-color: var(--p-surface-900);
+  }
+
   .form-footer {
     border-top-color: var(--p-surface-700);
+  }
+
+  ::ng-deep {
+    .p-inputtext {
+      background-color: var(--p-input-bg-color);
+      border-color: var(--p-surface-600);
+      color: var(--p-text-color);
+
+      &:focus {
+        border-color: vars.$primary-color;
+        box-shadow: 0 0 0 0.2rem rgba(vars.$primary-color, 0.25);
+      }
+    }
   }
 }
