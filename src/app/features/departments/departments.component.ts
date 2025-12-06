@@ -5,16 +5,13 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { forkJoin } from 'rxjs';
+import { MessageService } from 'primeng/api';
 import { Department } from '@/shared/types';
 import { DepartmentService } from '@/shared/services/department.service';
 import { SpinnerComponent } from '@/shared/components/spinner/spinner.component';
 import { DepartmentFormModalComponent } from './components/department-form-modal/department-form-modal.component';
 import {
   DEPARTMENT_CONSTANTS,
-  API_MESSAGES,
   TOAST_TYPES,
   TOAST_SUMMARIES,
 } from '@/shared/constants';
@@ -29,7 +26,6 @@ import {
     TagModule,
     DialogModule,
     TooltipModule,
-    ConfirmDialogModule,
     SpinnerComponent,
     DepartmentFormModalComponent,
     CurrencyPipe,
@@ -40,7 +36,6 @@ import {
 export class DepartmentsComponent implements OnInit {
   private departmentService = inject(DepartmentService);
   private messageService = inject(MessageService);
-  private confirmationService = inject(ConfirmationService);
 
   departments = signal<Department[]>([]);
   loading = signal<boolean>(false);
@@ -108,44 +103,5 @@ export class DepartmentsComponent implements OnInit {
       ]);
     }
     this.onDepartmentFormClose();
-  }
-
-  confirmDeleteDepartment(department: Department): void {
-    this.confirmationService.confirm({
-      message: `${API_MESSAGES.ADMIN.DEPARTMENT.DELETE_CONFIRMATION} "${department.name}" will be permanently removed.`,
-      header: 'Delete Department',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass: 'p-button-danger',
-      accept: () => {
-        this.deleteDepartment(department);
-      },
-    });
-  }
-
-  private deleteDepartment(department: Department): void {
-    this.submitting.set(true);
-
-    this.departmentService.deleteDepartment(department.id).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: TOAST_TYPES.SUCCESS,
-          summary: TOAST_SUMMARIES.SUCCESS,
-          detail: API_MESSAGES.ADMIN.DEPARTMENT.DELETE_SUCCESS,
-        });
-        this.departments.update((departments) =>
-          departments.filter((d) => d.id !== department.id),
-        );
-      },
-      error: (error: Error) => {
-        this.messageService.add({
-          severity: TOAST_TYPES.ERROR,
-          summary: TOAST_SUMMARIES.ERROR,
-          detail: `${API_MESSAGES.ADMIN.DEPARTMENT.DELETE_ERROR}\n${error.message}`,
-        });
-      },
-      complete: () => {
-        this.submitting.set(false);
-      },
-    });
   }
 }

@@ -6,7 +6,7 @@ import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 import { Project, Department } from '@/shared/types';
 import { ProjectService } from '@/shared/services/project.service';
@@ -15,7 +15,6 @@ import { SpinnerComponent } from '@/shared/components/spinner/spinner.component'
 import { ProjectFormModalComponent } from './components/project-form-modal/project-form-modal.component';
 import {
   PROJECT_CONSTANTS,
-  API_MESSAGES,
   TOAST_TYPES,
   TOAST_SUMMARIES
 } from '@/shared/constants';
@@ -41,7 +40,6 @@ export class ProjectsComponent implements OnInit {
   private projectService = inject(ProjectService);
   private departmentService = inject(DepartmentService);
   private messageService = inject(MessageService);
-  private confirmationService = inject(ConfirmationService);
 
   projects = signal<Project[]>([]);
   departments = signal<Department[]>([]);
@@ -109,43 +107,6 @@ export class ProjectsComponent implements OnInit {
       this.projects.update(projects => [savedProject, ...projects]);
     }
     this.onProjectFormClose();
-  }
-
-  confirmDeleteProject(project: Project): void {
-    this.confirmationService.confirm({
-      message: `${API_MESSAGES.ADMIN.PROJECT.DELETE_CONFIRMATION} "${project.name}" will be permanently removed.`,
-      header: 'Delete Project',
-      icon: 'pi pi-exclamation-triangle',
-      acceptButtonStyleClass: 'p-button-danger',
-      accept: () => {
-        this.deleteProject(project);
-      }
-    });
-  }
-
-  private deleteProject(project: Project): void {
-    this.submitting.set(true);
-
-    this.projectService.deleteProject(project.id).subscribe({
-      next: () => {
-        this.messageService.add({
-          severity: TOAST_TYPES.SUCCESS,
-          summary: TOAST_SUMMARIES.SUCCESS,
-          detail: API_MESSAGES.ADMIN.PROJECT.DELETE_SUCCESS
-        });
-        this.projects.update(projects => projects.filter(p => p.id !== project.id));
-      },
-      error: () => {
-        this.messageService.add({
-          severity: TOAST_TYPES.ERROR,
-          summary: TOAST_SUMMARIES.ERROR,
-          detail: API_MESSAGES.ADMIN.PROJECT.DELETE_ERROR
-        });
-      },
-      complete: () => {
-        this.submitting.set(false);
-      }
-    });
   }
 
   getProjectDepartment(project: Project): string {

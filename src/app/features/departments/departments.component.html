@@ -83,16 +83,6 @@
                   [disabled]="submitting() || loading()"
                   styleClass="p-button-text p-button-sm p-button-info">
                 </p-button>
-
-                <p-button
-                  icon="pi pi-trash"
-                  pTooltip="{{ constants.ACTIONS.DELETE }}"
-                  tooltipPosition="top"
-                  (onClick)="confirmDeleteDepartment(department)"
-                  [disabled]="submitting() || loading()"
-                  [loading]="submitting()"
-                  styleClass="p-button-text p-button-sm p-button-danger">
-                </p-button>
               </div>
             </td>
           </tr>
@@ -124,7 +114,4 @@
     (departmentSaved)="onDepartmentSaved($event)"
     (formClose)="onDepartmentFormClose()">
   </app-department-form-modal>
-
-  <p-confirmDialog></p-confirmDialog>
-
 </div>

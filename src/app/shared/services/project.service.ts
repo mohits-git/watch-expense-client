@@ -72,17 +72,4 @@ export class ProjectService {
         }),
       );
   }
-
-  deleteProject(id: string): Observable<void> {
-    const endpoint = buildAPIEndpoint(API_ENDPOINTS.ADMIN.PROJECT.DELETE, { id });
-    return this.httpClient
-      .delete<APIBaseResponse<void>>(endpoint)
-      .pipe(
-        map(() => undefined),
-        catchError((error: HttpErrorResponse) => {
-          const errorMessage = error.error?.message || API_MESSAGES.ADMIN.PROJECT.DELETE_ERROR;
-          return throwError(() => new Error(errorMessage));
-        }),
-      );
-  }
 }

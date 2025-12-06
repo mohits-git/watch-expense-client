@@ -67,17 +67,4 @@ export class DepartmentService {
         }),
       );
   }
-
-  deleteDepartment(id: string): Observable<void> {
-    const endpoint = buildAPIEndpoint(API_ENDPOINTS.ADMIN.DEPARTMENT.DELETE, { id });
-    return this.httpClient
-      .delete<APIBaseResponse<void>>(endpoint)
-      .pipe(
-        map(() => undefined),
-        catchError((error: HttpErrorResponse) => {
-          const errorMessage = error.error?.message || API_MESSAGES.ADMIN.DEPARTMENT.DELETE_ERROR;
-          return throwError(() => new Error(errorMessage));
-        }),
-      );
-  }
 }
