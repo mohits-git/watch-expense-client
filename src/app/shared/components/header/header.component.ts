@@ -1,6 +1,6 @@
 import { AuthService } from '@/shared/services/auth.serivce';
 import { Component, computed, inject } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, UrlTree } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { AvatarModule } from 'primeng/avatar';
 import { MenuItem } from 'primeng/api';

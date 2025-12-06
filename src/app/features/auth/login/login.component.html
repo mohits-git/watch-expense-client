@@ -1,30 +1,67 @@
-<div class="page-container">
-<div class="card" card>
-  <h2>Login</h2>
-  <p class="description">Login to WatchExpense to continue</p>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="form-control">
-      <p-floatlabel variant="on">
-        <input pInputText pSize="large" type="email" id="email" name="email" autocomplete="off" formControlName="email"
-          fluid />
-        <label for="email">Email</label>
-      </p-floatlabel>
-      @if (formState().submitted && isInvalidField('email')) {
-      <app-field-error-messages [errors]="getFieldErrors('email')" />
-      }
+<div class="login-page">
+  <div class="login-container">
+    <div class="brand-section">
+      <div class="brand-content">
+        <div class="logo-wrapper">
+          <i class="pi pi-wallet" style="font-size: 3rem;"></i>
+        </div>
+        <h1 class="brand-title">WatchExpense</h1>
+        <p class="brand-tagline">Expense Reimbursement System</p>
+        <div class="features-list">
+          <div class="feature-item">
+            <i class="pi pi-check-circle"></i>
+            <span>Track expenses efficiently</span>
+          </div>
+          <div class="feature-item">
+            <i class="pi pi-check-circle"></i>
+            <span>Fast reimbursement process</span>
+          </div>
+          <div class="feature-item">
+            <i class="pi pi-check-circle"></i>
+            <span>Request Advances for upcoming expenses</span>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="form-control">
-      <p-floatlabel variant="on">
-        <input pInputText pSize="large" type="password" id="password" name="password" autocomplete="off"
-          formControlName="password" fluid />
-        <label for="password">Password</label>
-      </p-floatlabel>
-      @if (formState().submitted && isInvalidField('password')) {
-      <app-field-error-messages [errors]="getFieldErrors('password')" />
-      }
+
+    <div class="form-section">
+      <div class="card" card>
+        <div class="form-header">
+          <h2>Welcome Back</h2>
+          <p class="description">Sign in to access your account</p>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="form-control">
+            <p-floatlabel variant="on">
+              <input pInputText pSize="large" type="email" id="email" name="email" autocomplete="off"
+                formControlName="email" fluid />
+              <label for="email">Email</label>
+            </p-floatlabel>
+            @if (formState().submitted && isInvalidField('email')) {
+            <app-field-error-messages [errors]="getFieldErrors('email')" />
+            }
+          </div>
+
+          <div class="form-control">
+            <p-floatlabel variant="on">
+              <input pInputText pSize="large" type="password" id="password" name="password" autocomplete="off"
+                formControlName="password" fluid />
+              <label for="password">Password</label>
+            </p-floatlabel>
+            @if (formState().submitted && isInvalidField('password')) {
+            <app-field-error-messages [errors]="getFieldErrors('password')" />
+            }
+          </div>
+
+          <p-button size="large" type="submit" [label]="formState().loading ? 'Signing in...' : 'Sign In'"
+            [disabled]="formState().loading" fluid />
+        </form>
+
+        <div class="form-footer">
+          <p class="help-text">Need help? Contact your administrator</p>
+        </div>
+      </div>
     </div>
-    <p-button size="large" type="submit" variant="outlined" [label]="formState().loading ? 'Submitting...' : 'Submit'"
-      [disabled]="formState().loading" />
-  </form>
-</div>
+  </div>
 </div>

@@ -1,37 +1,238 @@
-.page-container {
-  width: 1200px;
-  height: 80vh;
+@use "variables" as vars;
+
+.login-page {
+  height: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.login-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  max-width: 1100px;
+  width: 100%;
+  min-height: 600px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+}
+
+.brand-section {
+  background: linear-gradient(135deg,
+    vars.$primary-color 0%,
+    vars.$secondary-color 50%,
+    vars.$purple 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  color: white;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    animation: pulse 8s ease-in-out infinite;
+  }
+
+  @media (max-width: 968px) {
+    padding: 2rem;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+.brand-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 400px;
+}
+
+.logo-wrapper {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 1.5rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+
+  i {
+    color: white;
+  }
+}
+
+.brand-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.brand-tagline {
+  font-size: 1.125rem;
+  margin: 0 0 2.5rem 0;
+  opacity: 0.95;
+  font-weight: 400;
+}
+
+.features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1rem;
+
+  i {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.9);
+  }
+
+  span {
+    opacity: 0.9;
+  }
+}
+
+.form-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+
+  @media (max-width: 968px) {
+    padding: 2rem 1.5rem;
+  }
 }
 
 .card {
-  padding-top: 1rem;
-  padding-bottom: 2rem;
-  width: 400px;
+  width: 100%;
+  max-width: 420px;
+  padding: 2.5rem 2rem;
+  border: none;
+  box-shadow: none;
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 h2 {
-  width: 100%;
-  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  color: vars.$primary-color;
+  background: linear-gradient(135deg, vars.$primary-color, vars.$secondary-color);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .description {
-  width: 100%;
-  text-align: center;
+  margin: 0;
+  color: var(--p-text-muted-color);
+  font-size: 1rem;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  margin-top: 2rem;
+  gap: 1.75rem;
 }
 
 .form-control {
   width: 100%;
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--p-surface-200);
+}
+
+.help-text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--p-text-muted-color);
+}
+
+::ng-deep {
+  .p-inputtext {
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: vars.$primary-color;
+      box-shadow: 0 0 0 0.2rem rgba(vars.$primary-color, 0.15);
+    }
+  }
+
+  .p-button {
+    background: linear-gradient(135deg, vars.$primary-color, vars.$secondary-color);
+    border: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 0.5rem;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(vars.$primary-color, 0.3);
+    }
+
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+
+    &:disabled {
+      opacity: 0.6;
+    }
+  }
+}
+
+:host-context(.dark-mode) {
+  .login-container {
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .form-footer {
+    border-top-color: var(--p-surface-700);
+  }
 }
