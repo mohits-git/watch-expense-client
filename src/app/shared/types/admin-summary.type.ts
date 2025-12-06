@@ -17,7 +17,6 @@ export interface AdminDashboardSummary {
 
 export interface UsersSummary {
   totalUsers: number;
-  activeUsers: number;
   adminUsers: number;
   employeeUsers: number;
 }

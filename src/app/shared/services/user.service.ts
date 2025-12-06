@@ -41,7 +41,6 @@ export class UserService {
 
           return {
             totalUsers,
-            activeUsers: users.length,
             adminUsers,
             employeeUsers,
           };

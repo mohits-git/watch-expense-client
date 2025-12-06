@@ -32,7 +32,6 @@ export const DEFAULTS = {
   ADMIN: {
     USERS_SUMMARY: {
       totalUsers: 0,
-      activeUsers: 0,
       adminUsers: 0,
       employeeUsers: 0,
     } as UsersSummary,

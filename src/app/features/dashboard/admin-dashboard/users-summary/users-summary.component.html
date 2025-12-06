@@ -1,7 +1,6 @@
 @if (loading()) {
   <div class="summary">
     <app-summary-card-skeleton variant="primary" />
-    <app-summary-card-skeleton variant="success" />
     <app-summary-card-skeleton variant="secondary" />
     <app-summary-card-skeleton variant="purple" />
   </div>
@@ -14,25 +13,18 @@
       <p class="summary-title">Total Users</p>
       <p class="summary-data">{{ summary().totalUsers }}</p>
     </div>
-    <div card="summary" type="success">
-      <div class="summary-icon">
-        <i class="pi pi-user-plus"></i>
-      </div>
-      <p class="summary-title">Active Users</p>
-      <p class="summary-data">{{ summary().activeUsers }}</p>
-    </div>
     <div card="summary" type="secondary">
       <div class="summary-icon">
         <i class="pi pi-shield"></i>
       </div>
-      <p class="summary-title">Admin Users</p>
+      <p class="summary-title">Admins</p>
       <p class="summary-data">{{ summary().adminUsers }}</p>
     </div>
     <div card="summary" type="purple">
       <div class="summary-icon">
         <i class="pi pi-user"></i>
       </div>
-      <p class="summary-title">Employee Users</p>
+      <p class="summary-title">Employees</p>
       <p class="summary-data">{{ summary().employeeUsers }}</p>
     </div>
   </div>
