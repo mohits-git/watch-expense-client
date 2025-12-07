@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import {
+  API_ENDPOINTS,
   API_MESSAGES,
-  BASE_URL,
   TOAST_SUMMARIES,
   TOAST_TYPES,
 } from '../constants';
@@ -16,7 +16,6 @@ import { MessageService } from 'primeng/api';
 export class ImageUploadService {
   private httpClient: HttpClient = inject(HttpClient);
   private messageService: MessageService = inject(MessageService);
-  private imageUploadUrl: string = BASE_URL.IMAGE_UPLOAD;
 
   uploadImage(file: File): Observable<string> {
     const formData = new FormData();
@@ -24,7 +23,7 @@ export class ImageUploadService {
     return this.httpClient
       .post<
         APIBaseResponse<{ image_url: string }>
-      >(this.imageUploadUrl, formData)
+      >(API_ENDPOINTS.IMAGE.UPLOAD, formData)
       .pipe(
         map((response) => {
           this.messageService.add({
@@ -50,7 +49,7 @@ export class ImageUploadService {
     suppressMessage?: boolean,
   ): Observable<boolean> {
     return this.httpClient
-      .delete<void>(this.imageUploadUrl, {
+      .delete<void>(API_ENDPOINTS.IMAGE.DELETE, {
         body: { image_url: imageUrl },
       })
       .pipe(
@@ -73,6 +72,24 @@ export class ImageUploadService {
             });
           }
           return throwError(() => new Error(API_MESSAGES.IMAGE.DELETE_ERROR));
+        }),
+      );
+  }
+
+  getImageDownloadUrl(imageUrl: string): Observable<string> {
+    return this.httpClient
+      .get<APIBaseResponse<{ download_url: string }>>(
+        API_ENDPOINTS.IMAGE.DOWNLOAD_URL,
+        {
+          params: { url: imageUrl },
+        },
+      )
+      .pipe(
+        map((response) => response.data.download_url),
+        catchError(() => {
+          return throwError(
+            () => new Error(API_MESSAGES.IMAGE.DOWNLOAD_URL_ERROR),
+          );
         }),
       );
   }

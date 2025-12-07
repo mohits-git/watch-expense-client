@@ -14,6 +14,7 @@ import {
   TOAST_SUMMARIES,
   PRIMENG,
 } from '@/shared/constants';
+import { ImageUploadService } from '@/shared/services/image-upload.service';
 
 @Component({
   selector: 'app-expense-details-modal',
@@ -39,6 +40,7 @@ export class ExpenseDetailsModalComponent {
   private expensesService = inject(ExpensesService);
   private advancesService = inject(AdvancesService);
   private messageService = inject(MessageService);
+  private imageService = inject(ImageUploadService);
 
   isProcessing = signal(false);
   relatedAdvance = signal<Advance | null>(null);
@@ -180,6 +182,26 @@ export class ExpenseDetailsModalComponent {
           detail: error?.error?.message || API_MESSAGES.EXPENSE.EXPENSE_UPDATE_FAILED,
         });
         this.isProcessing.set(false);
+      },
+    });
+  }
+
+  downloadAttachment(attachmentUrl: string): void {
+    this.imageService.getImageDownloadUrl(attachmentUrl).subscribe({
+      next: (downloadUrl) => {
+        const link = document.createElement('a');
+        link.href = downloadUrl;
+        link.download = attachmentUrl.split('/').pop() || 'attachment';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      error: (error) => {
+        this.messageService.add({
+          severity: TOAST_TYPES.ERROR,
+          summary: TOAST_SUMMARIES.ERROR,
+          detail: error?.message || API_MESSAGES.IMAGE.DOWNLOAD_URL_ERROR,
+        });
       },
     });
   }

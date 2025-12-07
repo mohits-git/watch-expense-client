@@ -6,6 +6,7 @@ export const BASE_URL = {
 } as const;
 
 export const API_PREFIX = '/api';
+export const IMAGE_API_PREFIX = '/api/images';
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -52,8 +53,9 @@ export const API_ENDPOINTS = {
     },
   },
   IMAGE: {
-    UPLOAD: '/images',
-    DELETE: '/images',
+    UPLOAD: `${IMAGE_API_PREFIX}/`,
+    DELETE: `${IMAGE_API_PREFIX}/`,
+    DOWNLOAD_URL: `${IMAGE_API_PREFIX}/download-url`,
   },
 } as const;
 

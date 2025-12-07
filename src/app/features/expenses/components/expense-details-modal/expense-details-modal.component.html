@@ -85,9 +85,13 @@
         @for (bill of expense()?.bills; track bill.id) {
           <div class="bill-item">
             @if (bill.attachmentUrl) {
-            <a [href]="bill.attachmentUrl" [download]="bill.description || 'Bill_' + bill.id">
-              <i class="pi pi-file"></i> {{ bill.description || 'Bill #' + bill.id }}
-            </a>
+            <p-button
+              type="button"
+              variant="text"
+              icon="pi pi-download"
+              [label]="bill.description || 'Bill #' + bill.id"
+              (onClick)="downloadAttachment(bill.attachmentUrl)"
+            />
             }
             @else {
             <span class="empty-bill">

@@ -48,6 +48,7 @@ export const API_MESSAGES = {
     UPLOAD_ERROR: 'Failed to upload image',
     DELETE_SUCCESS: 'Image deleted successfully',
     DELETE_ERROR: 'Failed to delete image',
+    DOWNLOAD_URL_ERROR: 'Failed to get image download URL',
   },
   ADMIN: {
     USER: {
