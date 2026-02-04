@@ -1,7 +1,11 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
-module.exports = function (config) {
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
+const __dirname = import.meta.dirname
+
+export default function(config) {
   config.set({
     basePath: '',
     frameworks: ['jasmine', '@angular-devkit/build-angular'],

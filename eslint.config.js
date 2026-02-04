@@ -3,7 +3,7 @@ import eslint from "@eslint/js";
 import tseslint from "typescript-eslint";
 import angular from "angular-eslint";
 
-module.exports = tseslint.config(
+const cfg = tseslint.config(
   {
     files: ["**/*.ts"],
     extends: [
@@ -39,7 +39,9 @@ module.exports = tseslint.config(
       ...angular.configs.templateAccessibility,
     ],
     rules: {
-      "@angular-eslint/template/prefer-self-closing-tags": "error"
+      "@angular-eslint/template/prefer-self-closing-tags": "error",
     },
-  }
+  },
 );
+
+export default cfg;
