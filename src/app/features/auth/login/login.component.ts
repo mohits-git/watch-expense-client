@@ -47,14 +47,14 @@ export class LoginComponent {
 
   formState = signal<FormState>(DEFAULTS.FORM_STATE);
 
-  form: FormGroup<LoginForm> = new FormGroup({
+  form: FormGroup = new FormGroup<LoginForm>({
     email: new FormControl('', {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
     }),
     password: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required],
+      validators: [Validators.required, validatePassword],
     }),
   });
 
@@ -104,7 +104,7 @@ export class LoginComponent {
 
   getFieldErrors(field: LoginFormFields): string[] {
     const control = this.form.controls[field];
-    const fieldLabels: { [key: string]: string } = {
+    const fieldLabels: Record<string, string> = {
       email: LOGIN_FORM_CONSTANTS.FIELD_LABELS.EMAIL,
       password: LOGIN_FORM_CONSTANTS.FIELD_LABELS.PASSWORD
     };
