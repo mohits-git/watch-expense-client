@@ -16,7 +16,7 @@ describe('NewExpenseFormComponent', () => {
         provideHttpClient(),
         provideHttpClientTesting(),
         MessageService,
-      ]
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NewExpenseFormComponent);

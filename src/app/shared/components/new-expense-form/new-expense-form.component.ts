@@ -84,7 +84,7 @@ export class NewExpenseFormComponent {
     });
   }
 
-  formGroup: FormGroup<NewExpenseForm> = new FormGroup({
+  formGroup = new FormGroup<NewExpenseForm>({
     amount: new FormControl(0, {
       nonNullable: true,
       validators: [Validators.required, Validators.min(1)],
@@ -190,7 +190,7 @@ export class NewExpenseFormComponent {
 
   getFieldErrors(field: AddNewExpenseFormFields): string[] {
     const control = this.formGroup.controls[field];
-    const fieldLabels: { [key: string]: string } = {
+    const fieldLabels: Record<string, string> = {
       amount: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.AMOUNT,
       purpose: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.PURPOSE,
       description: EXPENSE_FORM_CONSTANTS.FIELD_LABELS.DESCRIPTION,

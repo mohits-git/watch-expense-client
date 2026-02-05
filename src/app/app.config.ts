@@ -14,7 +14,6 @@ import { loggingInterceptor } from '@/interceptors/logging.interceptor';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { apiProxyInterceptor } from './interceptors/api-proxy.interceptor';
 import { authInterceptor } from './interceptors/auth.interceptor';
-// import { mockApiInterceptor } from './interceptors/mock-api-server.interceptor';
 import { errorInterceptor } from './interceptors/error.interceptor';
 import { customPreset } from './shared/theme/custom-preset';
 
@@ -31,7 +30,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([
         loggingInterceptor,
-        // mockApiInterceptor,
         authInterceptor,
         apiProxyInterceptor,
         errorInterceptor,
