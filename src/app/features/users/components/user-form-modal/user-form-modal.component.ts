@@ -25,6 +25,7 @@ import {
   DEFAULTS
 } from '@/shared/constants';
 import { FormState, UserForm } from '@/shared/types';
+import { validatePassword } from '@/shared/validators/password-validator';
 
 @Component({
   selector: 'app-user-form-modal',
@@ -96,7 +97,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         nonNullable: true
       }),
       password: this.fb.control('', {
-        validators: [Validators.required, Validators.minLength(8)],
+        validators: [Validators.required, validatePassword],
         nonNullable: true
       }),
       role: this.fb.control<string | { label: string; value: string } | null>(null, {
