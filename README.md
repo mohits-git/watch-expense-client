@@ -1,6 +1,24 @@
 # WatchExpenseClient
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.17.
+Angular Frontend Client Application for [watch-expense](https://github.com/mohits-git/watch-expense-py)
+
+## Deploy to AWS
+1. Prerequisites:-
+- s3 bucket for frontend assets: watchexpense.mohits.me or other name
+- cloudfront distribution with s3 bucket as origin: EJ32DRF1SA3HO or other id
+> update the `./scripts/deploy.sh` with your bucket and cloudfront configuration (name/id)
+
+2. Deploy:
+```bash
+./scripts/deploy.sh
+```
+
+> Visit watch expense server
+
+---
+---
+
+Default Angular Generated README.md:
 
 ## Development server
 
