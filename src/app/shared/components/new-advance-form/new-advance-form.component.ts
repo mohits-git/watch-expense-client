@@ -54,17 +54,17 @@ export class NewAdvanceFormComponent {
 
   formState = signal(defaultFormState);
 
-  formGroup: FormGroup<NewAdvanceForm> = new FormGroup({
+  formGroup: FormGroup = new FormGroup<NewAdvanceForm>({
     amount: new FormControl(0, {
       nonNullable: true,
       validators: [Validators.required, Validators.min(1)],
     }),
     purpose: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(3)],
+      validators: [Validators.required, Validators.minLength(3), Validators.maxLength(25)],
     }),
     description: new FormControl('', {
-      validators: [],
+      validators: [Validators.maxLength(1000)],
     }),
   });
 

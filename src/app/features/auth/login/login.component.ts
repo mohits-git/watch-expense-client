@@ -50,11 +50,11 @@ export class LoginComponent {
   form: FormGroup = new FormGroup<LoginForm>({
     email: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.email],
+      validators: [Validators.required, Validators.email, Validators.maxLength(50)],
     }),
     password: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, validatePassword],
+      validators: [Validators.required, validatePassword, Validators.maxLength(72)],
     }),
   });
 

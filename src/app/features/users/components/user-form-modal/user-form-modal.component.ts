@@ -60,7 +60,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
   userForm!: FormGroup<UserForm>;
   formState = signal<FormState>(DEFAULTS.FORM_STATE);
   filteredProjects = signal<Project[]>([]);
-  roles: Array<{ label: string; value: string }> = [];
+  roles: { label: string; value: string }[] = [];
   filteredDepartments: Department[] = [];
   filteredProjectsList: Project[] = [];
   readonly constants = USER_CONSTANTS;
@@ -151,7 +151,6 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         projectId: projectObj || null
       });
       if (editingUserValue) {
-        this.userForm.get('employeeId')?.disable();
         this.userForm.get('password')?.clearValidators();
         this.userForm.get('password')?.updateValueAndValidity();
       }
@@ -167,7 +166,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         projectId: null
       });
       this.userForm.get('employeeId')?.enable();
-      this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
+      this.userForm.get('password')?.setValidators([Validators.required, validatePassword, Validators.maxLength(72)]);
       this.userForm.get('password')?.updateValueAndValidity();
     }
   }
@@ -254,7 +253,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
       : rawFormValue.projectId?.id;
 
     const formValue: Partial<User> = {
-      employeeId: editingUserValue ? editingUserValue.employeeId : rawFormValue.employeeId,
+      employeeId: rawFormValue.employeeId,
       name: rawFormValue.name,
       email: rawFormValue.email,
       role: roleValue as UserRole,
@@ -361,7 +360,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
   }
 
   private getFieldLabel(fieldName: string): string {
-    const labels: { [key: string]: string } = {
+    const labels: Record<string, string> = {
       employeeId: this.constants.FORM_LABELS.EMPLOYEE_ID,
       name: this.constants.FORM_LABELS.NAME,
       email: this.constants.FORM_LABELS.EMAIL,

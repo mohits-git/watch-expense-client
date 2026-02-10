@@ -91,10 +91,14 @@ export class NewExpenseFormComponent {
     }),
     purpose: new FormControl('', {
       nonNullable: true,
-      validators: [Validators.required, Validators.minLength(3)],
+      validators: [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(25),
+      ],
     }),
     description: new FormControl('', {
-      validators: [],
+      validators: [Validators.maxLength(2000)],
     }),
     bills: new FormArray([this.newBill()], {
       validators: [Validators.minLength(1)],
@@ -107,7 +111,9 @@ export class NewExpenseFormComponent {
         nonNullable: true,
         validators: [Validators.required, Validators.min(1)],
       }),
-      description: new FormControl(''),
+      description: new FormControl('', {
+        validators: [Validators.maxLength(1000)],
+      }),
       attachmentUrl: new FormControl(''),
     });
   }
