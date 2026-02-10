@@ -6,7 +6,7 @@ export const validatePassword: ValidatorFn = (
 ) => {
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\.])[A-Za-z\d@$!%*?&\.]{8,}$/;
-  if (passwordRegex.test(control.value)) {
+  if (!control.value || passwordRegex.test(control.value)) {
     return null;
   }
   return {

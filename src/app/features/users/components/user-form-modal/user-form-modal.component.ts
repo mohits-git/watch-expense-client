@@ -93,11 +93,11 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         nonNullable: true
       }),
       email: this.fb.control('', {
-        validators: [Validators.required, Validators.email],
+        validators: [Validators.required, Validators.email, Validators.maxLength(50)],
         nonNullable: true
       }),
       password: this.fb.control('', {
-        validators: [Validators.required, validatePassword],
+        validators: [Validators.required, validatePassword, Validators.maxLength(72)],
         nonNullable: true
       }),
       role: this.fb.control<string | { label: string; value: string } | null>(null, {
@@ -151,7 +151,7 @@ export class UserFormModalComponent implements OnInit, OnChanges {
         projectId: projectObj || null
       });
       if (editingUserValue) {
-        this.userForm.get('password')?.clearValidators();
+        this.userForm.get('password')?.removeValidators([Validators.required])
         this.userForm.get('password')?.updateValueAndValidity();
       }
     } else {
