@@ -89,13 +89,13 @@
               type="button"
               variant="text"
               icon="pi pi-download"
-              [label]="bill.description || 'Bill #' + bill.id"
+              [label]="bill.description || 'Bill #' + ($index + 1)"
               (onClick)="downloadAttachment(bill.attachmentUrl)"
             />
             }
             @else {
             <span class="empty-bill">
-              {{ bill.description || 'Bill #' + bill.id }}
+              {{ bill.description || 'Bill #' + ($index + 1) }}
             </span>
             }
             <span class="bill-amount">₹{{ bill.amount }}</span>

@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://api.watchexpense.mohits.me/api',
-  apiImageUploadBaseUrl: 'https://images.api.watchexpense.mohits.me/api/images',
+  apiBaseUrl: 'https://api.watchexpensepy.mohits.me/api',
+  apiImageUploadBaseUrl: 'https://api.watchexpensepy.mohits.me/api/images',
 }
