@@ -87,6 +87,7 @@ export class UserService {
     return this.httpClient
       .delete<void>(endpoint)
       .pipe(
+        map(() => undefined),
         catchError(this.handleError),
       );
   }
