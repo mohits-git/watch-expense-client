@@ -25,7 +25,7 @@ import {
   DEFAULTS
 } from '@/shared/constants';
 import { FormState, UserForm } from '@/shared/types';
-import { validatePassword } from '@/shared/validators/password-validator';
+import { validatePassword } from '@/shared/validators/password.validator';
 
 @Component({
   selector: 'app-user-form-modal',

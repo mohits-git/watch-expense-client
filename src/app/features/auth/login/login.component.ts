@@ -1,5 +1,5 @@
 import { CardComponent } from '@/shared/components/card/card.component';
-import { validatePassword } from '@/shared/validators/password-validator';
+import { validatePassword } from '@/shared/validators/password.validator';
 import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
